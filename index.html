@@ -1,1180 +1,138 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<title>AI工具网页 - 专业增强版</title>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<style>
-/* 基础重置 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* 全局样式 */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-  background-attachment: fixed;
-  color: #fff;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 100vh;
-  padding-bottom: 70px;
-}
-
-/* 动态背景 */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.15), transparent),
-    radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.15), transparent);
-  animation: bgMove 20s linear infinite;
-  z-index: -1;
-}
-
-@keyframes bgMove {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-10px, 10px); }
-  100% { transform: translate(0, 0); }
-}
-
-/* 底部导航 */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: rgba(20, 22, 40, 0.95);
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0.8rem 0;
-  border-top: 1px solid rgba(100, 200, 255, 0.2);
-  z-index: 1000;
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.bottom-nav a {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
-  flex-grow: 1;
-  text-align: center;
-  padding: 0.5rem 0;
-  transition: all 0.3s ease;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.bottom-nav a::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #00f2fe, #4facfe);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.bottom-nav a:hover {
-  color: #fff;
-  transform: translateY(-3px);
-}
-
-.bottom-nav a:hover::after {
-  width: 60%;
-}
-
-.bottom-nav a.active {
-  color: #fff;
-  font-weight: 600;
-}
-
-.bottom-nav a.active::after {
-  width: 80%;
-  background: linear-gradient(90deg, #ffcc00, #ff8800);
-}
-
-/* 页面内容 */
-.page-content {
-  padding-bottom: 4.2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.section {
-  display: none;
-  padding: 2rem 1rem;
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.section.active {
-  display: block;
-}
-
-/* 标题样式 */
-h2 {
-  color: #00ccff;
-  font-size: 1.6rem;
-  margin: 1.5rem 0 1rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 2px solid rgba(100, 200, 255, 0.3);
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-h2::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(90deg, #00f2fe, #4facfe);
-  border-radius: 3px;
-}
-
-/* 网格布局 */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.2rem;
-  margin: 1.5rem 0 2.5rem 0;
-}
-
-/* 卡片设计 - 玻璃拟态效果 */
-.card {
-  background: rgba(30, 35, 60, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  padding: 1.2rem 1rem;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  transform: rotate(30deg);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 200, 255, 0.4);
-  border-color: rgba(100, 200, 255, 0.3);
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card div {
-  position: relative;
-  z-index: 2;
-  font-weight: 500;
-  font-size: 1.05rem;
-}
-
-/* 特殊卡片样式 */
-.basic-card {
-  background: linear-gradient(135deg, rgba(63, 94, 251, 0.6), rgba(252, 70, 107, 0.6));
-}
-
-.svip-card {
-  background: linear-gradient(135deg, rgba(255, 60, 172, 0.6), rgba(120, 75, 160, 0.6));
-}
-
-.creator-card {
-  background: linear-gradient(135deg, rgba(255, 221, 85, 0.6), rgba(255, 136, 0, 0.6));
-}
-
-/* VIP徽章 */
-.badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: linear-gradient(135deg, #ff3cac, #784ba0);
-  color: white;
-  font-size: 0.65rem;
-  padding: 4px 9px;
-  border-radius: 999px;
-  font-weight: bold;
-  box-shadow: 0 0 8px rgba(255, 60, 200, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 10;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 60, 200, 0.6); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 60, 200, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 60, 200, 0); }
-}
-
-/* 资源搜索 */
-#resourceSearch {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: none;
-  border-radius: 10px;
-  margin: 1rem 0 1.5rem;
-  font-size: 1rem;
-  background: rgba(20, 25, 40, 0.7);
-  color: #fff;
-  border: 1px solid rgba(100, 200, 255, 0.3);
-  box-shadow: 0 0 15px rgba(0, 100, 255, 0.2);
-  transition: all 0.3s ease;
-}
-
-#resourceSearch:focus {
-  outline: none;
-  border-color: #00f2fe;
-  box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
-}
-
-#resourceSearch::placeholder {
-  color: rgba(200, 220, 255, 0.6);
-}
-
-/* 资源列表 */
-#resourceList {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.resource {
-  margin-bottom: 0.8rem;
-  padding: 0.9rem;
-  background: rgba(20, 25, 40, 0.6);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(100, 200, 255, 0.1);
-}
-
-.resource:hover {
-  background: rgba(30, 40, 60, 0.7);
-  transform: translateX(5px);
-  border-color: rgba(100, 200, 255, 0.3);
-}
-
-.resource a {
-  font-size: 1.1rem;
-  color: #ffcc00;
-  text-decoration: none;
-  font-weight: 500;
-  display: block;
-  transition: all 0.3s ease;
-}
-
-.resource a:hover {
-  color: #ffdd57;
-  text-shadow: 0 0 10px rgba(255, 221, 87, 0.6);
-}
-
-.vip-label {
-  color: #ffcc00;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: inline-block;
-  margin-left: 8px;
-  text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
-}
-
-#noResultTip {
-  display: none;
-  color: #ffcc00;
-  font-size: 1.1rem;
-  text-align: center;
-  padding: 1.5rem;
-  background: rgba(20, 25, 40, 0.6);
-  border-radius: 12px;
-  margin-top: 1rem;
-  border: 1px solid rgba(255, 204, 0, 0.3);
-}
-
-/* 首页样式 */
-#home .welcome-box {
-  max-width: 700px;
-  margin: 5rem auto;
-  padding: 2.5rem;
-  background: linear-gradient(135deg, rgba(0, 150, 255, 0.1), rgba(100, 0, 255, 0.1));
-  border-radius: 24px;
-  text-align: center;
-  font-size: 1.3rem;
-  line-height: 1.9;
-  color: #e0f7ff;
-  font-weight: 500;
-  box-shadow: 0 0 30px rgba(0, 150, 255, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(100, 200, 255, 0.3);
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
-}
-
-/* 账号面板 */
-.login-panel {
-  padding: 2rem;
-  text-align: center;
-  background: rgba(20, 25, 40, 0.7);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(100, 200, 255, 0.2);
-}
-
-.login-panel-title {
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 1.2rem;
-  color: #00ccff;
-  text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
-}
-
-.account-info {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.login-panel input {
-  padding: 0.8rem 1rem;
-  margin: 0.5rem 0;
-  border-radius: 12px;
-  border: none;
-  font-size: 1rem;
-  width: 100%;
-  background: rgba(10, 15, 30, 0.7);
-  color: #fff;
-  border: 1px solid rgba(100, 200, 255, 0.3);
-  transition: all 0.3s ease;
-}
-
-.login-panel input:focus {
-  outline: none;
-  border-color: #00f2fe;
-  box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
-}
-
-.login-panel button {
-  padding: 0.8rem 2rem;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #00f2fe, #4facfe);
-  color: #003350;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0, 150, 255, 0.4);
-}
-
-.login-panel button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 200, 255, 0.6);
-}
-
-/* 功能按钮 */
-.action-btn {
-  max-width: 520px;
-  margin: 1.5rem auto;
-  padding: 1.5rem;
-  background: linear-gradient(145deg, rgba(30, 35, 60, 0.7), rgba(20, 25, 50, 0.7));
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  color: #fff;
-  text-align: center;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(100, 200, 255, 0.2);
-}
-
-.action-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.action-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
-  border-color: rgba(100, 200, 255, 0.4);
-}
-
-.action-btn:hover::before {
-  transform: translateX(100%);
-}
-
-/* 功能声明弹窗 */
-#disclaimerContent {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 720px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: rgba(15, 20, 35, 0.98);
-  z-index: 3000;
-  padding: 3.5rem 2.5rem 2.5rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #f5f5f5;
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  box-shadow: 0 0 40px rgba(0, 150, 255, 0.5);
-  border: 1px solid rgba(100, 200, 255, 0.3);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-#disclaimerContent.show {
-  opacity: 1;
-}
-
-#closeDisclaimer {
-  position: sticky;
-  top: 1rem;
-  right: 1rem;
-  float: right;
-  font-size: 1.8rem;
-  color: #ff5555;
-  cursor: pointer;
-  font-weight: bold;
-  z-index: 3100;
-  transition: all 0.3s ease;
-  background: rgba(15, 20, 35, 0.8);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 85, 85, 0.3);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  margin: -1.5rem -1.5rem 1rem 1rem;
-}
-
-#closeDisclaimer:hover {
-  transform: rotate(90deg) scale(1.1);
-  color: #ff0000;
-  background: rgba(15, 20, 35, 0.9);
-}
-
-/* 专业声明样式 */
-.disclaimer-header {
-  background: linear-gradient(90deg, #00f2fe, #4facfe);
-  padding: 25px 30px;
-  text-align: center;
-  border-radius: 15px;
-  margin-bottom: 25px;
-  clear: both;
-}
-
-.disclaimer-header h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: #0f2027;
-  border: none;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.disclaimer-header p {
-  font-size: 1.1rem;
-  color: #003350;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.platform-section {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 25px;
-  gap: 20px;
-}
-
-.platform-card {
-  flex: 1;
-  min-width: 250px;
-  background: rgba(30, 35, 60, 0.6);
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.platform-title {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid rgba(100, 200, 255, 0.3);
-}
-
-.platform-title h3 {
-  font-size: 1.5rem;
-  color: #00ccff;
-  margin-left: 10px;
-}
-
-.feature-list li {
-  margin-bottom: 12px;
-  padding-left: 25px;
-  position: relative;
-}
-
-.feature-list li:before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #00f2fe;
-  font-weight: bold;
-}
-
-.disclaimer-section {
-  background: rgba(180, 30, 30, 0.2);
-  border-left: 4px solid #ff5555;
-  padding: 20px;
-  border-radius: 8px;
-  margin: 25px 0;
-}
-
-.disclaimer-section h3 {
-  color: #ff5555;
-  margin-bottom: 12px;
-  font-size: 1.3rem;
-}
-
-.disclaimer-content {
-  font-size: 0.95rem;
-}
-
-.contact-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 25px;
-}
-
-.contact-card {
-  flex: 1;
-  min-width: 180px;
-  background: rgba(30, 40, 60, 0.7);
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
-  border: 1px solid rgba(100, 200, 255, 0.2);
-}
-
-.contact-card h4 {
-  margin-bottom: 10px;
-  color: #00ccff;
-  font-size: 1.1rem;
-}
-
-.contact-card p {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.disclaimer-footer {
-  text-align: center;
-  padding: 20px 0 0;
-  border-top: 1px solid rgba(100, 200, 255, 0.2);
-  font-size: 0.9rem;
-  color: rgba(200, 220, 255, 0.8);
-}
-
-/* 提示信息 */
-.toast {
-  position: fixed;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #ffd700, #ffa500);
-  color: #003350;
-  padding: 0.9rem 1.8rem;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 1.05rem;
-  box-shadow: 0 0 20px rgba(255, 200, 0, 0.8);
-  z-index: 2000;
-  animation: fadeInOut 3s ease-in-out;
-  display: none;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translate(-50%, 20px); }
-  10% { opacity: 1; transform: translate(-50%, 0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, 20px); }
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  
-  .bottom-nav a {
-    font-size: 0.95rem;
-    padding: 0.4rem 0;
-  }
-  
-  .action-btn, .login-panel {
-    padding: 1.2rem;
-  }
-  
-  #home .welcome-box {
-    padding: 1.5rem;
-    margin: 3rem auto;
-    font-size: 1.1rem;
-  }
-  
-  #disclaimerContent {
-    padding: 4rem 1.5rem 1.5rem;
-  }
-  
-  .disclaimer-header {
-    padding: 15px;
-  }
-  
-  .platform-card {
-    min-width: 100%;
-  }
-  
-  #closeDisclaimer {
-    width: 50px;
-    height: 50px;
-    font-size: 2rem;
-    top: 0.5rem;
-    right: 0.5rem;
-    margin: -1rem -1rem 1rem 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-  
-  h2 {
-    font-size: 1.4rem;
-  }
-  
-  .contact-card {
-    min-width: 100%;
-  }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>观进 · 朗读神器 Pro（修复版）</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      border: 1px solid #00ffe7;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #00e6e6, #ff33cc);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #progressBar {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+    #progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(to right, #00ffc3, #ff00cc);
+    }
+  </style>
 </head>
 <body>
-<div class="page-content">
-<!-- 首页 -->
-<div class="section active" id="home">
-<div class="welcome-box">
-<div style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #00ccff; text-shadow: 0 0 15px rgba(0, 200, 255, 0.6);">
-        AI工具入口平台
-      </div>
-<div>
-        「首页模块暂未启用」<br/>
-        请通过底部导航，进入功能区探索更多内容
-      </div>
-<div style="margin-top: 1.5rem; font-size: 1rem; color: rgba(200, 220, 255, 0.8);">
-        已集成100+实用AI工具与资源，持续更新中...
-      </div>
-</div>
-</div>
-<!-- 功能区 -->
-<div class="section" id="functions">
-<h2>🛠️ 功能区</h2>
-<div class="grid searchable">
-<div class="card" onclick="window.open('https://snapany.com/zh', '_blank')">
-<div>万能链接解析下载神器</div>
-</div>
-<div class="card creator-only creator-card" onclick="window.open('https://www.example.com', '_blank')">
-<div>👑 创世神专属工具</div>
-</div>
-<div class="card svip-only svip-card" onclick="window.open('https://chatgpt.com/g/g-68622dc8cab481919ef3289e1763d3de-zhuan-shu-aizhu-li', '_blank')">
-<div>个人信息画像智能体<span class="badge">SVIP</span></div>
-</div>
-</div>
-<h2>🌐 网页区</h2>
-<div class="grid searchable">
-<div class="card" onclick="window.open('https://www.kaipai.com/home', '_blank')">
-<div>开拍</div>
-</div>
-<div class="card" onclick="window.open('https://pan.baidu.com/', '_blank')">
-<div>百度网盘</div>
-</div>
-<div class="card" onclick="window.open('https://jimeng.jianying.com/', '_blank')">
-<div>即梦 AI 绘画</div>
-</div>
-<div class="card svip-only svip-card" onclick="window.open('https://chat.openai.com', '_blank')">
-<div>ChatGPT<span class="badge">SVIP</span></div>
-</div>
-</div>
-</div>
-<!-- 影视区 -->
-<div class="section" id="videos">
-<h2>📽️ 影视平台</h2>
-<div class="grid searchable">
-<div class="card" onclick="window.open('https://v.qq.com', '_blank')">
-<div>腾讯视频</div>
-</div>
-<div class="card" onclick="window.open('https://www.iqiyi.com', '_blank')">
-<div>爱奇艺</div>
-</div>
-<div class="card" onclick="window.open('https://www.youku.com', '_blank')">
-<div>优酷</div>
-</div>
-<div class="card" onclick="window.open('https://www.bilibili.com', '_blank')">
-<div>哔哩哔哩</div>
-</div>
-<div class="card" onclick="window.open('https://www.mgtv.com', '_blank')">
-<div>芒果TV</div>
-</div>
-<div class="card" onclick="window.open('https://tv.sohu.com', '_blank')">
-<div>搜狐视频</div>
-</div>
-<div class="card" onclick="window.open('https://www.pptv.com', '_blank')">
-<div>PPTV</div>
-</div>
-</div>
-<h2>🎬 短视频平台</h2>
-<div class="grid searchable">
-<div class="card" onclick="window.open('https://www.douyin.com', '_blank')">
-<div>抖音</div>
-</div>
-<div class="card" onclick="window.open('https://www.kuaishou.com', '_blank')">
-<div>快手</div>
-</div>
-<div class="card" onclick="window.open('https://www.xiaohongshu.com', '_blank')">
-<div>小红书</div>
-</div>
-<div class="card" onclick="window.open('https://www.bilibili.com', '_blank')">
-<div>B站</div>
-</div>
-<div class="card svip-only svip-card" onclick="window.open('https://www.youtube.com/', '_blank')">
-<div>YouTube<span class="badge">SVIP</span></div>
-</div>
-</div>
-<h2>🎥 短视频创作者中心</h2>
-<div class="grid searchable">
-<div class="card" onclick="window.open('https://www.douyin.com', '_blank')">
-<div>抖音创作者中心</div>
-</div>
-<div class="card" onclick="window.open('https://channels.weixin.qq.com', '_blank')">
-<div>视频号助手</div>
-</div>
-<div class="card" onclick="window.open('https://www.xiaohongshu.com', '_blank')">
-<div>小红书创作服务平台</div>
-</div>
-<div class="card" onclick="window.open('https://www.kuaishou.com', '_blank')">
-<div>快手创作者服务平台</div>
-</div>
-</div>
-</div>
-<!-- 资源区 -->
-<div class="section" id="resources">
-<h2>📁 资源中心</h2>
-<input id="resourceSearch" oninput="filterResources()" placeholder="搜索你的资源关键词..." type="text"/>
-<ul id="resourceList">
-<li class="resource" title="推荐：AI工具入门推荐"><a href="https://app.1foo.com/install/10AD56" target="_blank">1. 边界AI</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/252ee82b27e8#/list/share" target="_blank">2. 科技插件</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/bc1ac6a6bf7c#/list/share" target="_blank">3. 安卓软件</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/bea1bfe13110#/list/share" target="_blank">4. 摄影剪辑</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/e735122148d6#/list/share" target="_blank">5. 媒体运营</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/8b0c13bb29c9" target="_blank">6. 去马赛克</a></li>
-<li class="resource"><a href="https://github.com/799342382/mofa/releases/download/v1.0.0/mofa.apk" target="_blank">7. 本站有APP方便进入</a></li>
-<li class="resource"><a href="https://kdocs.cn/l/clLbAxjyKcbr" target="_blank">8. 短剧百度搜索</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/32e2eef37133" target="_blank">9. 天当众说话</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/bda448f2ed6a" target="_blank">10. 情绪自救课（含训练营）</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/21d5a32c1006#/list/share" target="_blank">11. Deepseek保姆喂饭级使用技巧大全</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/d221986cd4dc" target="_blank">12. 小H书资源账号采集器(独家版)</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/615a6523ee82" target="_blank">13. TV软件专区(去除收费版)</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/816184bc8287" target="_blank">14. 11款可用磁力软件(资源不限速)</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/5f735ca11b35" target="_blank">15. [win]数据免费恢复软件x64</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/392b2ac04a48" target="_blank">16. 1DM中文版下载利器</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/53138911d722" target="_blank">17. 美图秀秀(高级版，已解所有功能)</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/6dbe95282e0b" target="_blank">18. 短视频-键搬运（会员解锁版.apk）</a></li>
-<li class="resource"><a href="https://pan.quark.cn/s/f1e879686c26" target="_blank">19. 虚拟机</a></li><li class="resource"><a href="https://pan.quark.cn/s/12ae0e46c1ae" target="_blank">20. 音乐软件</a></li><li class="resource"><a href="https://pan.quark.cn/s/85509d9602e2" target="_blank">21. 下载工具</a></li><li class="resource"><a href="https://pan.quark.cn/s/123f77d5efa4" target="_blank">22. 学习软件</a></li><li class="resource"><a href="https://pan.quark.cn/s/ce09bb4e237f" target="_blank">23. 系统相关</a></li><li class="resource"><a href="https://pan.quark.cn/s/8f2e093de051" target="_blank">24. 热门AI工具</a></li></ul>
-<div id="noResultTip">⚠️ 没有找到相关资源～</div>
-</div>
-<!-- 个人中心 -->
-<div class="section" id="notes">
-<div class="login-panel">
-<div class="login-panel-title">👤 我的账号</div>
-<div class="account-info">
-        当前账号：<span id="accountLevel">天使账号</span>
-<span class="vip-label">(永久会员)</span>
-</div>
-<div style="display:flex;gap:0.5rem;">
-<input id="passwordInput" onkeypress="handleKeyPress(event)" placeholder="输入密码切换账号" type="password"/>
-<button onclick="switchAccount()">切换账号</button>
-</div>
-</div>
-<div class="action-btn" id="copyLinkBtn">
-      🚪 网页版入口（点击复制）
-    </div>
-<div class="action-btn" id="copyQQ">
-      👨‍💻 作者联系（点击复制）
-    </div>
-<div class="action-btn" id="showDisclaimer">
-      📜 功能声明（点击查看）
-    </div>
-<!-- 功能声明弹窗 -->
-<div id="disclaimerContent">
-<div id="closeDisclaimer">✖</div>
-<div class="disclaimer-header">
-<h2>AI工具平台功能声明</h2>
-<p>本声明详细说明了平台的功能特性、适用范围及免责条款，适用于移动端与PC端用户</p>
-</div>
-<div class="platform-section">
-<div class="platform-card">
-<div class="platform-title">
-<svg height="32" viewbox="0 0 24 24" width="32">
-<path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z" fill="#00ccff"></path>
-</svg>
-<h3>移动端功能声明</h3>
-</div>
-<ul class="feature-list">
-<li>本平台针对移动设备进行全面优化，确保在各类智能手机和平板电脑上流畅运行</li>
-<li>所有功能支持触控操作，适配主流移动操作系统（iOS、Android）</li>
-<li>响应式设计确保在各种屏幕尺寸下均有良好的视觉体验</li>
-<li>提供移动端专属工具和快捷操作方式</li>
-<li>简化用户界面，提升移动端操作效率</li>
-<li>支持PWA技术，可添加至主屏幕实现类原生应用体验</li>
-</ul>
-</div>
-<div class="platform-card">
-<div class="platform-title">
-<svg height="32" viewbox="0 0 24 24" width="32">
-<path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z" fill="#00ccff"></path>
-</svg>
-<h3>PC端功能声明</h3>
-</div>
-<ul class="feature-list">
-<li>平台在桌面设备上提供完整功能集和增强型用户体验</li>
-<li>支持键盘快捷键操作，提升工作效率</li>
-<li>提供多窗口、多任务处理能力</li>
-<li>高分辨率适配，支持4K及以上显示设备</li>
-<li>桌面端专属高级工具和管理功能</li>
-<li>支持文件拖放、批量操作等桌面环境特性</li>
-</ul>
-</div>
-</div>
-<div class="platform-section">
-<div class="platform-card">
-<div class="platform-title">
-<svg height="32" viewbox="0 0 24 24" width="32">
-<path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" fill="#00ccff"></path>
-</svg>
-<h3>核心功能说明</h3>
-</div>
-<ul class="feature-list">
-<li>平台整合100+精选AI工具与资源，持续更新维护</li>
-<li>提供分类清晰的功能区，包括AI工具、影视资源、实用工具等</li>
-<li>支持资源搜索功能，快速定位所需工具</li>
-<li>账号系统提供不同权限级别的功能访问</li>
-<li>一键跳转至第三方工具平台，操作便捷</li>
-<li>提供网页版入口和APP下载选项</li>
-<li>资源中心提供实用工具和内容集合</li>
-</ul>
-</div>
-</div>
-<div class="disclaimer-section">
-<h3>免责声明</h3>
-<div class="disclaimer-content">
-<p>1. 本平台内容仅供个人学习参考，不涉及任何商业用途</p>
-<p>2. 平台内资源均来自公开渠道，功能由原服务方提供</p>
-<p>3. 如遇资源异常或服务不可用，请直接联系原服务方</p>
-<p>4. 平台开发者不承担因使用本平台资源而产生的任何责任</p>
-<p>5. 用户应遵守各第三方平台的服务条款和法律法规</p>
-<p>6. SVIP专属功能需获得相应权限后方可使用</p>
-</div>
-</div>
-<div class="contact-info">
-<div class="contact-card">
-<h4>问题反馈</h4>
-<p>799342382@qq.com</p>
-</div>
-<div class="contact-card">
-<h4>共享资源</h4>
-<p>799342382@qq.com</p>
-</div>
-<div class="contact-card">
-<h4>技术支持</h4>
-<p>799342382@qq.com</p>
-</div>
-</div>
-<div class="disclaimer-footer">
-<p>© 2025 AI工具平台 - 专业增强版 | 版本号 v3.2.1 | 最后更新: 2025-07-06</p>
-<p>本声明适用于所有平台用户，最终解释权归AI工具平台所有</p>
-</div>
-</div>
-</div>
-</div>
-<!-- 底部导航 -->
-<footer class="bottom-nav">
-<a onclick="showSection('home')">首页</a>
-<a onclick="showSection('functions')">功能</a>
-<a onclick="showSection('videos')">影视</a>
-<a onclick="showSection('resources')">资源</a>
-<a onclick="showSection('notes')">我的</a>
-</footer>
-<!-- 提示信息 -->
-<div class="toast" id="toast"></div>
-<script>
-// 页面切换功能
-function showSection(id) {
-  // 更新导航激活状态
-  document.querySelectorAll('.bottom-nav a').forEach(nav => {
-    nav.classList.remove('active');
-  });
-  
-  // 设置当前激活项
-  const activeNav = document.querySelector(`.bottom-nav a[onclick="showSection('${id}')"]`);
-  if (activeNav) {
-    activeNav.classList.add('active');
-  }
-  
-  // 切换内容区域
-  document.querySelectorAll('.section').forEach(sec => {
-    sec.classList.remove('active');
-  });
-  document.getElementById(id).classList.add('active');
-  
-  // 滚动到顶部
-  // 保存滚动位置
-  localStorage.setItem("scrollPos", window.scrollY);
-  // window.scrollTo(0, 0); // 禁用强制回顶
-}
+  <h1>📣 观进 · 朗读神器 Pro（修复版）</h1>
+  <textarea id="textInput" placeholder="请输入朗读内容..."></textarea>
+  <br/>
+  <input type="range" id="speedRange" min="0.5" max="3.0" step="0.1" value="1.1">
+  <label for="speedRange">朗读速度 <span id="speedValue">1.1</span>x</label>
+  <div id="progressBar"><div id="progress"></div></div>
+  <br/>
+  <button onclick="startReading()">▶️ 开始朗读</button>
+  <button onclick="pauseReading()">⏸️ 暂停</button>
+  <button onclick="resumeReading()">🔁 继续</button>
+  <button onclick="stopReading()">⏹️ 停止</button>
+  <button onclick="downloadAudio()">💽 导出 MP3</button>
 
-// 功能声明弹窗控制
-function openOverlayDisclaimer() {
-  const disclaimer = document.getElementById("disclaimerContent");
-  disclaimer.style.display = "block";
-  setTimeout(() => {
-    disclaimer.classList.add("show");
-  }, 10);
-}
+  <script>
+    const textInput = document.getElementById("textInput");
+    const speedRange = document.getElementById("speedRange");
+    const speedValue = document.getElementById("speedValue");
+    const progressEl = document.getElementById("progress");
+    let utterance;
+    let charIndex = 0;
+    let fullText = "";
 
-function closeOverlayDisclaimer() {
-  const disclaimer = document.getElementById("disclaimerContent");
-  disclaimer.classList.remove("show");
-  setTimeout(() => {
-    disclaimer.style.display = "none";
-  }, 300);
-}
-
-// 资源搜索功能
-function filterResources() {
-  let keyword = document.getElementById("resourceSearch").value.toLowerCase();
-  let found = false;
-  
-  document.querySelectorAll(".resource").forEach(item => {
-    const visible = item.innerText.toLowerCase().includes(keyword);
-    item.style.display = visible ? "block" : "none";
-    if (visible) found = true;
-  });
-  
-  document.getElementById("noResultTip").style.display = found ? "none" : "block";
-}
-
-// 显示提示信息
-function showToast(text) {
-  const toast = document.getElementById("toast");
-  toast.innerText = text;
-  toast.style.display = "block";
-  setTimeout(() => {
-    toast.style.display = "none";
-  }, 3000);
-}
-
-// 复制链接功能
-function copyLink() {
-  const link = "https://bit.ly/4lAqC7R";
-  navigator.clipboard.writeText(link).then(() => {
-    showToast("网页版入口链接已复制到剪贴板");
-  }).catch(err => {
-    showToast("复制失败，请手动复制");
-  });
-}
-
-// 复制QQ功能
-function copyQQ() {
-  const qq = "799342382";
-  navigator.clipboard.writeText(qq).then(() => {
-    showToast("QQ号已复制到剪贴板");
-  }).catch(err => {
-    showToast("复制失败，请手动复制");
-  });
-}
-
-// 账号切换功能
-function updateFeatureAccess() {
-  const accountLevel = document.getElementById("accountLevel")?.textContent || "";
-  
-  document.querySelectorAll(".svip-only").forEach(card => {
-    card.style.display = (accountLevel.includes("恶魔") || 
-                         accountLevel.includes("SVIP") || 
-                         accountLevel.includes("创世神")) ? "block" : "none";
-  });
-  
-  document.querySelectorAll(".creator-only").forEach(card => {
-    card.style.display = accountLevel.includes("创世神") ? "block" : "none";
-  });
-}
-
-function switchAccount() {
-  const input = document.getElementById("passwordInput").value;
-  let levelText = "";
-  
-  if (input === "520131419") {
-    levelText = "恶魔账号";
-    showToast("成功切换为恶魔账号");
-  } else if (input === "15934345873") {
-    levelText = "创世神账号";
-    showToast("成功切换为创世神账号");
-  } else {
-    levelText = "天使账号";
-    showToast("❌ 密码错误，已切换为天使账号");
-    document.getElementById("passwordInput").value = "";
-    document.getElementById("passwordInput").focus();
-  }
-  
-  document.getElementById("accountLevel").textContent = levelText;
-  localStorage.setItem("accountLevel", levelText);
-  updateFeatureAccess();
-}
-
-// 回车键处理
-function handleKeyPress(e) {
-  if (e.key === 'Enter') {
-    switchAccount();
-  }
-}
-
-// 页面加载完成后初始化
-document.addEventListener("DOMContentLoaded", function() {
-  // 设置事件监听器
-  document.getElementById("showDisclaimer").addEventListener("click", openOverlayDisclaimer);
-  document.getElementById("closeDisclaimer").addEventListener("click", closeOverlayDisclaimer);
-  document.getElementById("copyLinkBtn").addEventListener("click", copyLink);
-  document.getElementById("copyQQ").addEventListener("click", copyQQ);
-  
-  // 恢复账号状态
-  const saved = localStorage.getItem("accountLevel");
-  if (saved) {
-    document.getElementById("accountLevel").textContent = saved;
-  }
-  updateFeatureAccess();
-  
-  // 添加回车键切换账号功能
-// 恢复滚动位置
-  const scrollPos = localStorage.getItem("scrollPos");
-  if (scrollPos !== null) {
-    window.scrollTo(0, parseInt(scrollPos));
-    localStorage.removeItem("scrollPos");
-  }
-  const passwordInput = document.getElementById("passwordInput");
-  if (passwordInput) {
-    passwordInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        switchAccount();
-      }
+    speedRange.addEventListener("input", () => {
+      speedValue.textContent = speedRange.value;
     });
-  }
-  
-  // 设置初始激活的导航项
-  document.querySelector('.bottom-nav a[onclick="showSection(\'home\')"]').classList.add('active');
-});
-</script>
 
-<!-- 防扒遮罩层 -->
-<div id="antiTheftWarning" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:#000000e6; z-index:9999; color:#ff4d4f; text-align:center; padding-top:15%; font-size:1.3rem; font-weight:bold;">
-  ⚠️ 系统检测到异常操作<br><br>
-  请勿尝试复制/扒取网页资源<br><br>
-  已记录当前设备指纹和IP地址<br><br>
-  <span style="color:yellow">⚖️ 任何恶意窃取行为将依法追责！</span><br><br>
-  若为误触，请关闭调试工具并刷新页面。
-</div>
+    function startReading() {
+      stopReading();
+      fullText = textInput.value;
+      charIndex = 0;
+      readChunk();
+    }
 
-<script>
-// 防盗JS代码：禁止右键、F12、复制、调试等
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key))) {
-    document.getElementById("antiTheftWarning").style.display = 'block';
-  }
-});
-document.addEventListener('copy', function (e) {
-  e.preventDefault();
-  document.getElementById("antiTheftWarning").style.display = 'block';
-});
-Object.defineProperty(navigator, 'webdriver', { get: () => false }); // 防止被脚本控制
-</script>
+    function readChunk() {
+      if (charIndex >= fullText.length) return;
+      const chunkSize = 30;
+      const chunk = fullText.slice(charIndex, charIndex + chunkSize);
+      utterance = new SpeechSynthesisUtterance(chunk);
+      utterance.rate = parseFloat(speedRange.value);
+      utterance.onend = () => {
+        charIndex += chunkSize;
+        updateProgress();
+        readChunk();
+      };
+      window.speechSynthesis.speak(utterance);
+    }
 
+    function updateProgress() {
+      const percent = (charIndex / fullText.length) * 100;
+      progressEl.style.width = percent + "%";
+    }
+
+    function pauseReading() {
+      window.speechSynthesis.pause();
+    }
+
+    function resumeReading() {
+      window.speechSynthesis.resume();
+    }
+
+    function stopReading() {
+      window.speechSynthesis.cancel();
+      charIndex = 0;
+      progressEl.style.width = "0%";
+    }
+
+    async function downloadAudio() {
+      const text = textInput.value.trim();
+      if (!text) return alert("请输入内容后再导出 MP3");
+
+      const response = await fetch("https://ttsmp3.openaihub.top/api/mp3", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+
+      const result = await response.json();
+      if (result && result.url) {
+        const link = document.createElement("a");
+        link.href = result.url;
+        link.download = "观进朗读音频.mp3";
+        link.click();
+      } else {
+        alert("生成失败，请稍后再试~");
+      }
+    }
+  </script>
 </body>
 </html>
