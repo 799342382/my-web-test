@@ -727,7 +727,36 @@ h2::after {
   }
 }
 </style>
-</head>
+<style>
+.popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.popup-content {
+  background: #1e253c;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  color: #fff;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.close-btn {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+}
+</style></head>
 <body>
 <div class="page-content">
 <!-- 首页 -->
@@ -967,7 +996,7 @@ h2::after {
 <p>本声明适用于所有平台用户，最终解释权归AI工具平台所有</p>
 </div>
 </div>
-</div>
+<div class="action-btn" onclick="showFAQPopup()">❓ 常见问题（点击查看）</div></div>
 </div>
 <!-- 底部导航 -->
 <footer class="bottom-nav">
@@ -1167,5 +1196,41 @@ document.addEventListener('copy', function (e) {
 });
 Object.defineProperty(navigator, 'webdriver', { get: () => false }); // 防止被脚本控制
 </script>
-</body>
+
+<div class="popup" id="faqPopup" style="display:none;">
+<div class="popup-content">
+<span class="close-btn" onclick="hideFAQPopup()">×</span>
+<h2 style="color:#00ccff;">✅ 常见问题</h2>
+<div style="margin-top:1rem;">
+<p><strong style="color:#ffd700;">问题1：</strong> 点击后为什么没有反应？</p>
+<p><strong>答：</strong> 部分功能涉及网络请求或平台加载，需要 <strong>2～5秒</strong> 的响应时间，请耐心等待系统加载完成。</p>
+</div>
+<div style="margin-top:1rem;">
+<p><strong style="color:#ffd700;">问题2：</strong> 页面显示“数据获取失败”或出现空白？</p>
+<p><strong>答：</strong> 通常是网络连接不稳定造成的。建议：</p>
+<ul style="margin-left:1.2rem;">
+<li>刷新页面；</li>
+<li>点击空白区域重新加载；</li>
+<li>切换 Wi-Fi 或更稳定的网络重试。</li>
+</ul>
+</div>
+<div style="margin-top:1rem;">
+<p><strong style="color:#ffd700;">问题3：</strong> 手机端打开界面显示不完整，按钮看不到？</p>
+<p><strong>答：</strong> 可能是浏览器兼容问题。建议：</p>
+<ul style="margin-left:1.2rem;">
+<li>切换为横屏模式；</li>
+<li>尝试缩放调整；</li>
+<li>使用 Chrome、Edge、夸克等浏览器。</li>
+</ul>
+</div>
+</div>
+</div>
+<script>
+function showFAQPopup() {
+  document.getElementById('faqPopup').style.display = 'flex';
+}
+function hideFAQPopup() {
+  document.getElementById('faqPopup').style.display = 'none';
+}
+</script></body>
 </html>
