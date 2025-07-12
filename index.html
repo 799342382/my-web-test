@@ -806,6 +806,16 @@ h2::after {
 </div>
 <!-- 影视区 -->
 <div class="section" id="videos">
+
+<h2>🎓 学习专区</h2>
+<div class="grid searchable">
+<div class="card" onclick="window.open('https://open.163.com', '_blank')">
+<div>网易公开课</div>
+</div>
+<div class="card svip-only svip-card" onclick="window.open('https://www.icourse163.org', '_blank')">
+<div>MOOC大学<span class="badge">SVIP</span></div>
+</div>
+</div>
 <h2>📽️ 影视平台</h2>
 <div class="grid searchable">
 <div class="card" onclick="window.open('https://v.qq.com', '_blank')">
@@ -1196,7 +1206,6 @@ document.addEventListener('copy', function (e) {
 });
 Object.defineProperty(navigator, 'webdriver', { get: () => false }); // 防止被脚本控制
 </script>
-
 <div class="popup" id="faqPopup" style="display:none;">
 <div class="popup-content">
 <span class="close-btn" onclick="hideFAQPopup()">×</span>
@@ -1232,5 +1241,84 @@ function showFAQPopup() {
 function hideFAQPopup() {
   document.getElementById('faqPopup').style.display = 'none';
 }
-</script></body>
+</script>
+<!-- 右下角展开按钮组，仅在资源页显示 -->
+<div id="scrollButtons" style="display: none;">
+  <button id="toggleScrollMenu" onclick="toggleScrollMenu()">☰</button>
+  <div id="scrollActions" style="display: none; flex-direction: column; gap: 10px; margin-bottom: 10px;">
+    <button onclick="scrollToTop()" title="回到顶部">↑</button>
+    <button onclick="scrollToBottom()" title="跳到底部">↓</button>
+  </div>
+</div>
+
+<style>
+#scrollButtons {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  z-index: 9999;
+}
+
+#scrollButtons button {
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  opacity: 0.85;
+}
+
+#scrollButtons button:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+#toggleScrollMenu {
+  font-size: 20px;
+  padding: 14px;
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+}
+</style>
+
+<script>
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToBottom() {
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+
+function toggleScrollMenu() {
+  const actions = document.getElementById("scrollActions");
+  actions.style.display = actions.style.display === "none" ? "flex" : "none";
+}
+
+function updateScrollButtonVisibility() {
+  const scrollBtn = document.getElementById("scrollButtons");
+  const isResourcesActive = document.getElementById("resources").classList.contains("active");
+  scrollBtn.style.display = isResourcesActive ? "flex" : "none";
+}
+
+const originalShowSection = window.showSection;
+window.showSection = function(id) {
+  originalShowSection(id);
+  setTimeout(updateScrollButtonVisibility, 100);
+};
+
+window.addEventListener("DOMContentLoaded", function () {
+  updateScrollButtonVisibility();
+});
+</script>
+
+</body>
 </html>
