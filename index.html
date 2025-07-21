@@ -662,42 +662,143 @@
             box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
         }
 
-        /* 響應式設計 */
-        @media (max-width: 768px) {
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 16px;
-            }
-
-            .welcome-title {
-                font-size: 2rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .welcome-stats {
-                gap: 1rem;
-            }
-
-            .input-group {
-                flex-direction: column;
-            }
-
+        /* 響應式設計優化 */
+        @media (max-width: 480px) {
             .main-container {
-                padding: 16px;
+                padding: 15px 15px 100px 15px;
+                max-width: 100%;
+            }
+            
+            .welcome-title {
+                font-size: 28px;
+            }
+            
+            .welcome-subtitle {
+                font-size: 14px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .tool-card {
+                min-height: 50px;
+                padding: 12px;
+            }
+            
+            .card-content {
+                font-size: 14px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+                margin: 20px 0 15px 0;
+            }
+            
+            .resource-list {
+                gap: 8px;
+            }
+            
+            .resource-item {
+                padding: 12px;
+            }
+            
+            .nav-container {
+                padding: 8px 0;
+            }
+            
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 12px;
             }
         }
 
-        @media (max-width: 480px) {
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        @media (min-width: 481px) and (max-width: 768px) {
+            .main-container {
+                padding: 20px 20px 110px 20px;
             }
-
+            
             .welcome-title {
-                font-size: 1.8rem;
+                font-size: 32px;
             }
+            
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .tool-card {
+                min-height: 60px;
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 22px;
+                margin: 25px 0 18px 0;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .main-container {
+                padding: 25px 25px 120px 25px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+            
+            .tool-card {
+                min-height: 70px;
+                padding: 18px;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            
+            .tool-card {
+                min-height: 80px;
+                padding: 20px;
+            }
+        }
+
+        /* 統計數據樣式 */
+        .welcome-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
 
             .modal-content {
                 padding: 1.5rem;
