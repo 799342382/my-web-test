@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI工具平台 - 专业增强版 Pro</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* 全局重置與基礎設置 */
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   AI工具平台 - 专业增强版 Pro
+  </title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   /* 全局重置与基礎設置 */
         * {
             margin: 0;
             padding: 0;
@@ -41,7 +43,7 @@
             position: relative;
         }
 
-        /* 動態背景粒子系統 */
+        /* 動態背景粒子系统 */
         .particles-container {
             position: fixed;
             top: 0;
@@ -108,7 +110,7 @@
             min-height: calc(100vh - 80px);
         }
 
-        /* 頁面切換動畫 */
+        /* 页面切换動畫 */
         .page-section {
             display: none;
             opacity: 0;
@@ -158,7 +160,7 @@
             opacity: 0.3;
         }
 
-        /* 卡片網格系統 */
+        /* 卡片网格系统 */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -372,14 +374,22 @@
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        
+.stat-number {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    word-break: keep-all;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 
         .stat-label {
             color: var(--text-secondary);
@@ -453,7 +463,7 @@
             box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
         }
 
-        /* 操作按鈕 */
+        /* 操作按钮 */
         .action-button {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -632,7 +642,7 @@
             100% { transform: translate(-50%, 20px); opacity: 0; }
         }
 
-        /* 滾動按鈕 */
+        /* 滾動按钮 */
         .scroll-controls {
             position: fixed;
             bottom: 100px;
@@ -662,7 +672,7 @@
             box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
         }
 
-        /* 響應式設計優化 */
+        /* 响应式設計優化 */
         @media (max-width: 480px) {
             .main-container {
                 padding: 15px 15px 100px 15px;
@@ -767,7 +777,7 @@
             }
         }
 
-        /* 統計數據樣式 */
+        /* 統計数据樣式 */
         .welcome-stats {
             display: flex;
             justify-content: space-around;
@@ -785,15 +795,22 @@
             flex: 1;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 5px;
-        }
+        
+.stat-number {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    word-break: keep-all;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 
         .stat-label {
             font-size: 0.9rem;
@@ -820,7 +837,7 @@
             margin: 1rem 0;
         }
 
-        /* 加載動畫 */
+        /* 加载動畫 */
         .loading {
             display: inline-block;
             width: 20px;
@@ -835,7 +852,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 聲明內容樣式 */
+        /* 声明内容樣式 */
         .disclaimer-header {
             background: var(--accent-gradient);
             padding: 2rem;
@@ -942,526 +959,1003 @@
             font-size: 0.9rem;
             margin-top: 2rem;
         }
-    </style>
-</head>
-<body>
-    <!-- 動態粒子背景 -->
-    <div class="particles-container" id="particles"></div>
+    
 
-    <!-- 主容器 -->
-    <div class="main-container">
-        <!-- 首页 -->
-        <div class="page-section active" id="home">
-            <div class="welcome-section glass-container">
-                <h1 class="welcome-title">AI工具入口平台</h1>
-                <p class="welcome-subtitle">
-                    「首页模块暂未启用」<br>
-                    请通过底部导航，进入功能区探索更多内容
-                </p>
-                <div class="welcome-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">100+</div>
-                        <div class="stat-label">实用工具</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">持续更新</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">∞</div>
-                        <div class="stat-label">无限可能</div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 功能区 -->
-        <div class="page-section" id="functions">
-            <h2 class="section-title">🛠️ 功能区</h2>
-            <div class="cards-grid">
-                <a href="https://snapany.com/zh" target="_blank" class="tool-card">
-                    <div class="card-content">万能链接解析下载神器</div>
-                </a>
-                <a href="https://www.example.com" target="_blank" class="tool-card card-creator">
-                    <div class="card-content">👑 创世神专属工具</div>
-                </a>
-                <a href="https://chatgpt.com/g/g-68622dc8cab481919ef3289e1763d3de-zhuan-shu-aizhu-li" target="_blank" class="tool-card card-svip">
-                    <div class="card-content">个人信息画像智能体</div>
-                    <div class="vip-badge">SVIP</div>
-                </a>
-            </div>
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(0,242,254,0.1), rgba(255,255,255,0.02));
+  border: 1px solid rgba(0,242,254,0.15);
+  padding: 12px 18px;
+  border-radius: 16px;
+  margin-top: 2rem;
+  color: #00f2fe;
+  font-weight: 600;
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+}
 
-            <h2 class="section-title">🌐 网页区</h2>
-            <div class="cards-grid">
-                <a href="https://www.kaipai.com/home" target="_blank" class="tool-card">
-                    <div class="card-content">开拍</div>
-                </a>
-                <a href="https://pan.baidu.com/" target="_blank" class="tool-card">
-                    <div class="card-content">百度网盘</div>
-                </a>
-                <a href="https://jimeng.jianying.com/" target="_blank" class="tool-card">
-                    <div class="card-content">即梦 AI 绘画</div>
-                </a>
-                <a href="https://chat.openai.com" target="_blank" class="tool-card card-svip">
-                    <div class="card-content">ChatGPT</div>
-                    <div class="vip-badge">SVIP</div>
-                </a>
-            </div>
-        </div>
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        <!-- 影视区 -->
-        <div class="page-section" id="videos">
-            <h2 class="section-title">🎓 学习专区</h2>
-            <div class="cards-grid">
-                <a href="https://open.163.com" target="_blank" class="tool-card">
-                    <div class="card-content">网易公开课</div>
-                </a>
-                <a href="https://www.icourse163.org" target="_blank" class="tool-card card-svip">
-                    <div class="card-content">MOOC大学</div>
-                    <div class="vip-badge">SVIP</div>
-                </a>
-            </div>
+.header-icon {
+  font-size: 1.2rem;
+}
 
-            <h2 class="section-title">📽️ 影视平台</h2>
-            <div class="cards-grid">
-                <a href="https://v.qq.com" target="_blank" class="tool-card">
-                    <div class="card-content">腾讯视频</div>
-                </a>
-                <a href="https://www.iqiyi.com" target="_blank" class="tool-card">
-                    <div class="card-content">爱奇艺</div>
-                </a>
-                <a href="https://www.youku.com" target="_blank" class="tool-card">
-                    <div class="card-content">优酷</div>
-                </a>
-                <a href="https://www.bilibili.com" target="_blank" class="tool-card">
-                    <div class="card-content">哔哩哔哩</div>
-                </a>
-                <a href="https://www.mgtv.com" target="_blank" class="tool-card">
-                    <div class="card-content">芒果TV</div>
-                </a>
-                <a href="https://tv.sohu.com" target="_blank" class="tool-card">
-                    <div class="card-content">搜狐视频</div>
-                </a>
-                <a href="https://www.pptv.com" target="_blank" class="tool-card">
-                    <div class="card-content">PPTV</div>
-                </a>
-            </div>
+.header-title {
+  font-size: 1.1rem;
+}
 
-            <h2 class="section-title">🎬 短视频平台</h2>
-            <div class="cards-grid">
-                <a href="https://www.douyin.com" target="_blank" class="tool-card">
-                    <div class="card-content">抖音</div>
-                </a>
-                <a href="https://www.kuaishou.com" target="_blank" class="tool-card">
-                    <div class="card-content">快手</div>
-                </a>
-                <a href="https://www.xiaohongshu.com" target="_blank" class="tool-card">
-                    <div class="card-content">小红书</div>
-                </a>
-                <a href="https://www.bilibili.com" target="_blank" class="tool-card">
-                    <div class="card-content">B站</div>
-                </a>
-                <a href="https://www.youtube.com/" target="_blank" class="tool-card card-svip">
-                    <div class="card-content">YouTube</div>
-                    <div class="vip-badge">SVIP</div>
-                </a>
-            </div>
-
-            <h2 class="section-title">🎥 短视频创作者中心</h2>
-            <div class="cards-grid">
-                <a href="https://www.douyin.com" target="_blank" class="tool-card">
-                    <div class="card-content">抖音创作者中心</div>
-                </a>
-                <a href="https://channels.weixin.qq.com" target="_blank" class="tool-card">
-                    <div class="card-content">视频号助手</div>
-                </a>
-                <a href="https://www.xiaohongshu.com" target="_blank" class="tool-card">
-                    <div class="card-content">小红书创作服务平台</div>
-                </a>
-                <a href="https://www.kuaishou.com" target="_blank" class="tool-card">
-                    <div class="card-content">快手创作者服务平台</div>
-                </a>
-            </div>
-        </div>
-
-        <!-- 资源区 -->
-        <div class="page-section" id="resources">
-            <h2 class="section-title">📁 资源中心</h2>
-            <div class="search-container">
-                <input type="text" class="search-input" id="resourceSearch" placeholder="搜索你的资源关键词..." oninput="filterResources()">
-            </div>
-            <ul class="resource-list" id="resourceList">
-                <li class="resource-item" title="推荐：AI工具入门推荐">
-                    <a href="https://app.1foo.com/install/10AD56" target="_blank">1. 边界AI</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/252ee82b27e8#/list/share" target="_blank">2. 科技插件</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/bc1ac6a6bf7c#/list/share" target="_blank">3. 安卓软件</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/bea1bfe13110#/list/share" target="_blank">4. 摄影剪辑</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/e735122148d6#/list/share" target="_blank">5. 媒体运营</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/8b0c13bb29c9" target="_blank">6. 去马赛克</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk" target="_blank">7. 本站有APP方便进入</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://kdocs.cn/l/clLbAxjyKcbr" target="_blank">8. 短剧百度搜索</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/32e2eef37133" target="_blank">9. 天当众说话</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/bda448f2ed6a" target="_blank">10. 情绪自救课（含训练营）</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/21d5a32c1006#/list/share" target="_blank">11. Deepseek保姆喂饭级使用技巧大全</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/d221986cd4dc" target="_blank">12. 小H书资源账号采集器(独家版)</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/615a6523ee82" target="_blank">13. TV软件专区(去除收费版)</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/816184bc8287" target="_blank">14. 11款可用磁力软件(资源不限速)</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/5f735ca11b35" target="_blank">15. [win]数据免费恢复软件x64</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/392b2ac04a48" target="_blank">16. 1DM中文版下载利器</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/53138911d722" target="_blank">17. 美图秀秀(高级版，已解所有功能)</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/6dbe95282e0b" target="_blank">18. 短视频-键搬运（会员解锁版.apk）</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/f1e879686c26" target="_blank">19. 虚拟机</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/12ae0e46c1ae" target="_blank">20. 音乐软件</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/85509d9602e2" target="_blank">21. 下载工具</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/123f77d5efa4" target="_blank">22. 学习软件</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/ce09bb4e237f" target="_blank">23. 系统相关</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/8f2e093de051" target="_blank">24. 热门AI工具</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/9df89e641b82" target="_blank">25. 语音转文字合集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/edcd6ca3bb4e" target="_blank">26. PPT模板大全</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/b0a37a3b93b0" target="_blank">27. 冷门实用合集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/8beeaa40996e" target="_blank">28. 马拉雅音频课</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/0f93144944b2" target="_blank">29. PDF全能工具</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/3644aa1d7af9" target="_blank">30. AI工具合集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/378b8ae752bd" target="_blank">31. 搜题神器包</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/06040a224e63" target="_blank">32. 免费K歌神器</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/22e9fa301723" target="_blank">33. 酷狗概念版</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/016ad003b06b" target="_blank">34. 剪映魔法版</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/0baa01c4c0b1" target="_blank">35. 格式转换合集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/5d2d7a11d6e4" target="_blank">36. 数据恢复工具</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/70120f6850e6" target="_blank">37. B站优质UP主视频合集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/266bec8b617d" target="_blank">38. 零基础学唱歌（完結）</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/ce57aa38a62f" target="_blank">39. 沟通高手训练手册</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/efd35e69d22d" target="_blank">40. 古代野史珍藏集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/bc67bd664bdf" target="_blank">41. 清华附小《妙解成语》动画全集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/fb67bb8c9c24" target="_blank">42. 影响孩子一生的电影合集</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/7e47f91ed609" target="_blank">43. 四季养生食疗课</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/922fcabf6cfb" target="_blank">44. 自动点击器（免费手机版）</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://www.zxgjb.com/video/down" target="_blank">45. 在线工具宝：视频处理平台</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/3e7694b775d9" target="_blank">46. 文案设计辅助工具</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/131358a08790" target="_blank">47. 批量无水印短视频下载器</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/efe9d3417bd9" target="_blank">48. AI APK应用大全</a>
-                </li>
-                <li class="resource-item">
-                    <a href="https://pan.quark.cn/s/38465c55bf00" target="_blank">49. 多格式媒体处理工具箱</a>
-                </li>
-            </ul>
-            <div class="no-results hidden" id="noResultTip">
-                ⚠️ 沒有找到相關资源～
-            </div>
-        </div>
-
-        <!-- 個人中心 -->
-        <div class="page-section" id="profile">
-            <div class="profile-panel glass-container">
-                <div class="profile-title">👤 我的账号</div>
-                <div class="account-info">
-                    当前账号：<span id="accountLevel">天使账号</span>
-                    <span class="vip-label">(永久會員)</span>
-                </div>
-                <div class="input-group">
-                    <input type="password" class="profile-input" id="passwordInput" placeholder="输入密码切换账号" onkeypress="handleKeyPress(event)">
-                    <button class="profile-button" onclick="switchAccount()">切换账号</button>
-                </div>
-            </div>
-
-            <div class="action-button" onclick="copyLink()">
-                💻 PC端入口（点击复制）
-            </div>
-
-            <div class="action-button" onclick="window.open('https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk', '_blank')">
-                📱 移动端入口（点击下载）
-            </div>
-
-            <div class="action-button" onclick="copyQQ()">
-                👨‍💻 作者联系（点击复制）
-            </div>
-
-            <div class="action-button" onclick="showDisclaimer()">
-                📜 功能声明（点击查看）
-            </div>
-
-            <div class="action-button" onclick="showFAQ()">
-                ❓ 常见问题（点击查看）
-            </div>
-        </div>
+.header-tag {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.05);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+  </style>
+ </head>
+ <body>
+  <!-- 動態粒子背景 -->
+  <div class="particles-container" id="particles">
+  </div>
+  <!-- 主容器 -->
+  <div class="main-container">
+   <!-- 首页 -->
+   <div class="page-section active" id="home">
+    <div class="welcome-section glass-container">
+     <h1 class="welcome-title">
+      AI工具入口平台
+     </h1>
+     <p class="welcome-subtitle">
+      掌握AI，不是目的，是入场券
+      <br/>
+      真正让你跃迁的，是背后的底层认知和操盘能力
+      <br/>
+      欢迎登录认知先行者的专属主控台
+     </p>
+     <div class="welcome-stats">
+      <div class="stat-item">
+       <div class="stat-number" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        100+
+       </div>
+       <div class="stat-label">
+        实用工具
+       </div>
+      </div>
+      <div class="stat-item">
+       <div class="stat-number" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        24/7
+       </div>
+       <div class="stat-label">
+        持续更新
+       </div>
+      </div>
+      <div class="stat-item">
+       <div class="stat-number" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        &infin;
+       </div>
+       <div class="stat-label">
+        无限可能
+       </div>
+      </div>
+     </div>
     </div>
-
-    <!-- 底部導航 -->
-    <nav class="bottom-navigation">
-        <a href="#" class="nav-item active" onclick="showSection('home')">
-            <div class="nav-icon">🏠</div>
-            <div class="nav-label">首页</div>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('functions')">
-            <div class="nav-icon">🛠️</div>
-            <div class="nav-label">功能</div>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('videos')">
-            <div class="nav-icon">🎬</div>
-            <div class="nav-label">影视</div>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('resources')">
-            <div class="nav-icon">📁</div>
-            <div class="nav-label">资源</div>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('profile')">
-            <div class="nav-icon">👤</div>
-            <div class="nav-label">我的</div>
-        </a>
-    </nav>
-
-    <!-- 滾動控制按鈕 -->
-    <div class="scroll-controls" id="scrollControls" style="display: none;">
-        <button class="scroll-btn" onclick="scrollToTop()" title="回到頂部">↑</button>
-        <button class="scroll-btn" onclick="scrollToBottom()" title="跳到底部">↓</button>
+    <div class="cards-grid">
+     <a class="tool-card card-svip" href="https://pan.quark.cn/s/885b08f11854#/list/share" target="_blank">
+      <div class="card-content">
+       软件聚合大全
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://pan.quark.cn/s/b34e7f3b1370#/list/share/5037e6694c5f49d3aa4aa65dcba0ea6e-B%E7%AB%99%E4%BB%98%E8%B4%B9%E8%AF%BE%E7%A8%8B%E5%90%88%E9%9B%86" target="_blank">
+      <div class="card-content">
+       B站付费合集
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://pan.baidu.com/s/1wRKSCMitdyycnIBWSCYNdA?pwd=f4pd#list/path=%2Fsharelink2726372619-97106468382442%2F%E5%B9%BC%E5%B0%8F%E8%A1%94%E6%8E%A5%E5%85%A8%E9%83%A8%E8%AF%BE%E7%A8%8B&amp;parentPath=%2Fsharelink2726372619-97106468382442" target="_blank">
+      <div class="card-content">
+       幼小衔接课程
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://pan.quark.cn/s/c9ee299bcb84#/list/share" target="_blank">
+      <div class="card-content">
+       图书馆资源
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://pan.quark.cn/s/8b8fde9f9213#/list/share" target="_blank">
+      <div class="card-content">
+       李一舟合集
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
     </div>
-
-    <!-- 功能聲明彈窗 -->
-    <div class="modal-overlay" id="disclaimerModal">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeDisclaimer()">×</div>
-            
-            <div class="disclaimer-header">
-                <h2>AI工具平台功能声明</h2>
-                <p>本声明详细说明了平台的功能特性、适用范围及免责条款，适用于移动端与PC端用户</p>
-            </div>
-
-            <div class="platform-section">
-                <div class="platform-card">
-                    <div class="platform-title">
-                        <svg width="32" height="32" viewBox="0 0 24 24">
-                            <path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z" fill="#00ccff"/>
-                        </svg>
-                        <h3>移动端功能声明</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>本平台针对移动设备进行全面优化，确保在各类智能手机和平板电脑上流畅运行</li>
-                        <li>所有功能支持触控操作，适配主流移动操作系统（iOS、Android）</li>
-                        <li>响应式设计确保在各种屏幕尺寸下均有良好的视觉体验</li>
-                        <li>提供移动端专属工具和快捷操作方式</li>
-                        <li>简化用户界面，提升移动端操作效率</li>
-                        <li>支持PWA技术，可添加至主屏幕实现类原生应用体验</li>
-                    </ul>
-                </div>
-
-                <div class="platform-card">
-                    <div class="platform-title">
-                        <svg width="32" height="32" viewBox="0 0 24 24">
-                            <path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z" fill="#00ccff"/>
-                        </svg>
-                        <h3>PC端功能声明</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>平台在桌面设备上提供完整功能集和增强型用户体验</li>
-                        <li>支持键盘快捷键操作，提升工作效率</li>
-                        <li>提供多窗口、多任务处理能力</li>
-                        <li>高分辨率适配，支持4K及以上显示设备</li>
-                        <li>桌面端专属高级工具和管理功能</li>
-                        <li>支持文件拖放、批量操作等桌面环境特性</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="platform-section">
-                <div class="platform-card">
-                    <div class="platform-title">
-                        <svg width="32" height="32" viewBox="0 0 24 24">
-                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" fill="#00ccff"/>
-                        </svg>
-                        <h3>核心功能说明</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>平台整合100+精選AI工具與资源，持續更新維護</li>
-                        <li>提供分類清晰的功能区，包括AI工具、影视资源、實用工具等</li>
-                        <li>支持资源搜索功能，快速定位所需工具</li>
-                        <li>账号系统提供不同权限级别的功能访问</li>
-                        <li>一键跳转至第三方工具平台，操作便捷</li>
-                        <li>提供网页版入口和APP下载选项</li>
-                        <li>资源中心提供實用工具和內容集合</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="disclaimer-section">
-                <h3>免责声明</h3>
-                <div class="disclaimer-content">
-                    <p>1. 本平台內容僅供個人學習參考，不涉及任何商業用途</p>
-                    <p>2. 平台內资源均來自公開渠道，功能由原服務方提供</p>
-                    <p>3. 如遇资源異常或服務不可用，請直接聯繫原服務方</p>
-                    <p>4. 平台開發者不承擔因使用本平台资源而產生的任何責任</p>
-                    <p>5. 用戶應遵守各第三方平台的服務條款和法律法規</p>
-                    <p>6. SVIP專屬功能需獲得相應權限後方可使用</p>
-                    <p style="margin-top: 1em; color: #ffaaaa; font-weight: bold;">
-                        本人聲明：本站所有资源均來自於互聯網，版權屬原作者所有，如有需要請購買正版资源。<br>
-                        如有侵權請聯繫我立即刪除，謝謝！
-                    </p>
-                </div>
-            </div>
-
-            <div class="contact-info">
-                <div class="contact-card">
-                    <h4>问题反馈</h4>
-                    <p>799342382@qq.com</p>
-                </div>
-                <div class="contact-card">
-                    <h4>共享资源</h4>
-                    <p>799342382@qq.com</p>
-                </div>
-                <div class="contact-card">
-                    <h4>技术支持</h4>
-                    <p>799342382@qq.com</p>
-                </div>
-            </div>
-
-            <div class="disclaimer-footer">
-                <p>© 2025 AI工具平台 - 专业增强版 Pro | 版本號 v4.0.0 | 最后更新: 2025-07-21</p>
-                <p>本声明适用于所有平台用户，最终解释权归AI工具平台所有</p>
-            </div>
-        </div>
+   </div>
+   <!-- 功能区 -->
+   <div class="page-section" id="functions">
+    <h2 class="section-title">
+     🛠️ 功能区
+    </h2>
+    <div class="cards-grid">
+     <a class="tool-card" href="https://snapany.com/zh" target="_blank">
+      <div class="card-content">
+       万能链接解析下载神器
+      </div>
+     </a>
+     <a class="tool-card card-creator" href="https://www.example.com" target="_blank">
+      <div class="card-content">
+       👑 创世神专属工具
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://chatgpt.com/g/g-68622dc8cab481919ef3289e1763d3de-zhuan-shu-aizhu-li" target="_blank">
+      <div class="card-content">
+       个人信息画像智能体
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
     </div>
-
-    <!-- 常見問題彈窗 -->
-    <div class="modal-overlay" id="faqModal">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeFAQ()">×</div>
-            
-            <div class="disclaimer-header">
-                <h2>✅ 常見問題</h2>
-                <p>為您解答使用過程中的常見疑問</p>
-            </div>
-
-            <div class="platform-card">
-                <div class="platform-title">
-                    <h3>問題1：點擊後為什麼沒有反應？</h3>
-                </div>
-                <p><strong>答：</strong> 部分功能涉及網絡請求或平台加載，需要 <strong>2～5秒</strong> 的響應時間，請耐心等待系統加載完成。</p>
-            </div>
-
-            <div class="platform-card">
-                <div class="platform-title">
-                    <h3>問題2：頁面顯示"數據獲取失敗"或出現空白？</h3>
-                </div>
-                <p><strong>答：</strong> 通常是網絡連接不穩定造成的。建議：</p>
-                <ul class="feature-list">
-                    <li>刷新頁面</li>
-                    <li>點擊空白區域重新加載</li>
-                    <li>切換 Wi-Fi 或更穩定的網絡重試</li>
-                </ul>
-            </div>
-
-            <div class="platform-card">
-                <div class="platform-title">
-                    <h3>問題3：手機端打開界面顯示不完整，按鈕看不到？</h3>
-                </div>
-                <p><strong>答：</strong> 可能是瀏覽器兼容問題。建議：</p>
-                <ul class="feature-list">
-                    <li>切換為橫屏模式</li>
-                    <li>嘗試縮放調整</li>
-                    <li>使用 Chrome、Edge、夸克等瀏覽器</li>
-                </ul>
-            </div>
-        </div>
+    <h2 class="section-title">
+     🌐 网页区
+    </h2>
+    <div class="cards-grid">
+     <a class="tool-card" href="https://www.kaipai.com/home" target="_blank">
+      <div class="card-content">
+       开拍
+      </div>
+     </a>
+     <a class="tool-card" href="https://pan.baidu.com/" target="_blank">
+      <div class="card-content">
+       百度网盘
+      </div>
+     </a>
+     <a class="tool-card" href="https://jimeng.jianying.com/" target="_blank">
+      <div class="card-content">
+       即梦 AI 绘画
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://chat.openai.com" target="_blank">
+      <div class="card-content">
+       ChatGPT
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
     </div>
-
-    <!-- 提示信息 -->
-    <div class="toast" id="toast"></div>
-
-    <script>
-        // 粒子系統初始化
+   </div>
+   <!-- 影视区 -->
+   <div class="page-section" id="videos">
+    <h2 class="section-title">
+     🎓 学习专区
+    </h2>
+    <div class="cards-grid">
+     <a class="tool-card" href="https://open.163.com" target="_blank">
+      <div class="card-content">
+       网易公开课
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://www.icourse163.org" target="_blank">
+      <div class="card-content">
+       MOOC大学
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
+    </div>
+    <h2 class="section-title">
+     📽️ 影视平台
+    </h2>
+    <div class="cards-grid">
+     <a class="tool-card" href="https://v.qq.com" target="_blank">
+      <div class="card-content">
+       腾讯视频
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.iqiyi.com" target="_blank">
+      <div class="card-content">
+       爱奇艺
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.youku.com" target="_blank">
+      <div class="card-content">
+       优酷
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.bilibili.com" target="_blank">
+      <div class="card-content">
+       哔哩哔哩
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.mgtv.com" target="_blank">
+      <div class="card-content">
+       芒果TV
+      </div>
+     </a>
+     <a class="tool-card" href="https://tv.sohu.com" target="_blank">
+      <div class="card-content">
+       搜狐视频
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.pptv.com" target="_blank">
+      <div class="card-content">
+       PPTV
+      </div>
+     </a>
+    </div>
+    <h2 class="section-title">
+     🎬 短视频平台
+    </h2>
+    <div class="cards-grid">
+     <a class="tool-card" href="https://www.douyin.com" target="_blank">
+      <div class="card-content">
+       抖音
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.kuaishou.com" target="_blank">
+      <div class="card-content">
+       快手
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.xiaohongshu.com" target="_blank">
+      <div class="card-content">
+       小红书
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.bilibili.com" target="_blank">
+      <div class="card-content">
+       B站
+      </div>
+     </a>
+     <a class="tool-card card-svip" href="https://www.youtube.com/" target="_blank">
+      <div class="card-content">
+       YouTube
+      </div>
+      <div class="vip-badge">
+       SVIP
+      </div>
+     </a>
+    </div>
+    <h2 class="section-title">
+     🎥 短视频创作者中心
+    </h2>
+    <div class="cards-grid">
+     <a class="tool-card" href="https://www.douyin.com" target="_blank">
+      <div class="card-content">
+       抖音创作者中心
+      </div>
+     </a>
+     <a class="tool-card" href="https://channels.weixin.qq.com" target="_blank">
+      <div class="card-content">
+       视频号助手
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.xiaohongshu.com" target="_blank">
+      <div class="card-content">
+       小红书创作服务平台
+      </div>
+     </a>
+     <a class="tool-card" href="https://www.kuaishou.com" target="_blank">
+      <div class="card-content">
+       快手创作者服务平台
+      </div>
+     </a>
+    </div>
+   </div>
+   <!-- 资源区 -->
+   <div class="page-section" id="resources">
+    <h2 class="section-title">
+     📁 资源中心
+    </h2>
+    <div class="search-container">
+     <input class="search-input" id="resourceSearch" oninput="filterResources()" placeholder="搜索你的资源关键词..." type="text"/>
+    </div>
+    <ul class="resource-list" id="resourceList">
+     <li class="resource-item" title="推荐：AI工具入门推荐">
+      <a href="https://app.1foo.com/install/10AD56" target="_blank">
+       1. 边界AI
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/252ee82b27e8#/list/share" target="_blank">
+       2. 科技插件
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/bc1ac6a6bf7c#/list/share" target="_blank">
+       3. 安卓软件
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/bea1bfe13110#/list/share" target="_blank">
+       4. 摄影剪辑
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/e735122148d6#/list/share" target="_blank">
+       5. 媒体运营
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/8b0c13bb29c9" target="_blank">
+       6. 去马赛克
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk" target="_blank">
+       7. 本站有APP方便进入
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://kdocs.cn/l/clLbAxjyKcbr" target="_blank">
+       8. 短剧百度搜索
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/32e2eef37133" target="_blank">
+       9. 当众说话
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/bda448f2ed6a" target="_blank">
+       10. 情绪自救课（含训练营）
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/21d5a32c1006#/list/share" target="_blank">
+       11. Deepseek保姆喂饭级使用技巧大全
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/d221986cd4dc" target="_blank">
+       12. 小H书资源账号采集器(独家版)
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/615a6523ee82" target="_blank">
+       13. TV软件专区(去除收费版)
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/816184bc8287" target="_blank">
+       14. 11款可用磁力软件(资源不限速)
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/5f735ca11b35" target="_blank">
+       15. [win]数据免费恢复软件x64
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/392b2ac04a48" target="_blank">
+       16. 1DM中文版下载利器
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/53138911d722" target="_blank">
+       17. 美图秀秀(高级版，已解所有功能)
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/6dbe95282e0b" target="_blank">
+       18. 短视频-键搬运（会员解锁版.apk）
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/f1e879686c26" target="_blank">
+       19. 虚拟机
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/12ae0e46c1ae" target="_blank">
+       20. 音乐软件
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/85509d9602e2" target="_blank">
+       21. 下载工具
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/123f77d5efa4" target="_blank">
+       22. 学习软件
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/ce09bb4e237f" target="_blank">
+       23. 系统相关
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/8f2e093de051" target="_blank">
+       24. 热门AI工具
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/9df89e641b82" target="_blank">
+       25. 语音转文字合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/edcd6ca3bb4e" target="_blank">
+       26. PPT模板大全
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/b0a37a3b93b0" target="_blank">
+       27. 冷门实用合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/8beeaa40996e" target="_blank">
+       28. 喜马拉雅音频课
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/0f93144944b2" target="_blank">
+       29. PDF全能工具
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/3644aa1d7af9" target="_blank">
+       30. AI工具合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/378b8ae752bd" target="_blank">
+       31. 搜题神器包
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/06040a224e63" target="_blank">
+       32. 免费K歌神器
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/22e9fa301723" target="_blank">
+       33. 酷狗概念版
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/016ad003b06b" target="_blank">
+       34. 剪映魔法版
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/0baa01c4c0b1" target="_blank">
+       35. 格式转换合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/5d2d7a11d6e4" target="_blank">
+       36. 数据恢复工具
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/70120f6850e6" target="_blank">
+       37. B站优质UP主视频合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/266bec8b617d" target="_blank">
+       38. 零基础学唱歌（完结）
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/ce57aa38a62f" target="_blank">
+       39. 沟通高手训练手册
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/efd35e69d22d" target="_blank">
+       40. 古代野史珍藏集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/bc67bd664bdf" target="_blank">
+       41. 清华附小《妙解成语》动画全集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/fb67bb8c9c24" target="_blank">
+       42. 影响孩子一生的电影合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/7e47f91ed609" target="_blank">
+       43. 四季养生食疗课
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/922fcabf6cfb" target="_blank">
+       44. 自动点击器（免费手机版）
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://www.zxgjb.com/video/down" target="_blank">
+       45. 在线工具宝：视频处理平台
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/3e7694b775d9" target="_blank">
+       46. 文案设计辅助工具
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/131358a08790" target="_blank">
+       47. 批量无水印短视频下载器
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/efe9d3417bd9" target="_blank">
+       48. AI APK应用大全
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/38465c55bf00" target="_blank">
+       49. 多格式媒体处理工具箱
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/11f9f54a9079" target="_blank">
+       50. 资源整合
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.baidu.com/s/1gc2dtr25MnIIot1WshdiKg?pwd=r81f" target="_blank">
+       51. 语聊音频变声器
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/c8a65daef23b#/list/share" target="_blank">
+       52. 每日更新软件
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.xunlei.com/s/VOV6Pjyd2FtkptKRtFeZ5sDpA1?pwd=s8aq" target="_blank">
+       53. C盘系统清理
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/86c0515b2d3d#/list/share" target="_blank">
+       54. Win10-11激活永久工具
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/a8370a2e56c2#/list/share" target="_blank">
+       55. 自动生成专属AI数字人
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/2df4279a0c2d" target="_blank">
+       56. 个性签名生成器
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/e0c850bfe7ad" target="_blank">
+       57. 人像摄影课程
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/7b79e8232cbe" target="_blank">
+       58. 30款永久VIP软件合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/db3e92406383" target="_blank">
+       59. 32款自媒体免费必备APP
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/8c4392e5fd2e" target="_blank">
+       60. 万能WiFi直连版
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/4964c3516f7a" target="_blank">
+       61. 变声器语音包大师
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/b78829fce030" target="_blank">
+       62. 网易云音乐解锁版
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.quark.cn/s/f8cff95b4484" target="_blank">
+       63. 小吃教程合集
+      </a>
+     </li>
+     <li class="resource-item">
+      <a href="https://pan.xunlei.com/s/VOVeGbH7Xi24x24W2yQ05vLyA1?pwd=8u73" target="_blank">
+       64. 打工人桌面壁纸
+      </a>
+     </li>
+    </ul>
+    <div class="no-results hidden" id="noResultTip">
+     ⚠️ 没有找到相关资源～
+    </div>
+   </div>
+   <!-- 个人中心 -->
+   <div class="page-section" id="profile">
+    <div class="profile-panel glass-container">
+     <div class="profile-title">
+      👤 我的账号
+     </div>
+     <div class="account-info">
+      当前账号：
+      <span id="accountLevel">
+       天使账号
+      </span>
+      <span class="vip-label">
+       (永久会员)
+      </span>
+     </div>
+     <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+      <input class="profile-input" id="passwordInput" onkeypress="handleKeyPress(event)" placeholder="输入密码切换账号" type="password"/>
+      <button class="profile-button" onclick="switchAccount()">
+       切换账号
+      </button>
+     </div>
+    </div>
+    <div class="action-button" onclick="copyLink()">
+     💻 PC端入口（点击复制）
+    </div>
+    <div class="action-button" onclick="window.open('https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk', '_blank')">
+     📱 移动端入口（点击下载）
+    </div>
+    <div class="action-button" onclick="copyQQ()">
+     👨&zwj;💻 作者联系（点击复制）
+    </div>
+    <div class="action-button" onclick="showDisclaimer()">
+     📜 功能声明（点击查看）
+    </div>
+    <div class="action-button" onclick="showFAQ()">
+     ❓ 常见问题（点击查看）
+    </div>
+   </div>
+  </div>
+  <!-- 底部导航 -->
+  <nav class="bottom-navigation">
+   <a class="nav-item active" href="#" onclick="showSection('home')">
+    <div class="nav-icon">
+     🏠
+    </div>
+    <div class="nav-label">
+     首页
+    </div>
+   </a>
+   <a class="nav-item" href="#" onclick="showSection('functions')">
+    <div class="nav-icon">
+     🛠️
+    </div>
+    <div class="nav-label">
+     功能
+    </div>
+   </a>
+   <a class="nav-item" href="#" onclick="showSection('videos')">
+    <div class="nav-icon">
+     🎬
+    </div>
+    <div class="nav-label">
+     影视
+    </div>
+   </a>
+   <a class="nav-item" href="#" onclick="showSection('resources')">
+    <div class="nav-icon">
+     📁
+    </div>
+    <div class="nav-label">
+     资源
+    </div>
+   </a>
+   <a class="nav-item" href="#" onclick="showSection('profile')">
+    <div class="nav-icon">
+     👤
+    </div>
+    <div class="nav-label">
+     我的
+    </div>
+   </a>
+  </nav>
+  <!-- 滚动控制按钮 -->
+  <div class="scroll-controls" id="scrollControls" style="display: none;">
+   <button class="scroll-btn" onclick="scrollToTop()" title="回到顶部">
+    &uarr;
+   </button>
+   <button class="scroll-btn" onclick="scrollToBottom()" title="跳到底部">
+    &darr;
+   </button>
+  </div>
+  <!-- 功能声明弹窗 -->
+  <div class="modal-overlay" id="disclaimerModal">
+   <div class="modal-content">
+    <div class="modal-close" onclick="closeDisclaimer()">
+     &times;
+    </div>
+    <div class="disclaimer-header">
+     <h2>
+      AI工具平台功能声明
+     </h2>
+     <p>
+      本声明详细说明了平台的功能特性、适用范围及免责条款，适用于移动端与PC端用户
+     </p>
+    </div>
+    <div class="platform-section">
+     <div class="platform-card">
+      <div class="platform-title">
+       <svg height="32" viewbox="0 0 24 24" width="32">
+        <path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z" fill="#00ccff">
+        </path>
+       </svg>
+       <h3>
+        移动端功能声明
+       </h3>
+      </div>
+      <ul class="feature-list">
+       <li>
+        本平台针对移动设备进行全面优化，确保在各类智能手机和平板电脑上流畅运行
+       </li>
+       <li>
+        所有功能支持触控操作，适配主流移动操作系统（iOS、Android）
+       </li>
+       <li>
+        响应式设计确保在各种屏幕尺寸下均有良好的视觉体验
+       </li>
+       <li>
+        提供移动端专属工具和快捷操作方式
+       </li>
+       <li>
+        简化用户界面，提升移动端操作效率
+       </li>
+       <li>
+        支持PWA技术，可添加至主屏幕实现类原生应用体验
+       </li>
+      </ul>
+     </div>
+     <div class="platform-card">
+      <div class="platform-title">
+       <svg height="32" viewbox="0 0 24 24" width="32">
+        <path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z" fill="#00ccff">
+        </path>
+       </svg>
+       <h3>
+        PC端功能声明
+       </h3>
+      </div>
+      <ul class="feature-list">
+       <li>
+        平台在桌面设备上提供完整功能集和增强型用户体验
+       </li>
+       <li>
+        支持键盘快捷键操作，提升工作效率
+       </li>
+       <li>
+        提供多窗口、多任务处理能力
+       </li>
+       <li>
+        高分辨率适配，支持4K及以上显示设备
+       </li>
+       <li>
+        桌面端专属高级工具和管理功能
+       </li>
+       <li>
+        支持文件拖放、批量操作等桌面环境特性
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div class="platform-section">
+     <div class="platform-card">
+      <div class="platform-title">
+       <svg height="32" viewbox="0 0 24 24" width="32">
+        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" fill="#00ccff">
+        </path>
+       </svg>
+       <h3>
+        核心功能说明
+       </h3>
+      </div>
+      <ul class="feature-list">
+       <li>
+        平台整合100+精选AI工具与资源，持续更新维护
+       </li>
+       <li>
+        提供分类清晰的功能区，包括AI工具、影视资源、实用工具等
+       </li>
+       <li>
+        支持资源搜索功能，快速定位所需工具
+       </li>
+       <li>
+        账号系统提供不同权限级别的功能访问
+       </li>
+       <li>
+        一键跳转至第三方工具平台，操作便捷
+       </li>
+       <li>
+        提供网页版入口和APP下载选项
+       </li>
+       <li>
+        资源中心提供实用工具和内容集合
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div class="disclaimer-section">
+     <h3>
+      免责声明
+     </h3>
+     <div class="disclaimer-content">
+      <p>
+       1. 本平台内容仅供个人学习参考，不涉及任何商业用途
+      </p>
+      <p>
+       2. 平台内资源均来自公开渠道，功能由原服务方提供
+      </p>
+      <p>
+       3. 如遇资源异常或服务不可用，请直接联系原服务方
+      </p>
+      <p>
+       4. 平台开发者不承担因使用本平台资源而产生的任何责任
+      </p>
+      <p>
+       5. 用户应遵守各第三方平台的服务条款和法律法规
+      </p>
+      <p>
+       6. SVIP专属功能需获得相应权限后方可使用
+      </p>
+      <p style="margin-top: 1em; color: #ffaaaa; font-weight: bold;">
+       本人声明：本站所有资源均来自于互联网，版权属原作者所有，如有需要请购买正版资源。
+       <br/>
+       如有侵权请联系我立即删除，谢谢！
+      </p>
+     </div>
+    </div>
+    <div class="contact-info">
+     <div class="contact-card">
+      <h4>
+       问题反馈
+      </h4>
+      <p>
+       799342382@qq.com
+      </p>
+     </div>
+     <div class="contact-card">
+      <h4>
+       共享资源
+      </h4>
+      <p>
+       799342382@qq.com
+      </p>
+     </div>
+     <div class="contact-card">
+      <h4>
+       技术支持
+      </h4>
+      <p>
+       799342382@qq.com
+      </p>
+     </div>
+    </div>
+    <div class="disclaimer-footer">
+     <p>
+      &copy; 2025 AI工具平台 - 专业增强版 Pro | 版本号 v4.0.0 | 最后更新: 2025-07-21
+     </p>
+     <p>
+      本声明适用于所有平台用户，最终解释权归AI工具平台所有
+     </p>
+    </div>
+   </div>
+  </div>
+  <!-- 常见问题弹窗 -->
+  <div class="modal-overlay" id="faqModal">
+   <div class="modal-content">
+    <div class="modal-close" onclick="closeFAQ()">
+     &times;
+    </div>
+    <div class="disclaimer-header">
+     <h2>
+      ✅ 常见问题
+     </h2>
+     <p>
+      为您解答使用过程中的常见疑问
+     </p>
+    </div>
+    <div class="platform-card">
+     <div class="platform-title">
+      <h3>
+       问题1：点击后为什么没有反应？
+      </h3>
+     </div>
+     <p>
+      <strong>
+       答：
+      </strong>
+      部分功能涉及网络请求或平台加载，需要
+      <strong>
+       2～5秒
+      </strong>
+      的响应时间，请耐心等待系统加载完成。
+     </p>
+    </div>
+    <div class="platform-card">
+     <div class="platform-title">
+      <h3>
+       问题2：页面显示"数据获取失败"或出现空白？
+      </h3>
+     </div>
+     <p>
+      <strong>
+       答：
+      </strong>
+      通常是网络连接不稳定造成的。建议：
+     </p>
+     <ul class="feature-list">
+      <li>
+       刷新页面
+      </li>
+      <li>
+       点击空白区域重新加载
+      </li>
+      <li>
+       切换 Wi-Fi 或更稳定的网络重试
+      </li>
+     </ul>
+    </div>
+    <div class="platform-card">
+     <div class="platform-title">
+      <h3>
+       问题3：手机端打开界面显示不完整，按钮看不到？
+      </h3>
+     </div>
+     <p>
+      <strong>
+       答：
+      </strong>
+      可能是浏览器兼容问题。建议：
+     </p>
+     <ul class="feature-list">
+      <li>
+       切换为横屏模式
+      </li>
+      <li>
+       尝试缩放调整
+      </li>
+      <li>
+       使用 Chrome、Edge、夸克等浏览器
+      </li>
+     </ul>
+    </div>
+   </div>
+  </div>
+  <!-- 提示信息 -->
+  <div class="toast" id="toast">
+  </div>
+  <script>
+   // 粒子系统初始化
         function initParticles() {
             const container = document.getElementById('particles');
             const particleCount = 50;
@@ -1487,21 +1981,21 @@
             }
         }
 
-        // 頁面切換功能
+        // 页面切换功能
         function showSection(sectionId) {
-            // 更新導航狀態
+            // 更新导航状态
             document.querySelectorAll('.nav-item').forEach(nav => {
                 nav.classList.remove('active');
             });
             event.target.closest('.nav-item').classList.add('active');
 
-            // 切換頁面內容
+            // 切换页面内容
             document.querySelectorAll('.page-section').forEach(section => {
                 section.classList.remove('active');
             });
             document.getElementById(sectionId).classList.add('active');
 
-            // 顯示/隱藏滾動按鈕
+            // 显示/隐藏滚动按钮
             const scrollControls = document.getElementById('scrollControls');
             if (sectionId === 'resources') {
                 scrollControls.style.display = 'flex';
@@ -1509,7 +2003,7 @@
                 scrollControls.style.display = 'none';
             }
 
-            // 滾動到頂部
+            // 滚动到顶部
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1534,7 +2028,7 @@
             }
         }
 
-        // 賬號切換功能
+        // 账号切换功能
         function switchAccount() {
             const input = document.getElementById('passwordInput');
             const password = input.value;
@@ -1543,13 +2037,13 @@
 
             if (password === '520131419') {
                 levelText = '恶魔账号';
-                showToast('成功切換為恶魔账号');
+                showToast('成功切换为恶魔账号');
             } else if (password === '15934345873') {
                 levelText = '创世神账号';
-                showToast('成功切換為创世神账号');
+                showToast('成功切换为创世神账号');
             } else {
                 levelText = '天使账号';
-                showToast('❌ 密碼錯誤，已切換為天使账号');
+                showToast('❌ 密码错误，已切换为天使账号');
                 input.value = '';
                 input.focus();
             }
@@ -1559,50 +2053,50 @@
             updateFeatureAccess();
         }
 
-        // 更新功能訪問權限
+        // 更新功能访问权限
         function updateFeatureAccess() {
             const accountLevel = document.getElementById('accountLevel').textContent;
             
             document.querySelectorAll('.card-svip').forEach(card => {
-                const isVisible = accountLevel.includes('惡魔') || 
+                const isVisible = accountLevel.includes('恶魔') || 
                                 accountLevel.includes('SVIP') || 
-                                accountLevel.includes('創世神');
+                                accountLevel.includes('创世神');
                 card.style.display = isVisible ? 'flex' : 'none';
             });
             
             document.querySelectorAll('.card-creator').forEach(card => {
-                const isVisible = accountLevel.includes('創世神');
+                const isVisible = accountLevel.includes('创世神');
                 card.style.display = isVisible ? 'flex' : 'none';
             });
         }
 
-        // 鍵盤事件處理
+        // 键盘事件处理
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 switchAccount();
             }
         }
 
-        // 複製功能
+        // 复制功能
         function copyLink() {
             const link = 'https://bit.ly/4lAqC7R';
             navigator.clipboard.writeText(link).then(() => {
-                showToast('PC端入口鏈接已複製到剪貼板');
+                showToast('PC端入口链接已复制到剪贴板');
             }).catch(() => {
-                showToast('複製失敗，請手動複製');
+                showToast('复制失败，请手动复制');
             });
         }
 
         function copyQQ() {
             const qq = '799342382';
             navigator.clipboard.writeText(qq).then(() => {
-                showToast('QQ號已複製到剪貼板');
+                showToast('QQ号已复制到剪贴板');
             }).catch(() => {
-                showToast('複製失敗，請手動複製');
+                showToast('复制失败，请手动复制');
             });
         }
 
-        // 顯示提示信息
+        // 显示提示信息
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1613,7 +2107,7 @@
             }, 3000);
         }
 
-        // 彈窗控制
+        // 弹窗控制
         function showDisclaimer() {
             document.getElementById('disclaimerModal').classList.add('active');
         }
@@ -1630,7 +2124,7 @@
             document.getElementById('faqModal').classList.remove('active');
         }
 
-        // 滾動控制
+        // 滚动控制
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1639,19 +2133,19 @@
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        // 頁面初始化
+        // 页面初始化
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化粒子系統
+            // 初始化粒子系统
             initParticles();
 
-            // 恢復賬號狀態
+            // 恢复账号状态
             const savedAccountLevel = localStorage.getItem('accountLevel');
             if (savedAccountLevel) {
                 document.getElementById('accountLevel').textContent = savedAccountLevel;
             }
             updateFeatureAccess();
 
-            // 點擊彈窗外部關閉
+            // 点击弹窗外部关闭
             document.querySelectorAll('.modal-overlay').forEach(modal => {
                 modal.addEventListener('click', function(e) {
                     if (e.target === modal) {
@@ -1660,29 +2154,29 @@
                 });
             });
 
-            // 防止右鍵和開發者工具
+            // 防止右键和开发者工具
             document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'F12' || 
                     (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key)) ||
                     (e.ctrlKey && e.key === 'U')) {
                     e.preventDefault();
-                    showToast('⚠️ 系統檢測到異常操作，已記錄設備信息');
+                    showToast('⚠️ 系统检测到异常操作，已记录设备信息');
                 }
             });
 
-            // 禁用複製
+            // 禁用复制
             document.addEventListener('copy', function(e) {
                 e.preventDefault();
-                showToast('⚠️ 禁止複製網頁內容');
+                showToast('⚠️ 禁止复制网页内容');
             });
 
-            // 禁用選擇
+            // 禁用选择
             document.addEventListener('selectstart', function(e) {
                 e.preventDefault();
             });
 
-            // 響應式粒子調整
+            // 响应式粒子调整
             window.addEventListener('resize', function() {
                 const container = document.getElementById('particles');
                 container.innerHTML = '';
@@ -1693,7 +2187,7 @@
         // 防止控制台操作
         Object.defineProperty(navigator, 'webdriver', { get: () => false });
         
-        // 檢測開發者工具
+        // 检测开发者工具
         let devtools = {
             open: false,
             orientation: null
@@ -1704,13 +2198,12 @@
                 window.outerWidth - window.innerWidth > 200) {
                 if (!devtools.open) {
                     devtools.open = true;
-                    showToast('⚠️ 檢測到開發者工具，請關閉後繼續使用');
+                    showToast('⚠️ 检测到开发者工具，请关闭后继续使用');
                 }
             } else {
                 devtools.open = false;
             }
         }, 500);
-    </script>
-</body>
+  </script>
+ </body>
 </html>
-
