@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#1e40af"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="#1e40af" name="theme-color"/>
 <title>AI 工具平台 · 官方专业版（分阶级权限）</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --brand:#2563eb;--brand2:#1e40af;--ok:#10b981;--muted:#64748b;--bg:#f8fafc;--panel:#fff;--text:#0f172a;--border:#e5e7eb;
@@ -29,8 +30,8 @@
   .acct input{flex:1;min-width:0;height:38px;border-radius:10px;border:1px solid #ffffff66;background:#fff;color:#0f172a;padding:0 12px;outline:none}
   .acct button{height:38px;padding:0 12px;border:none;border-radius:10px;background:#fff;color:var(--brand2);font-weight:800;cursor:pointer}
   /* 容器 */
-  .container{max-width:1200px;margin:14px auto 90px;padding:0 14px}
-  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+  .container{max-width:1200px;margin:14px auto 0;padding:0 14px 160px}
+  .hero{display:grid;grid-template-columns:1fr;gap:14px}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
   .hero h1{font-size:24px;line-height:1.28}
   .hero p{color:var(--muted);margin-top:6px}
@@ -48,7 +49,6 @@
   .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   .tile{background:#fff;border:1px solid var(--border);border-radius:14px;min-height:74px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit;font-weight:700;box-shadow:var(--shadow);transition:.2s;position:relative;padding:10px;text-align:center;line-height:1.2}
   .tile:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
-  .badge{position:absolute;top:8px;right:8px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:800}
   .panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:12px}
   .resource-list{list-style:none;display:flex;flex-direction:column;gap:8px}
   .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:.2s;position:relative}
@@ -62,9 +62,8 @@
   [data-tier]::after{content:attr(data-tier-label);position:absolute;right:10px;top:8px;font-size:10px;font-weight:800;color:#fff;padding:2px 6px;border-radius:999px}
   [data-tier="angel"]::after{background:#22c55e}
   [data-tier="devil"]::after{background:#0ea5e9}
-  [data-tier="creator"]::after{background:#8b5cf6}
   .locked{position:relative;overflow:hidden;cursor:not-allowed}
-  .locked::before{content:"🔒 需更高等级";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(255,255,255,.82));color:#111827;font-weight:900;letter-spacing:.3px;font-size:14px}
+  .locked::before{content:"🔒";position:absolute;left:10px;top:8px;font-size:18px;opacity:.85;pointer-events:none}
   .locked a{pointer-events:none}
   .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;display:none}
   .toast.show{display:block;animation:fade3 3s both}
@@ -84,7 +83,6 @@
     .hero h1{font-size:20px}
     .grid{grid-template-columns:repeat(2,1fr)} /* 2列卡片，更节省空间 */
     .tile{min-height:66px;font-size:14px;padding:10px 8px}
-    .badge{font-size:9px;padding:1px 5px}
     .nav a{padding:10px 4px;font-size:13px}
   }
   /* 极小屏（如 320px）回退为 1 列，避免拥挤 */
@@ -92,226 +90,326 @@
     .grid{grid-template-columns:1fr}
     .tile{min-height:60px}
   }
+
+html{scroll-padding-bottom:160px}
+@media(max-width:640px){.container{padding-bottom:180px}html{scroll-padding-bottom:180px}}
 </style>
 </head>
 <body>
 <!-- 顶部品牌条 -->
 <div class="brand-bar">
-  <div class="brand-inner">
-    <div class="brand-left">
-      <div class="logo">AI</div>
-      <div class="title">AI 工具平台 · 官方专业版</div>
-      <div id="lv" class="level">未登录（默认天使）</div>
-    </div>
-    <div class="acct">
-      <input id="pwd" type="password" placeholder="输入口令：angel / devil / creator"/>
-      <button id="login">登录</button>
-      <button id="logout" style="display:none;">退出</button>
-    </div>
-  </div>
+<div class="brand-inner">
+<div class="brand-left">
+<div class="logo">AI</div>
+<div class="title">AI 工具平台 · 官方专业版</div>
+<div class="level" id="lv">未登录（默认天使）</div>
 </div>
-
+<div class="acct">
+<input id="pwd" placeholder="输入口令：angel / devil" type="password"/>
+<button id="login">登录</button>
+<button id="logout" style="display:none;">退出</button>
+</div>
+</div>
+</div>
 <div class="container">
-  <!-- 顶部引导 -->
-  <section class="hero">
-    <div class="card">
-      <h1>官方级体验 · 分阶级权限 · 稳定入口</h1>
-      <p>天使 → 恶魔 → 创世神，等级越高可用能力越多；未授权条目对低等级可见但上锁。</p>
-      <div class="stats">
-        <div class="stat"><div class="num">100+</div><div class="lab">精选工具</div></div>
-        <div class="stat"><div class="num">24/7</div><div class="lab">持续更新</div></div>
-        <div class="stat"><div class="num">∞</div><div class="lab">场景扩展</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="search">
-        <input id="gSearch" placeholder="搜资源 / 平台 / 工具，例如：剪辑 / 网盘 / 激活 / AI" oninput="goFilter()"/>
-        <button onclick="toRes()">搜索</button>
-      </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px">搜索会跳转到资源中心并即时筛选。</p>
-    </div>
-  </section>
-
-  <!-- 首页核心入口 -->
-  <section id="home" class="section" role="tabpanel">
-    <div class="head">
-      <div class="h-title">核心入口</div><div class="h-note">高频常用 · 官方可靠</div>
-    </div>
-    <div class="grid">
-      <a class="tile" href="https://pan.quark.cn/s/885b08f11854#/list/share" target="_blank" data-tier="devil" data-tier-label="恶魔">软件聚合大全</a>
-      <a class="tile" href="https://pan.quark.cn/s/b34e7f3b1370#/list/share/5037e6694c5f49d3aa4aa65dcba0ea6e-B%E7%AB%99%E4%BB%98%E8%B4%B9%E8%AF%BE%E7%A8%8B%E5%90%88%E9%9B%86" target="_blank" data-tier="devil" data-tier-label="恶魔">B站付费合集 <span class="badge">SVIP</span></a>
-      <a class="tile" href="https://pan.baidu.com/s/1wRKSCMitdyycnIBWSCYNdA?pwd=f4pd#list/path=%2Fsharelink2726372619-97106468382442%2F%E5%B9%BC%E5%B0%8F%E8%A1%94%E6%8E%A5%E5%85%A8%E9%83%A8%E8%AF%BE%E7%A8%8B&parentPath=%2Fsharelink2726372619-97106468382442" target="_blank" data-tier="devil" data-tier-label="恶魔">幼小衔接课程</a>
-      <a class="tile" href="https://pan.quark.cn/s/c9ee299bcb84#/list/share" target="_blank" data-tier="devil" data-tier-label="恶魔">图书馆资源</a>
-    </div>
-  </section>
-
-  <!-- 平台区 -->
-  <section id="videos" class="section" role="tabpanel" hidden>
-    <div class="head"><div class="h-title">创作常用入口</div><div class="h-note">剪辑/分发常用四件套</div></div>
-    <div class="grid" style="margin-bottom:12px">
-      <a class="tile" href="https://snapany.com/zh" target="_blank" data-tier="angel" data-tier-label="天使">万能链接解析下载</a>
-      <a class="tile" href="https://chat.openai.com" target="_blank" data-tier="angel" data-tier-label="天使">ChatGPT</a>
-      <a class="tile" href="https://jimeng.jianying.com/" target="_blank" data-tier="angel" data-tier-label="天使">即梦 AI 绘画</a>
-      <a class="tile" href="https://www.youtube.com/" target="_blank" data-tier="devil" data-tier-label="恶魔">YouTube（境外）</a>
-    </div>
-    <div class="head"><div class="h-title">学习平台</div><div class="h-note">系统学习与提升（已公开：天使）</div></div>
-    <div class="grid" style="margin-bottom:12px">
-      <a class="tile" href="https://open.163.com" target="_blank" data-tier="angel" data-tier-label="天使">网易公开课</a>
-      <a class="tile" href="https://www.icourse163.org" target="_blank" data-tier="angel" data-tier-label="天使">MOOC大学 <span class="badge">SVIP</span></a>
-    </div>
-    <div class="head"><div class="h-title">影视平台</div><div class="h-note">主流视频入口</div></div>
-    <div class="grid">
-      <a class="tile" href="https://v.qq.com" target="_blank" data-tier="angel" data-tier-label="天使">腾讯视频</a>
-      <a class="tile" href="https://www.iqiyi.com" target="_blank" data-tier="angel" data-tier-label="天使">爱奇艺</a>
-      <a class="tile" href="https://www.youku.com" target="_blank" data-tier="angel" data-tier-label="天使">优酷</a>
-      <a class="tile" href="https://www.bilibili.com" target="_blank" data-tier="angel" data-tier-label="天使">哔哩哔哩</a>
-      <a class="tile" href="https://www.mgtv.com" target="_blank" data-tier="angel" data-tier-label="天使">芒果TV</a>
-      <a class="tile" href="https://tv.sohu.com" target="_blank" data-tier="angel" data-tier-label="天使">搜狐视频</a>
-      <a class="tile" href="https://www.pptv.com" target="_blank" data-tier="angel" data-tier-label="天使">PPTV</a>
-    </div>
-    <div class="head"><div class="h-title">短视频平台</div><div class="h-note">分发与增长</div></div>
-    <div class="grid">
-      <a class="tile" href="https://www.douyin.com" target="_blank" data-tier="angel" data-tier-label="天使">抖音</a>
-      <a class="tile" href="https://www.kuaishou.com" target="_blank" data-tier="angel" data-tier-label="天使">快手</a>
-      <a class="tile" href="https://www.xiaohongshu.com" target="_blank" data-tier="angel" data-tier-label="天使">小红书</a>
-      <a class="tile" href="https://www.bilibili.com" target="_blank" data-tier="angel" data-tier-label="天使">B站</a>
-      <a class="tile" href="https://www.youtube.com/" target="_blank" data-tier="devil" data-tier-label="恶魔">YouTube</a>
-    </div>
-    <div class="head"><div class="h-title">创作者中心</div><div class="h-note">账号运营</div></div>
-    <div class="grid">
-      <a class="tile" href="https://www.douyin.com" target="_blank" data-tier="angel" data-tier-label="天使">抖音创作者中心</a>
-      <a class="tile" href="https://channels.weixin.qq.com" target="_blank" data-tier="angel" data-tier-label="天使">视频号助手</a>
-      <a class="tile" href="https://www.xiaohongshu.com" target="_blank" data-tier="angel" data-tier-label="天使">小红书创作服务平台</a>
-      <a class="tile" href="https://www.kuaishou.com" target="_blank" data-tier="angel" data-tier-label="天使">快手创作者服务平台</a>
-    </div>
-  </section>
-
-  <!-- 资源中心（全部天使公开） -->
-  <section id="resources" class="section" role="tabpanel" hidden>
-    <div class="head">
-      <div class="h-title">资源中心</div>
-      <div class="h-note">以下为全部资源（已设为天使级公开）。支持关键词过滤。</div>
-    </div>
-    <div class="panel">
-      <div class="search" style="margin-bottom:10px">
-        <input id="resSearch" placeholder="搜：安卓 / 剪辑 / 激活 / AI / 无水印…" oninput="filterRes()"/>
-        <button onclick="filterRes()">筛选</button>
-      </div>
-      <ul id="resList" class="resource-list">
-        <!-- 从原文件复制的 1~64 列表，保持一致 -->
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://app.1foo.com/install/10AD56" target="_blank">1. 边界AI</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/252ee82b27e8#/list/share" target="_blank">2. 科技插件</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bc1ac6a6bf7c#/list/share" target="_blank">3. 安卓软件</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bea1bfe13110#/list/share" target="_blank">4. 摄影剪辑</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/e735122148d6#/list/share" target="_blank">5. 媒体运营</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8b0c13bb29c9" target="_blank">6. 去马赛克</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk" target="_blank">7. 本站有APP方便进入</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://kdocs.cn/l/clLbAxjyKcbr" target="_blank">8. 短剧百度搜索</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/32e2eef37133" target="_blank">9. 当众说话</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bda448f2ed6a" target="_blank">10. 情绪自救课（含训练营）</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/21d5a32c1006#/list/share" target="_blank">11. Deepseek保姆喂饭级使用技巧大全</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/d221986cd4dc" target="_blank">12. 小H书资源账号采集器(独家版)</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/615a6523ee82" target="_blank">13. TV软件专区(去除收费版)</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/816184bc8287" target="_blank">14. 11款可用磁力软件(资源不限速)</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/5f735ca11b35" target="_blank">15. [win]数据免费恢复软件x64</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/392b2ac04a48" target="_blank">16. 1DM中文版下载利器</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/53138911d722" target="_blank">17. 美图秀秀(高级版，已解所有功能)</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/6dbe95282e0b" target="_blank">18. 短视频-键搬运（会员解锁版.apk）</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/f1e879686c26" target="_blank">19. 虚拟机</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/12ae0e46c1ae" target="_blank">20. 音乐软件</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/85509d9602e2" target="_blank">21. 下载工具</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/123f77d5efa4" target="_blank">22. 学习软件</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/ce09bb4e237f" target="_blank">23. 系统相关</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8f2e093de051" target="_blank">24. 热门AI工具</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/9df89e641b82" target="_blank">25. 语音转文字合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/edcd6ca3bb4e" target="_blank">26. PPT模板大全</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/b0a37a3b93b0" target="_blank">27. 冷门实用合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8beeaa40996e" target="_blank">28. 喜马拉雅音频课</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/0f93144944b2" target="_blank">29. PDF全能工具</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/3644aa1d7af9" target="_blank">30. AI工具合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/378b8ae752bd" target="_blank">31. 搜题神器包</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/06040a224e63" target="_blank">32. 免费K歌神器</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/22e9fa301723" target="_blank">33. 酷狗概念版</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/016ad003b06b" target="_blank">34. 剪映魔法版</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/0baa01c4c0b1" target="_blank">35. 格式转换合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/5d2d7a11d6e4" target="_blank">36. 数据恢复工具</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/70120f6850e6" target="_blank">37. B站优质UP主视频合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/266bec8b617d" target="_blank">38. 零基础学唱歌（完结）</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/ce57aa38a62f" target="_blank">39. 沟通高手训练手册</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/efd35e69d22d" target="_blank">40. 古代野史珍藏集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bc67bd664bdf" target="_blank">41. 清华附小《妙解成语》动画全集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/fb67bb8c9c24" target="_blank">42. 影响孩子一生的电影合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/7e47f91ed609" target="_blank">43. 四季养生食疗课</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/922fcabf6cfb" target="_blank">44. 自动点击器（免费手机版）</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://www.zxgjb.com/video/down" target="_blank">45. 在线工具宝：视频处理平台</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/3e7694b775d9" target="_blank">46. 文案设计辅助工具</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/131358a08790" target="_blank">47. 批量无水印短视频下载器</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/efe9d3417bd9" target="_blank">48. AI APK应用大全</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/38465c55bf00" target="_blank">49. 多格式媒体处理工具箱</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/11f9f54a9079" target="_blank">50. 资源整合</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.baidu.com/s/1gc2dtr25MnIIot1WshdiKg?pwd=r81f" target="_blank">51. 语聊音频变声器</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/c8a65daef23b#/list/share" target="_blank">52. 每日更新软件</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.xunlei.com/s/VOV6Pjyd2FtkptKRtFeZ5sDpA1?pwd=s8aq" target="_blank">53. C盘系统清理</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/86c0515b2d3d#/list/share" target="_blank">54. Win10-11激活永久工具</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/a8370a2e56c2#/list/share" target="_blank">55. 自动生成专属AI数字人</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/2df4279a0c2d" target="_blank">56. 个性签名生成器</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/e0c850bfe7ad" target="_blank">57. 人像摄影课程</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/7b79e8232cbe" target="_blank">58. 30款永久VIP软件合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/db3e92406383" target="_blank">59. 32款自媒体免费必备APP</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8c4392e5fd2e" target="_blank">60. 万能WiFi直连版</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/4964c3516f7a" target="_blank">61. 变声器语音包大师</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/b78829fce030" target="_blank">62. 网易云音乐解锁版</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/f8cff95b4484" target="_blank">63. 小吃教程合集</a></li>
-        <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.xunlei.com/s/VOVeGbH7Xi24x24W2yQ05vLyA1?pwd=8u73" target="_blank">64. 打工人桌面壁纸</a></li>
-      </ul>
-      <div id="noTip" style="display:none;color:var(--muted);text-align:center;padding:10px">没有找到相关资源～</div>
-    </div>
-  </section>
-
-  <!-- 我的 -->
-  <section id="mine" class="section" role="tabpanel" hidden>
-    <div class="head"><div class="h-title">我的账号</div><div class="h-note">仅本地显示</div></div>
-    <div class="grid" style="grid-template-columns:1fr 1fr">
-      <div class="card">
-        <div style="font-weight:800;margin-bottom:8px">当前等级</div>
-        <div style="margin-bottom:8px"><span id="lvName" style="font-weight:900">天使账号</span> <span style="color:var(--ok);font-weight:800">（永久）</span></div>
-        <div style="display:flex;gap:8px"><button class="search button" style="border:none;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer" onclick="copyPC()">复制 PC 入口</button><a class="tile" style="padding:10px 14px;text-decoration:none" href="https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk" target="_blank">下载移动端 APP</a></div>
-      </div>
-      <div class="card">
-        <div style="font-weight:800;margin-bottom:8px">帮助</div>
-        <div style="color:var(--muted);font-size:14px">本页为前端分级，若需严密授权可加后端校验与签名授权。</div>
-      </div>
-    </div>
-  </section>
+<!-- 顶部引导 -->
+<section class="hero">
+<div class="card">
+<h1>官方级体验 · 分阶级权限 · 稳定入口</h1>
+<p>天使 → 恶魔，等级越高可用能力越多；未授权条目对低等级可见但上锁。</p>
+<div class="stats">
+<div class="stat"><div class="num">100+</div><div class="lab">精选工具</div></div>
+<div class="stat"><div class="num">24/7</div><div class="lab">持续更新</div></div>
+<div class="stat"><div class="num">∞</div><div class="lab">场景扩展</div></div>
 </div>
-
+</div>
+</section>
+<!-- 首页核心入口 -->
+<section class="section" id="home" role="tabpanel">
+<div class="head">
+<div class="h-title">核心入口</div><div class="h-note">高频常用 · 官方可靠</div>
+</div>
+<div class="grid">
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.quark.cn/s/885b08f11854#/list/share" target="_blank">软件聚合大全</a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.quark.cn/s/b34e7f3b1370#/list/share/5037e6694c5f49d3aa4aa65dcba0ea6e-B%E7%AB%99%E4%BB%98%E8%B4%B9%E8%AF%BE%E7%A8%8B%E5%90%88%E9%9B%86" target="_blank">B站付费合集 </a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.baidu.com/s/1wRKSCMitdyycnIBWSCYNdA?pwd=f4pd#list/path=%2Fsharelink2726372619-97106468382442%2F%E5%B9%BC%E5%B0%8F%E8%A1%94%E6%8E%A5%E5%85%A8%E9%83%A8%E8%AF%BE%E7%A8%8B&amp;parentPath=%2Fsharelink2726372619-97106468382442" target="_blank">幼小衔接课程</a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.quark.cn/s/c9ee299bcb84#/list/share" target="_blank">图书馆资源</a>
+</div>
+</section>
+<!-- 平台区 -->
+<section class="section" hidden="" id="videos" role="tabpanel">
+<div class="head"><div class="h-title">创作常用入口</div><div class="h-note">剪辑/分发常用四件套</div></div>
+<div class="grid" style="margin-bottom:12px">
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://snapany.com/zh" target="_blank">万能链接解析下载</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://chat.openai.com" target="_blank">ChatGPT</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://jimeng.jianying.com/" target="_blank">即梦 AI 绘画</a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://www.youtube.com/" target="_blank">YouTube</a>
+</div>
+<div class="head"><div class="h-title">学习平台</div><div class="h-note">系统学习与提升（已公开：天使）</div></div>
+<div class="grid" style="margin-bottom:12px">
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://open.163.com" target="_blank">网易公开课</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.icourse163.org" target="_blank">MOOC大学 </a>
+</div>
+<div class="head"><div class="h-title">影视平台</div><div class="h-note">主流视频入口</div></div>
+<div class="grid">
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://v.qq.com" target="_blank">腾讯视频</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.iqiyi.com" target="_blank">爱奇艺</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.youku.com" target="_blank">优酷</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.bilibili.com" target="_blank">哔哩哔哩</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.mgtv.com" target="_blank">芒果TV</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://tv.sohu.com" target="_blank">搜狐视频</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.pptv.com" target="_blank">PPTV</a>
+</div>
+<div class="head"><div class="h-title">短视频平台</div><div class="h-note">分发与增长</div></div>
+<div class="grid">
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.douyin.com" target="_blank">抖音</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.kuaishou.com" target="_blank">快手</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.xiaohongshu.com" target="_blank">小红书</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.bilibili.com" target="_blank">B站</a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://www.youtube.com/" target="_blank">YouTube</a>
+</div>
+<div class="head"><div class="h-title">创作者中心</div><div class="h-note">账号运营</div></div>
+<div class="grid">
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.douyin.com" target="_blank">抖音创作者中心</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://channels.weixin.qq.com" target="_blank">视频号助手</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.xiaohongshu.com" target="_blank">小红书创作服务平台</a>
+<a class="tile" data-tier="angel" data-tier-label="天使" href="https://www.kuaishou.com" target="_blank">快手创作者服务平台</a>
+</div>
+</section>
+<!-- 资源中心（全部天使公开） -->
+<section class="section" hidden="" id="resources" role="tabpanel">
+<div class="head">
+<div class="h-title">资源中心</div>
+<div class="h-note">以下为全部资源（已设为天使级公开）。支持关键词过滤。</div>
+</div>
+<div class="panel">
+<div class="search" style="margin-bottom:10px">
+<input id="resSearch" oninput="filterRes()" placeholder="搜：安卓 / 剪辑 / 激活 / AI / 无水印…"/>
+<button onclick="filterRes()">筛选</button>
+</div>
+<ul class="resource-list" id="resList">
+<!-- 从原文件复制的 1~64 列表，保持一致 -->
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://app.1foo.com/install/10AD56" target="_blank">1. 边界AI</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/252ee82b27e8#/list/share" target="_blank">2. 科技插件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bc1ac6a6bf7c#/list/share" target="_blank">3. 安卓软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bea1bfe13110#/list/share" target="_blank">4. 摄影剪辑</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/e735122148d6#/list/share" target="_blank">5. 媒体运营</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8b0c13bb29c9" target="_blank">6. 去马赛克</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk" target="_blank">7. 本站有APP方便进入</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://kdocs.cn/l/clLbAxjyKcbr" target="_blank">8. 短剧百度搜索</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/32e2eef37133" target="_blank">9. 当众说话</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bda448f2ed6a" target="_blank">10. 情绪自救课（含训练营）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/21d5a32c1006#/list/share" target="_blank">11. Deepseek保姆喂饭级使用技巧大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/d221986cd4dc" target="_blank">12. 小H书资源账号采集器(独家版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/615a6523ee82" target="_blank">13. TV软件专区(去除收费版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/816184bc8287" target="_blank">14. 11款可用磁力软件(资源不限速)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/5f735ca11b35" target="_blank">15. [win]数据免费恢复软件x64</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/392b2ac04a48" target="_blank">16. 1DM中文版下载利器</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/53138911d722" target="_blank">17. 美图秀秀(高级版，已解所有功能)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/6dbe95282e0b" target="_blank">18. 短视频-键搬运（会员解锁版.apk）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/f1e879686c26" target="_blank">19. 虚拟机</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/12ae0e46c1ae" target="_blank">20. 音乐软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/85509d9602e2" target="_blank">21. 下载工具</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/123f77d5efa4" target="_blank">22. 学习软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/ce09bb4e237f" target="_blank">23. 系统相关</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8f2e093de051" target="_blank">24. 热门AI工具</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/9df89e641b82" target="_blank">25. 语音转文字合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/edcd6ca3bb4e" target="_blank">26. PPT模板大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/b0a37a3b93b0" target="_blank">27. 冷门实用合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8beeaa40996e" target="_blank">28. 喜马拉雅音频课</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/0f93144944b2" target="_blank">29. PDF全能工具</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/3644aa1d7af9" target="_blank">30. AI工具合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/378b8ae752bd" target="_blank">31. 搜题神器包</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/06040a224e63" target="_blank">32. 免费K歌神器</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/22e9fa301723" target="_blank">33. 酷狗概念版</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/016ad003b06b" target="_blank">34. 剪映魔法版</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/0baa01c4c0b1" target="_blank">35. 格式转换合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/5d2d7a11d6e4" target="_blank">36. 数据恢复工具</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/70120f6850e6" target="_blank">37. B站优质UP主视频合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/266bec8b617d" target="_blank">38. 零基础学唱歌（完结）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/ce57aa38a62f" target="_blank">39. 沟通高手训练手册</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/efd35e69d22d" target="_blank">40. 古代野史珍藏集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bc67bd664bdf" target="_blank">41. 清华附小《妙解成语》动画全集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/fb67bb8c9c24" target="_blank">42. 影响孩子一生的电影合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/7e47f91ed609" target="_blank">43. 四季养生食疗课</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/922fcabf6cfb" target="_blank">44. 自动点击器（免费手机版）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://www.zxgjb.com/video/down" target="_blank">45. 在线工具宝：视频处理平台</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/3e7694b775d9" target="_blank">46. 文案设计辅助工具</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/131358a08790" target="_blank">47. 批量无水印短视频下载器</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/efe9d3417bd9" target="_blank">48. AI APK应用大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/38465c55bf00" target="_blank">49. 多格式媒体处理工具箱</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/11f9f54a9079" target="_blank">50. 资源整合</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.baidu.com/s/1gc2dtr25MnIIot1WshdiKg?pwd=r81f" target="_blank">51. 语聊音频变声器</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/c8a65daef23b#/list/share" target="_blank">52. 每日更新软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.xunlei.com/s/VOV6Pjyd2FtkptKRtFeZ5sDpA1?pwd=s8aq" target="_blank">53. C盘系统清理</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/86c0515b2d3d#/list/share" target="_blank">54. Win10-11激活永久工具</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/a8370a2e56c2#/list/share" target="_blank">55. 自动生成专属AI数字人</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/2df4279a0c2d" target="_blank">56. 个性签名生成器</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/e0c850bfe7ad" target="_blank">57. 人像摄影课程</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/7b79e8232cbe" target="_blank">58. 30款永久VIP软件合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/db3e92406383" target="_blank">59. 32款自媒体免费必备APP</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/8c4392e5fd2e" target="_blank">60. 万能WiFi直连版</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/4964c3516f7a" target="_blank">61. 变声器语音包大师</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/b78829fce030" target="_blank">62. 网易云音乐解锁版</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/f8cff95b4484" target="_blank">63. 小吃教程合集</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.xunlei.com/s/VOVeGbH7Xi24x24W2yQ05vLyA1?pwd=8u73" target="_blank">64. 打工人桌面壁纸</a></li>
+</ul>
+<div id="noTip" style="display:none;color:var(--muted);text-align:center;padding:10px">没有找到相关资源～</div>
+</div>
+</section>
+<!-- 我的 -->
+<section class="section" hidden="" id="mine" role="tabpanel">
+<div class="head"><div class="h-title">我的账号</div><div class="h-note">仅本地显示</div></div>
+<div class="grid" style="grid-template-columns:1fr 1fr">
+<div class="card">
+<div style="font-weight:800;margin-bottom:8px">当前等级</div>
+<div style="margin-bottom:8px"><span id="lvName" style="font-weight:900">天使账号</span> <span style="color:var(--ok);font-weight:800">（永久）</span></div>
+<div style="display:flex;gap:8px"><button class="search button" onclick="copyPC()" style="border:none;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer">复制 PC 入口</button><a class="tile" href="https://github.com/799342382/mofa/releases/download/v1.0.1/AI.apk" style="padding:10px 14px;text-decoration:none" target="_blank">下载移动端 APP</a></div>
+</div>
+<div class="card">
+<div style="font-weight:800;margin-bottom:8px">帮助</div>
+<div style="color:var(--muted);font-size:14px">本页为前端分级，若需严密授权可加后端校验与签名授权。</div>
+</div>
+</div>
+</section>
+</div>
 <!-- 底部导航 -->
 <nav class="nav">
-  <a href="#" class="cur" data-tab="home">首页</a>
-  <a href="#" data-tab="videos">平台</a>
-  <a href="#" data-tab="resources">资源</a>
-  <a href="#" data-tab="mine">我的</a>
+<a class="cur" data-tab="home" href="#">首页</a>
+<a data-tab="videos" href="#">平台</a>
+<a data-tab="resources" href="#">资源</a>
+<a data-tab="mine" href="#">我的</a>
 </nav>
-<div id="toast" class="toast"></div>
-
+<div class="toast" id="toast"></div>
 <script>
-const LEVELS={angel:0,devil:1,creator:2};
-const NAMES={0:"天使账号",1:"恶魔账号",2:"创世神账号"};
-const PASS={angel:"angel888",devil:"devil666",creator:"creator999"};
-const state={lv:Number(localStorage.getItem('lv')??0)};
-function setLv(n){state.lv=n;localStorage.setItem('lv',String(n));document.getElementById('lv').textContent=NAMES[n]+"（当前）";document.getElementById('lvName').textContent=NAMES[n];document.getElementById('logout').style.display=n>0?'inline-block':'none';applyLocks();}
-document.getElementById('login').addEventListener('click',()=>{const v=(document.getElementById('pwd').value||'').trim();if(!v){toast('请输入口令');return;}if(v===PASS.angel){setLv(0);toast('已登录：天使账号');}else if(v===PASS.devil){setLv(1);toast('已登录：恶魔账号');}else if(v===PASS.creator){setLv(2);toast('已登录：创世神账号');}else{toast('口令不正确');return;}document.getElementById('pwd').value='';});
-document.getElementById('logout').addEventListener('click',()=>{setLv(0);toast('已退出，回到天使账号');});
-function applyLocks(){document.querySelectorAll('[data-tier]').forEach(el=>{const tier=el.getAttribute('data-tier');const need=tier==='creator'?2:tier==='devil'?1:0;const ok=state.lv>=need;el.classList.remove('locked');const a=el.tagName==='A'?el:el.querySelector('a');if(!ok){el.classList.add('locked');if(a)a.addEventListener('click',blockClick,true);}else{if(a)a.removeEventListener('click',blockClick,true);}});}
-function blockClick(e){e.preventDefault();const tier=this.closest('[data-tier]').getAttribute('data-tier');const need=tier==='creator'?2:1;toast('此内容需要 '+NAMES[need]+' 及以上');}
-const tabs=document.querySelectorAll('.nav a');const panes=['home','videos','resources','mine'].map(id=>document.getElementById(id));
-tabs.forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();tabs.forEach(b=>b.classList.remove('cur'));btn.classList.add('cur');panes.forEach(p=>p.hidden=p.id!==btn.dataset.tab);window.scrollTo({top:0,behavior:'smooth'});if(btn.dataset.tab==='resources')document.getElementById('resSearch').focus();}));
-function toRes(){tabs.forEach(b=>b.classList.remove('cur'));document.querySelector('.nav a[data-tab="resources"]').classList.add('cur');panes.forEach(p=>p.hidden=p.id!=='resources');document.getElementById('resSearch').focus();filterRes();}
-function goFilter(){const v=document.getElementById('gSearch').value.trim();if(v){toRes();document.getElementById('resSearch').value=v;filterRes();}}
-function filterRes(){const q=(document.getElementById('resSearch').value||'').toLowerCase();const items=document.querySelectorAll('#resList .res');let show=0;items.forEach(li=>{const txt=li.textContent.toLowerCase();const hit=txt.includes(q);li.style.display=hit?'':'none';if(hit)show++;});document.getElementById('noTip').style.display=show?'none':'block';applyLocks();}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2800);}
-function copyPC(){navigator.clipboard.writeText(location.href).then(()=>toast('PC 入口已复制'));}
-document.addEventListener('DOMContentLoaded',()=>{setLv(state.lv||0);applyLocks();});
+const LEVELS = { angel: 0, devil: 1 };
+const NAMES  = { 0: "天使账号", 1: "恶魔账号" };
+const PASS   = { angel: "angel888", devil: "devil666" };
+
+const state = { lv: Number(localStorage.getItem('lv') ?? 0) };
+
+function setLv(n){
+  state.lv = n;
+  localStorage.setItem('lv', String(n));
+  document.getElementById('lv').textContent = NAMES[n] + "（当前）";
+  document.getElementById('lvName').textContent = NAMES[n];
+  document.getElementById('logout').style.display = n>0 ? 'inline-block' : 'none';
+  applyLocks();
+}
+
+document.getElementById('login').addEventListener('click',()=>{
+  const v = (document.getElementById('pwd').value || '').trim();
+  if(!v){ toast('请输入口令'); return; }
+  if(v === PASS.angel){ setLv(0); toast('已登录：天使账号'); }
+  else if(v === PASS.devil){ setLv(1); toast('已登录：恶魔账号'); }
+  else { toast('口令不正确'); return; }
+  document.getElementById('pwd').value='';
+});
+
+document.getElementById('logout').addEventListener('click',()=>{
+  setLv(0);
+  toast('已退出，回到天使账号');
+});
+
+function applyLocks(){
+  document.querySelectorAll('[data-tier]').forEach(el=>{
+    const need = el.getAttribute('data-tier') === 'devil' ? 1 : 0;
+    const ok = state.lv >= need;
+    el.classList.remove('locked');
+    const a = el.tagName==='A' ? el : el.querySelector('a');
+    if(!ok){
+      el.classList.add('locked');
+      if(a) a.addEventListener('click', blockClick, true);
+    }else{
+      if(a) a.removeEventListener('click', blockClick, true);
+    }
+  });
+}
+
+function blockClick(e){
+  e.preventDefault();
+  toast('此内容需要 恶魔账号 及以上');
+}
+
+const tabs = document.querySelectorAll('.nav a');
+const panes = ['home','videos','resources','mine'].map(id=>document.getElementById(id));
+
+tabs.forEach(btn=>btn.addEventListener('click',e=>{
+  e.preventDefault();
+  tabs.forEach(b=>b.classList.remove('cur'));
+  btn.classList.add('cur');
+  panes.forEach(p=>p.hidden = p.id !== btn.dataset.tab);
+  window.scrollTo({ top:0, behavior:'smooth' });
+  if(btn.dataset.tab === 'resources'){
+    const inp = document.getElementById('resSearch');
+    if(inp) inp.focus();
+  }
+}));
+
+function filterRes(){
+  const q = (document.getElementById('resSearch').value || '').toLowerCase();
+  const items = document.querySelectorAll('#resList .res');
+  let show = 0;
+  items.forEach(li=>{
+    const txt = li.textContent.toLowerCase();
+    const hit = txt.includes(q);
+    li.style.display = hit ? '' : 'none';
+    if(hit) show++;
+  });
+  const tip = document.getElementById('noTip');
+  if(tip) tip.style.display = show ? 'none' : 'block';
+  applyLocks();
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(window.__t);
+  window.__t=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function copyPC(){
+  navigator.clipboard.writeText(location.href).then(()=>toast('PC 入口已复制'));
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  setLv(state.lv || 0);
+  applyLocks();
+});
+
+
+// 整块点击：资源列表 <li.res> 点击任意空白都打开内部链接
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#resList .res').forEach(li => {
+    const a = li.querySelector('a');
+    if(!a) return;
+    li.addEventListener('click', (e) => {
+      // 如果是点到 <a> 自己，就让默认行为执行；否则整块打开
+      if(e.target.tagName === 'A') return;
+      // 锁定的禁止
+      if(li.classList.contains('locked')){ blockClick.call(li, e); return; }
+      window.open(a.href, '_blank');
+    });
+  });
+  // 栅格卡片（.tile）已经是 <a>，但为了兼容空白内边距，补一个 click 代理
+  document.querySelectorAll('.grid .tile').forEach(el => {
+    // 有可能是 <a> 或非 <a>
+    if(el.tagName === 'A'){
+      // 补充：点击内部空白与子元素都触发 a
+      el.addEventListener('click', (e) => {
+        // 默认就行，这里确保有手型和 hover
+      });
+    }else{
+      const a = el.querySelector('a');
+      if(!a) return;
+      el.addEventListener('click', (e) => {
+        if(el.classList.contains('locked')){ blockClick.call(el, e); return; }
+        window.open(a.href, '_blank');
+      });
+    }
+  });
+});
 </script>
 </body>
 </html>
