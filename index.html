@@ -2,70 +2,96 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#1e40af"/>
 <title>AI 工具平台 · 官方专业版（分阶级权限）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-  :root{--brand:#2563eb;--brand2:#1e40af;--ok:#10b981;--muted:#64748b;--bg:#f8fafc;--panel:#fff;--text:#0f172a;--border:#e5e7eb;--r:16px;--shadow:0 10px 30px rgba(15,23,42,.08);--shadow2:0 16px 50px rgba(15,23,42,.12)}
-  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --brand:#2563eb;--brand2:#1e40af;--ok:#10b981;--muted:#64748b;--bg:#f8fafc;--panel:#fff;--text:#0f172a;--border:#e5e7eb;
+    --r:16px;--shadow:0 10px 30px rgba(15,23,42,.08);--shadow2:0 16px 50px rgba(15,23,42,.12);
+    --safe-bottom: env(safe-area-inset-bottom);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
   body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans SC',Arial,sans-serif;background:var(--bg);color:var(--text)}
   a{color:inherit}
   /* 顶部品牌条 */
   .brand-bar{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;border-bottom:1px solid #1f2a5a}
-  .brand-inner{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;gap:14px;align-items:center;justify-content:space-between}
-  .brand-left{display:flex;gap:12px;align-items:center}
-  .logo{width:36px;height:36px;border-radius:10px;background:#ffffff1a;border:1px solid #ffffff33;display:grid;place-items:center;font-weight:800}
-  .title{font-weight:800;letter-spacing:.3px}
+  .brand-inner{max-width:1200px;margin:0 auto;padding:12px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .brand-left{display:flex;gap:10px;align-items:center;min-width:240px;flex:1}
+  .logo{width:34px;height:34px;border-radius:10px;background:#ffffff1a;border:1px solid #ffffff33;display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+  .title{font-weight:800;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .level{background:#fff;color:var(--brand2);padding:6px 10px;border-radius:999px;font-weight:800;box-shadow:0 6px 20px rgba(255,255,255,.25)}
-  .acct{display:flex;gap:8px;align-items:center}
-  .acct input{width:220px;height:36px;border-radius:10px;border:1px solid #ffffff66;background:#fff;color:#0f172a;padding:0 12px;outline:none}
-  .acct button{height:36px;padding:0 14px;border:none;border-radius:10px;background:#fff;color:var(--brand2);font-weight:800;cursor:pointer}
+  .acct{display:flex;gap:8px;align-items:center;flex:1;min-width:260px}
+  .acct input{flex:1;min-width:0;height:38px;border-radius:10px;border:1px solid #ffffff66;background:#fff;color:#0f172a;padding:0 12px;outline:none}
+  .acct button{height:38px;padding:0 12px;border:none;border-radius:10px;background:#fff;color:var(--brand2);font-weight:800;cursor:pointer}
   /* 容器 */
-  .container{max-width:1200px;margin:18px auto 80px;padding:0 20px}
-  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
-  .hero h1{font-size:26px;line-height:1.28}
+  .container{max-width:1200px;margin:14px auto 90px;padding:0 14px}
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+  .hero h1{font-size:24px;line-height:1.28}
   .hero p{color:var(--muted);margin-top:6px}
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-  .stat{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
-  .num{font-weight:800;font-size:20px;background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+  .stat{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff}
+  .num{font-weight:800;font-size:18px;background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
   .lab{font-size:12px;color:var(--muted);margin-top:2px}
   .search{display:flex;gap:10px}
   .search input{flex:1;border:1px solid var(--border);border-radius:12px;padding:12px 14px}
   .search button{border:none;border-radius:12px;padding:12px 16px;font-weight:800;color:#fff;background:linear-gradient(90deg,var(--brand),var(--brand2));box-shadow:0 10px 24px rgba(37,99,235,.25);cursor:pointer}
-  .section{margin-top:22px}
-  .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-  .h-title{font-weight:800;font-size:18px}
+  .section{margin-top:18px}
+  .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .h-title{font-weight:800;font-size:17px}
   .h-note{font-size:12px;color:var(--muted)}
-  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .tile{background:#fff;border:1px solid var(--border);border-radius:14px;min-height:78px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit;font-weight:700;box-shadow:var(--shadow);transition:.2s;position:relative}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .tile{background:#fff;border:1px solid var(--border);border-radius:14px;min-height:74px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit;font-weight:700;box-shadow:var(--shadow);transition:.2s;position:relative;padding:10px;text-align:center;line-height:1.2}
   .tile:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
-  .badge{position:absolute;top:10px;right:10px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800}
-  .panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
-  .resource-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-  .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:var(--shadow);transition:.2s;position:relative}
+  .badge{position:absolute;top:8px;right:8px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:800}
+  .panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:12px}
+  .resource-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:.2s;position:relative}
   .res:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
   .res a{color:var(--brand2);font-weight:800;text-decoration:none;word-break:break-all}
   /* 底部导航 */
-  .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:998;background:#fff;border:1px solid var(--border);border-radius:18px;padding:8px;display:flex;gap:6px;width:min(96%,560px);box-shadow:var(--shadow2)}
+  .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + var(--safe-bottom));z-index:998;background:#fff;border:1px solid var(--border);border-radius:18px;padding:8px;display:flex;gap:6px;width:min(96%,560px);box-shadow:var(--shadow2)}
   .nav a{flex:1;text-align:center;padding:10px 6px;border-radius:12px;text-decoration:none;color:#334155;font-weight:800}
   .nav a.cur{background:linear-gradient(90deg,#e0f2fe,#dbeafe);color:#1e3a8a}
-  /* 分阶级标签 + 锁定 */
-  [data-tier]::after{content:attr(data-tier-label);position:absolute;right:12px;top:10px;font-size:11px;font-weight:800;color:#fff;padding:2px 8px;border-radius:999px}
+  /* 分阶级标签（保持原逻辑） */
+  [data-tier]::after{content:attr(data-tier-label);position:absolute;right:10px;top:8px;font-size:10px;font-weight:800;color:#fff;padding:2px 6px;border-radius:999px}
   [data-tier="angel"]::after{background:#22c55e}
   [data-tier="devil"]::after{background:#0ea5e9}
   [data-tier="creator"]::after{background:#8b5cf6}
   .locked{position:relative;overflow:hidden;cursor:not-allowed}
-  .locked::before{content:"🔒 需更高等级";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(255,255,255,.82));color:#111827;font-weight:900;letter-spacing:.3px}
+  .locked::before{content:"🔒 需更高等级";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(255,255,255,.82));color:#111827;font-weight:900;letter-spacing:.3px;font-size:14px}
   .locked a{pointer-events:none}
   .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;display:none}
   .toast.show{display:block;animation:fade3 3s both}
   @keyframes fade3{0%{opacity:0;transform:translate(-50%,10px)}10%{opacity:1;transform:translate(-50%,0)}90%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
-  @media(max-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1fr}}
-  @media(max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:480px){.grid{grid-template-columns:1fr}.hero h1{font-size:22px}}
+  /* 平板 */
+  @media(max-width:1024px){
+    .grid{grid-template-columns:repeat(3,1fr)}
+    .hero{grid-template-columns:1fr}
+  }
+  /* 手机：核心体验优化 */
+  @media(max-width:640px){
+    .brand-inner{gap:8px}
+    .brand-left{flex:1 1 100%}
+    .acct{flex:1 1 100%}
+    .title{font-size:15px}
+    .level{font-size:12px;padding:5px 8px}
+    .hero h1{font-size:20px}
+    .grid{grid-template-columns:repeat(2,1fr)} /* 2列卡片，更节省空间 */
+    .tile{min-height:66px;font-size:14px;padding:10px 8px}
+    .badge{font-size:9px;padding:1px 5px}
+    .nav a{padding:10px 4px;font-size:13px}
+  }
+  /* 极小屏（如 320px）回退为 1 列，避免拥挤 */
+  @media(max-width:360px){
+    .grid{grid-template-columns:1fr}
+    .tile{min-height:60px}
+  }
 </style>
 </head>
 <body>
@@ -84,6 +110,7 @@
     </div>
   </div>
 </div>
+
 <div class="container">
   <!-- 顶部引导 -->
   <section class="hero">
@@ -104,7 +131,8 @@
       <p style="font-size:12px;color:var(--muted);margin-top:8px">搜索会跳转到资源中心并即时筛选。</p>
     </div>
   </section>
-  <!-- 首页核心入口：四项为恶魔级（你要求） -->
+
+  <!-- 首页核心入口 -->
   <section id="home" class="section" role="tabpanel">
     <div class="head">
       <div class="h-title">核心入口</div><div class="h-note">高频常用 · 官方可靠</div>
@@ -116,6 +144,7 @@
       <a class="tile" href="https://pan.quark.cn/s/c9ee299bcb84#/list/share" target="_blank" data-tier="devil" data-tier-label="恶魔">图书馆资源</a>
     </div>
   </section>
+
   <!-- 平台区 -->
   <section id="videos" class="section" role="tabpanel" hidden>
     <div class="head"><div class="h-title">创作常用入口</div><div class="h-note">剪辑/分发常用四件套</div></div>
@@ -156,6 +185,7 @@
       <a class="tile" href="https://www.kuaishou.com" target="_blank" data-tier="angel" data-tier-label="天使">快手创作者服务平台</a>
     </div>
   </section>
+
   <!-- 资源中心（全部天使公开） -->
   <section id="resources" class="section" role="tabpanel" hidden>
     <div class="head">
@@ -168,7 +198,7 @@
         <button onclick="filterRes()">筛选</button>
       </div>
       <ul id="resList" class="resource-list">
-        <!-- 1~64 全部设为天使 -->
+        <!-- 从原文件复制的 1~64 列表，保持一致 -->
         <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://app.1foo.com/install/10AD56" target="_blank">1. 边界AI</a></li>
         <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/252ee82b27e8#/list/share" target="_blank">2. 科技插件</a></li>
         <li class="res" data-tier="angel" data-tier-label="天使"><a href="https://pan.quark.cn/s/bc1ac6a6bf7c#/list/share" target="_blank">3. 安卓软件</a></li>
@@ -237,6 +267,7 @@
       <div id="noTip" style="display:none;color:var(--muted);text-align:center;padding:10px">没有找到相关资源～</div>
     </div>
   </section>
+
   <!-- 我的 -->
   <section id="mine" class="section" role="tabpanel" hidden>
     <div class="head"><div class="h-title">我的账号</div><div class="h-note">仅本地显示</div></div>
@@ -253,6 +284,7 @@
     </div>
   </section>
 </div>
+
 <!-- 底部导航 -->
 <nav class="nav">
   <a href="#" class="cur" data-tab="home">首页</a>
@@ -261,6 +293,7 @@
   <a href="#" data-tab="mine">我的</a>
 </nav>
 <div id="toast" class="toast"></div>
+
 <script>
 const LEVELS={angel:0,devil:1,creator:2};
 const NAMES={0:"天使账号",1:"恶魔账号",2:"创世神账号"};
