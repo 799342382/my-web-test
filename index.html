@@ -65,8 +65,30 @@
   .locked{position:relative;overflow:hidden;cursor:not-allowed}
   .locked::before{content:"🔒";position:absolute;left:10px;top:8px;font-size:18px;opacity:.85;pointer-events:none}
   .locked a{pointer-events:none}
-  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;display:none}
-  .toast.show{display:block;animation:fade3 3s both}
+  .toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 41, 59, 0.92);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  max-width: 80%;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  word-break: break-word;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
   @keyframes fade3{0%{opacity:0;transform:translate(-50%,10px)}10%{opacity:1;transform:translate(-50%,0)}90%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
   /* 平板 */
   @media(max-width:1024px){
@@ -102,6 +124,25 @@ html{scroll-padding-bottom:160px}
 .locked::before{content:"🔒";position:absolute;left:10px;top:8px;font-size:18px;opacity:.85;pointer-events:none}
 /* 让 tile / res 都是整块可点击的手型 */
 .tile, .res { cursor: pointer; }
+
+/* 账号等级一行显示，不换行 */
+.account-level{white-space:nowrap; display:flex; align-items:center; gap:6px}
+@media(max-width:640px){
+  .account-level{font-size:14px}
+}
+
+/* 我的页：单卡时铺满一列 */
+section#mine .grid{grid-template-columns:1fr}
+
+
+.toast {
+  position: fixed;
+  top: 20px !important;
+  bottom: auto !important;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
 </style>
 <meta content="frame-ancestors 'none'; upgrade-insecure-requests; form-action 'self'" http-equiv="Content-Security-Policy"/><meta content="noindex,noarchive,nosnippet,noimageindex" name="robots"/><meta content="no-referrer" name="referrer"/></head>
 <body>
@@ -138,13 +179,13 @@ html{scroll-padding-bottom:160px}
 <div class="head">
 <div class="h-title">核心入口</div><div class="h-note">高频常用 · 官方可靠</div>
 </div>
-<div class="grid">
-<a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UZAk_I_q0Y91kCWkw7b47nygTLnujoDc=" href="#">软件聚合大全</a>
+<div class="grid"><a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UZAk_I_q0Y91kCWkw7b47nygTLnujoDc=" href="#">软件聚合大全</a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Obwg4JKThMN1vC20w7b47nygTLnujoDfDaQxuJKfkZNVoX2h19us23z1daXKj5GeIP148I6ezZIlxfnhW9fcTrnkFZDaH5neuHhlkK-eXaskeCHhR-_cX1Hl9GzaAl3epaxkcK-fqEMkZCXgq8vdq1Hl5ZDb7kHfUag==" href="#">B站付费合集 </a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9oLM7iCkSPnyv_SHDbUsPWJGRH4UoWCRqobwbrgtvHkqMthPTLEs5LqTmIoh_UDRgtv0ijShUYDbwlCGEPU44f6u8Od5rDmsg9eBk3WURZCTz4mTYagRuK_DmZt55Dhs2h-d3rmUZH1Dnl2fJHgx4K4T3F9R5fWw2--Z3qWoZZVbnk2fJGQl4K_f3E9R5eWQ2-uF3rWQZGCvnkxTJHnl4VvX3E9R5BB81srMgiTJIDXK2um_Jbnoue6OgN4A1UjYh9eBk32sOayL7_2vbbQxrJ_TqYdRuCGkh" href="#">幼小衔接课程</a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2PZVk4IfvrMI8-BGkw7b47nygTLnujoDc=" href="#">图书馆资源</a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.quark.cn/s/8b8fde9f9213#/list/share" target="_blank">李一舟合集</a>
 </div>
-</section>
+<div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 <!-- 平台区 -->
 <section class="section" hidden="" id="videos" role="tabpanel">
 <div class="head"><div class="h-title">创作常用入口</div><div class="h-note">剪辑/分发常用四件套</div></div>
@@ -184,7 +225,7 @@ html{scroll-padding-bottom:160px}
 <a class="tile" data-tier="angel" data-tier-label="天使" data-u="NEgpY7HofcMrSyo9urszgzRTM3SxuifCP1Mw" href="#">小红书创作服务平台</a>
 <a class="tile" data-tier="angel" data-tier-label="天使" data-u="NEgpY7HofcMrSyo9qaczhS9UMmbssT2B" href="#">快手创作者服务平台</a>
 </div>
-</section>
+<div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 <!-- 资源中心（全部天使公开） -->
 <section class="section" hidden="" id="resources" role="tabpanel">
 <div class="head">
@@ -265,22 +306,16 @@ html{scroll-padding-bottom:160px}
 </ul>
 <div id="noTip" style="display:none;color:var(--muted);text-align:center;padding:10px">没有找到相关资源～</div>
 </div>
-</section>
+<div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 <!-- 我的 -->
 <section class="section" hidden="" id="mine" role="tabpanel">
 <div class="head"><div class="h-title">我的账号</div><div class="h-note">仅本地显示</div></div>
-<div class="grid" style="grid-template-columns:1fr 1fr">
-<div class="card">
-<div style="font-weight:800;margin-bottom:8px">当前等级</div>
-<div style="margin-bottom:8px"><span id="lvName" style="font-weight:900">天使账号</span> <span style="color:var(--ok);font-weight:800">（永久）</span></div>
-<div style="display:flex;gap:8px"><button class="search button" onclick="copyPC()" style="border:none;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer">复制 PC 入口</button><a class="tile" data-u="NEgpY7HofcM7VSl7t7B8jzNRciT762HYbg9lIe2_PYo9Ey92rrcznzlPcnetpTyAM105PLTjfNxyDXJSi_wznDc=" href="#" style="padding:10px 14px;text-decoration:none">下载移动端 APP</a></div>
-</div>
-<div class="card">
-<div style="font-weight:800;margin-bottom:8px">帮助</div>
-<div style="color:var(--muted);font-size:14px">本页为前端分级，若需严密授权可加后端校验与签名授权。</div>
-</div>
-</div>
-</section>
+<ul class="resource-list" id="mineRes">
+<li class="res"><a href="javascript:void(0)" onclick="copyWeChat()">联系站长微信</a></li>
+<li class="res"><a href="javascript:void(0)" onclick="copyPC()">PC端入口复制</a></li>
+<li class="res"><a href="javascript:void(0)" onclick="clearAllData()">清空本地数据（回到初次访问）</a></li>
+</ul>
+<div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 </div>
 <!-- 底部导航 -->
 <nav class="nav">
@@ -359,7 +394,7 @@ function setLv(n){
   state.lv = n;
   localStorage.setItem('lv', String(n));
   document.getElementById('lv').textContent = NAMES[n] + "（当前）";
-  document.getElementById('lvName').textContent = NAMES[n];
+  var _lvName=document.getElementById('lvName'); if(_lvName){ _lvName.textContent = NAMES[n]; }
   document.getElementById('logout').style.display = n>0 ? 'inline-block' : 'none';
   applyLocks();
 }
@@ -431,27 +466,55 @@ function filterRes(){
 }
 
 
-// ===== 多次触发可重复提示的消息队列版 toast =====
-let __toastQueue = [];
-let __toasting = false;
-function toast(msg){
-  __toastQueue.push(String(msg));
-  if(!__toasting) __runToast();
-}
-function __runToast(){
-  if(!__toastQueue.length){ __toasting = false; return; }
-  __toasting = true;
+// ===== 即时高质感 Toast（可打断、无排队） =====
+let __toastTimer = 0;
+function toast(msg, opts) {
   const t = document.getElementById('toast');
-  t.textContent = __toastQueue.shift();
+  if(!t) return;
+  const dur = Math.max(800, (opts && opts.duration) ? Number(opts.duration) : 1800);
+  clearTimeout(__toastTimer);
+  t.textContent = String(msg);
+  t.classList.remove('show');
+  // 回流以重启动画
+  void t.offsetWidth;
   t.classList.add('show');
-  // 与现有CSS动画保持一致，显示 ~2.6s
-  setTimeout(()=>{
+  __toastTimer = setTimeout(()=>{
     t.classList.remove('show');
-    // 稍作间隔再播下一个，避免动画未收尾叠加
-    setTimeout(__runToast, 120);
-  }, 2600);
+  }, dur);
 }
 
+// 通用复制到剪贴板（含降级与提示）
+async function copyText(text, okMsg, failMsg){
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(String(text));
+    }else{
+      // 降级：使用临时 textarea 选中复制
+      const ta = document.createElement('textarea');
+      ta.value = String(text);
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      if(!ok) throw new Error('execCommand failed');
+    }
+    toast(okMsg || '已复制');
+  }catch(e){
+    console.warn('复制失败：', e);
+    try{
+      // 最后兜底：弹窗给用户长按复制（移动端）
+      alert((failMsg || '复制失败，请手动复制') + '\n\n' + String(text));
+    }catch(_) {}
+    toast(failMsg || '复制失败，请手动复制');
+  }
+}
+
+// 复制站长微信（不直接展示微信号，点击即可复制）
+function copyWeChat(){
+  copyText('Y613148639391', '微信号已复制', '复制失败，请手动复制');
+}
 
 function copyPC(){
   navigator.clipboard.writeText(location.href).then(()=>toast('PC 入口已复制'));
@@ -577,10 +640,12 @@ document.addEventListener('contextmenu',e=>{ if(!isInEditable(e.target)) e.preve
   ctx.fillStyle = '#0f172a';
   const text = '内部使用 · 禁止外传 · UID:'+id+' · '+new Date().toLocaleString();
   ctx.fillText(text, 20, 100);
+  if(localStorage.getItem('wmOff')!=='1'){
   const overlay = document.createElement('div');
   overlay.className = 'protect-overlay';
   overlay.style.backgroundImage = 'url('+cvs.toDataURL('image/png')+')';
   document.body.appendChild(overlay);
+}
 })();
 
 /* 6) 反 iframe 嵌套（点击劫持） */
@@ -640,8 +705,137 @@ function throttle(fn, interval){
 const toastRightClick = throttle(()=>toast('已禁用右键'), 2000);
 document.addEventListener('contextmenu', (e)=>{
   const isEditable = !!e.target.closest('input,textarea,[contenteditable="true"]');
+  if(localStorage.getItem('rcAllow')==='1') return; 
   if(!isEditable){ toastRightClick(); }
 }, true);
+
+
+
+// 进入“我的”页时，将下载链接应用防护编码
+document.addEventListener('DOMContentLoaded', ()=>{
+  const a = document.querySelector('#mineRes a[href^="https://github.com/"]');
+  if(a && typeof PROTECT_SALT !== 'undefined'){
+    // 运行时按与 protect_href 相同的逻辑进行编码
+    const raw = new TextEncoder().encode(a.getAttribute('href'));
+    const out = raw.map((b,i)=> b ^ PROTECT_SALT[i % PROTECT_SALT.length]);
+    const b64 = btoa(String.fromCharCode(...out)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+    a.setAttribute('data-u', b64);
+    a.setAttribute('href', 'javascript:void(0)');
+    a.addEventListener('click', (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      openProtected(a);
+    }, true);
+  }
+});
+
+
+function clearLocalData(){
+  try{
+    localStorage.removeItem('lv');
+    localStorage.removeItem('uid');
+    localStorage.removeItem('loginLock');
+    localStorage.removeItem('wmOff');
+    localStorage.removeItem('rcAllow');
+    toast('已清空：登录等级/UID/锁定/水印/右键设置');
+  }catch(_){};
+}
+
+function toggleWatermark(){
+  const off = localStorage.getItem('wmOff')==='1';
+  if(off){
+    localStorage.setItem('wmOff','0');
+    // 如果没有 overlay 就生成
+    if(!document.querySelector('.protect-overlay')){
+      (function(){ 
+        const cvs = document.createElement('canvas');
+        cvs.width=380; cvs.height=160;
+        const ctx = cvs.getContext('2d');
+        ctx.globalAlpha = 0.18;
+        ctx.rotate(-Math.PI/8);
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.fillStyle = '#0f172a';
+        const id = localStorage.getItem('uid') || Math.random().toString(36).slice(2,8);
+        ctx.fillText('内部使用 · 禁止外传 · UID:'+id+' · '+new Date().toLocaleString(), 20, 100);
+        const overlay = document.createElement('div');
+        overlay.className = 'protect-overlay';
+        overlay.style.backgroundImage = 'url('+cvs.toDataURL('image/png')+')';
+        document.body.appendChild(overlay);
+      })();
+    }else{
+      document.querySelector('.protect-overlay').style.display='block';
+    }
+    toast('水印：已开启');
+  }else{
+    localStorage.setItem('wmOff','1');
+    const ov = document.querySelector('.protect-overlay');
+    if(ov) ov.style.display='none';
+    toast('水印：已关闭');
+  }
+}
+
+function toggleRightClick(){
+  const allow = localStorage.getItem('rcAllow')==='1';
+  localStorage.setItem('rcAllow', allow ? '0' : '1');
+  toast('右键：' + (allow ? '已关闭' : '已开启'));
+}
+
+
+
+
+
+
+
+
+var toastTimeout;
+function safeToast(msg){
+  // 统一到顶层 toast，支持可打断/立即刷新
+  try{ toast(String(msg)); }catch(_){ /* 忽略 */ }
+}
+
+/* 一键清空所有本地数据：回到第一次打开的样子 */
+async function clearAllData(){
+  try{ toast('正在清空本地数据…'); }catch(_){}
+  try{
+    // 1) 本地存储
+    try{ localStorage.clear(); }catch(_){}
+    try{ sessionStorage.clear(); }catch(_){}
+    // 2) IndexedDB
+    try{
+      if('databases' in indexedDB){
+        const dbs = await indexedDB.databases();
+        if(Array.isArray(dbs)){
+          await Promise.all(dbs.map(d=>{ try{ indexedDB.deleteDatabase(d.name); }catch(_){}}));
+        }
+      }else{
+        // 删除常用库名（兜底）
+        ['keyval-store','idb-keyval','localforage','workbox-expiration'].forEach(n=>{ try{ indexedDB.deleteDatabase(n); }catch(_){} });
+      }
+    }catch(_){}
+    // 3) Cache Storage / Service Worker
+    try{
+      if('caches' in window){
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k=>caches.delete(k)));
+      }
+      if('serviceWorker' in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r=>r.unregister()));
+      }
+    }catch(_){}
+    // 4) Cookie（若有）
+    try{
+      document.cookie.split(';').forEach(c=>{
+        const eq = c.indexOf('=');
+        const name = (eq> -1 ? c.substr(0, eq) : c).trim();
+        if(name){
+          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+        }
+      });
+    }catch(_){}
+  }catch(_){}
+  try{ toast('已清空，本页将自动刷新'); }catch(_){}
+  setTimeout(()=>{ try{ location.reload(true); }catch(_){ location.reload(); } }, 800);
+}
 
 </script>
 </body>
