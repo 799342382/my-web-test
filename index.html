@@ -51,7 +51,7 @@
   .tile:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
   .panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:12px}
   .resource-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:.2s;position:relative}
+  .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:.2s;position:relative;cursor: pointer;}
   .res:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
   .res a{color:var(--brand2);font-weight:800;text-decoration:none;word-break:break-all}
   /* 底部导航 */
@@ -143,6 +143,133 @@ section#mine .grid{grid-template-columns:1fr}
   transform: translateX(-50%);
   z-index: 9999;
 }
+
+/* 新增：免责声明模态框样式 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: white;
+  width: min(90%, 600px);
+  max-height: 80vh;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  background: linear-gradient(90deg, var(--brand), var(--brand2));
+  color: white;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.close-modal:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 25px;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.disclaimer-content {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.disclaimer-content h3 {
+  margin: 20px 0 10px;
+  font-size: 16px;
+  color: var(--brand2);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px;
+}
+
+.disclaimer-content p {
+  margin-bottom: 15px;
+}
+
+.disclaimer-content ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.disclaimer-content li {
+  margin-bottom: 8px;
+}
+
+.disclaimer-footer {
+  background: var(--bg);
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* 防骗声明特殊样式 */
+.warning-icon {
+  background: #fef3c7;
+  color: #d97706;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 24px;
+}
 </style>
 <meta content="frame-ancestors 'none'; upgrade-insecure-requests; form-action 'self'" http-equiv="Content-Security-Policy"/><meta content="noindex,noarchive,nosnippet,noimageindex" name="robots"/><meta content="no-referrer" name="referrer"/></head>
 <body>
@@ -183,8 +310,8 @@ section#mine .grid{grid-template-columns:1fr}
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Obwg4JKThMN1vC20w7b47nygTLnujoDfDaQxuJKfkZNVoX2h19us23z1daXKj5GeIP148I6ezZIlxfnhW9fcTrnkFZDaH5neuHhlkK-eXaskeCHhR-_cX1Hl9GzaAl3epaxkcK-fqEMkZCXgq8vdq1Hl5ZDb7kHfUag==" href="#">B站付费合集 </a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9oLM7iCkSPnyv_SHDbUsPWJGRH4UoWCRqobwbrgtvHkqMthPTLEs5LqTmIoh_UDRgtv0ijShUYDbwlCGEPU44f6u8Od5rDmsg9eBk3WURZCTz4mTYagRuK_DmZt55Dhs2h-d3rmUZH1Dnl2fJHgx4K4T3F9R5fWw2--Z3qWoZZVbnk2fJGQl4K_f3E9R5eWQ2-uF3rWQZGCvnkxTJHnl4VvX3E9R5BB81srMgiTJIDXK2um_Jbnoue6OgN4A1UjYh9eBk32sOayL7_2vbbQxrJ_TqYdRuCGkh" href="#">幼小衔接课程</a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2PZVk4IfvrMI8-BGkw7b47nygTLnujoDc=" href="#">图书馆资源</a>
-<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.quark.cn/s/8b8fde9f9213#/list/share" target="_blank">李一舟合集</a>
-</div>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="#" data-u="N3R7dmRkKjVjfntyNTdzdmN2OmN-cmUqNXNyYX57NTdzdmN2OmN-cmU6e3Z1cnsqNfGWof66gzU=">李一舟合集</a>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="#" data-u="N3R7dmRkKjVjfntyNTdzdmN2OmN-cmUqNXNyYX57NTdzdmN2OmN-cmU6e3Z1cnsqNfGWof66gzU=">李一舟互联网创业课</a></div>
 <div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 <!-- 平台区 -->
 <section class="section" hidden="" id="videos" role="tabpanel">
@@ -310,11 +437,15 @@ section#mine .grid{grid-template-columns:1fr}
 <!-- 我的 -->
 <section class="section" hidden="" id="mine" role="tabpanel">
 <div class="head"><div class="h-title">我的账号</div><div class="h-note">仅本地显示</div></div>
+
 <ul class="resource-list" id="mineRes">
+<li class="res" onclick="showModal('disclaimer')">免责声明</li>
+<li class="res" onclick="showModal('antiFraud')">防骗声明</li>
 <li class="res"><a href="javascript:void(0)" onclick="copyWeChat()">联系站长微信</a></li>
 <li class="res"><a href="javascript:void(0)" onclick="copyPC()">PC端入口复制</a></li>
 <li class="res"><a href="javascript:void(0)" onclick="clearAllData()">清空本地数据（回到初次访问）</a></li>
 </ul>
+
 <div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 </div>
 <!-- 底部导航 -->
@@ -325,7 +456,124 @@ section#mine .grid{grid-template-columns:1fr}
 <a data-tab="mine" href="#">我的</a>
 </nav>
 <div class="toast" id="toast"></div>
+<!-- 免责声明模态框 -->
+<div class="modal" id="disclaimerModal">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal-title">免责声明</div>
+<button class="close-modal" onclick="hideModal('disclaimer')">×</button>
+</div>
+<div class="modal-body">
+<div class="disclaimer-content">
+<p>欢迎使用AI工具平台（以下简称"本平台"）。在使用本平台提供的任何服务前，请您务必仔细阅读并理解本免责声明的全部内容。如果您不同意本声明的任何条款，请立即停止使用本平台。</p>
+<h3>一、服务性质与内容</h3>
+<p>本平台是AI工具聚合平台，旨在为用户提供便捷的AI工具访问入口。平台内展示的所有工具、资源、链接均来源于互联网公开信息，本平台不对其内容的合法性、准确性、完整性、适用性或安全性作任何明示或暗示的保证。</p>
+<h3>二、用户责任与义务</h3>
+<ul>
+<li>用户应自行判断使用平台内工具的风险，并承担因使用工具而产生的全部责任</li>
+<li>用户承诺不将本平台用于任何非法目的，不侵犯任何第三方的合法权益</li>
+<li>用户应遵守各工具提供方的使用条款和隐私政策</li>
+<li>用户不得对本平台进行反向工程、反编译、破解或任何形式的非法操作</li>
+</ul>
+<h3>三、知识产权声明</h3>
+<p>本平台展示的商标、标识、产品名称等均属于其合法权利人所有。本平台尊重知识产权，如您认为平台内容侵犯了您的合法权益，请通过官方渠道联系我们，我们将及时处理。</p>
+<h3>四、免责条款</h3>
+<ul>
+<li>本平台不保证服务的连续性、及时性、安全性和准确性</li>
+<li>对于因使用或无法使用本平台而造成的任何损失（包括但不限于直接、间接、偶然、特殊损失），本平台不承担任何责任</li>
+<li>因不可抗力（如自然灾害、政府行为、黑客攻击等）导致的服务中断或数据丢失，本平台不承担责任</li>
+<li>用户通过本平台访问第三方工具或网站时产生的一切纠纷，由用户与第三方自行解决</li>
+</ul>
+<h3>五、平台使用规则</h3>
+<p>本平台采用分阶级权限管理机制，不同等级用户享有不同权限。用户不得以任何形式转让、出售或泄露账号及权限信息，不得尝试绕过平台权限管理系统。</p>
+<h3>六、声明更新</h3>
+<p>本平台保留随时修改本免责声明的权利，修改后的声明将在平台公布后立即生效。用户继续使用本平台即视为接受修改后的声明。</p>
+</div>
+</div>
+<div class="disclaimer-footer">
+      AI工具平台运营团队 · 最终解释权归本平台所有
+    </div>
+</div>
+</div>
+<!-- 防骗声明模态框 -->
+<div class="modal" id="antiFraudModal">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal-title">防骗声明</div>
+<button class="close-modal" onclick="hideModal('antiFraud')">×</button>
+</div>
+<div class="modal-body">
+<div class="disclaimer-content">
+<div class="warning-icon">⚠️</div>
+<p>近期我们发现有第三方冒用本平台名义进行非法活动，为保护您的权益，请务必阅读本防骗声明：</p>
+<h3>官方唯一声明</h3>
+<p>本平台为官方唯一正版AI工具聚合平台，未授权任何个人或组织进行代理、分销或收费服务。任何声称与本平台合作的收费行为均为诈骗。</p>
+<h3>警惕常见诈骗手段</h3>
+<ul>
+<li><strong>虚假客服：</strong>声称提供"特殊渠道"、"内部账号"、"高级权限"等收费服务</li>
+<li><strong>钓鱼网站：</strong>模仿本平台界面诱导输入账号密码或支付信息</li>
+<li><strong>付费加群：</strong>以"官方交流群"名义收取入群费、资料费</li>
+<li><strong>代充服务：</strong>声称可低价代充平台会员或代购高级权限</li>
+<li><strong>投资诈骗：</strong>以"平台合作项目"名义诱导投资或参与传销</li>
+</ul>
+<h3>官方服务说明</h3>
+<ul>
+<li>本平台所有服务均为免费提供，不会以任何形式向用户收取费用</li>
+<li>平台升级需通过官方指定入口完成，无需额外付费</li>
+<li>官方客服不会主动添加用户微信、QQ等社交账号</li>
+<li>官方不会通过私信、评论等方式向用户索要密码、验证码等敏感信息</li>
+</ul>
+<h3>防骗指南</h3>
+<ul>
+<li>仅通过官方渠道（本平台）获取服务</li>
+<li>警惕要求转账、充值、付费的"客服人员"</li>
+<li>不点击不明来源的链接，不扫描非官方二维码</li>
+<li>不向任何人透露账号密码、验证码等敏感信息</li>
+<li>定期修改密码，使用强密码保护账户安全</li>
+</ul>
+<h3>举报渠道</h3>
+<p>如您遇到可疑行为或诈骗活动，请立即通过以下官方渠道举报：</p>
+<ul>
+<li>官方邮箱：security@ai-tools-platform.com</li>
+<li>平台内"联系站长"功能</li>
+</ul>
+</div>
+</div>
+<div class="disclaimer-footer">
+      安全提示：提高警惕，谨防上当受骗 · 本平台不对任何非官方渠道交易负责
+    </div>
+</div>
+</div>
 <script>
+// ===== 模态框控制函数 =====
+function showModal(type) {
+  if (type === 'disclaimer') {
+    document.getElementById('disclaimerModal').classList.add('show');
+  } else if (type === 'antiFraud') {
+    document.getElementById('antiFraudModal').classList.add('show');
+  }
+  // 防止背景滚动
+  document.body.style.overflow = 'hidden';
+}
+
+function hideModal(type) {
+  if (type === 'disclaimer') {
+    document.getElementById('disclaimerModal').classList.remove('show');
+  } else if (type === 'antiFraud') {
+    document.getElementById('antiFraudModal').classList.remove('show');
+  }
+  // 恢复背景滚动
+  document.body.style.overflow = '';
+}
+
+// 点击模态框外部关闭
+window.addEventListener('click', function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+});
+
 // ===== 渐进式封锁机制 =====
 function getLockState(){
   const data = JSON.parse(localStorage.getItem('loginLock') || '{"count":0,"until":0}');
@@ -523,142 +771,26 @@ function copyPC(){
 document.addEventListener('DOMContentLoaded',()=>{
   setLv(state.lv || 0);
   applyLocks();
+  
+  // 初始化页面显示
+  document.getElementById('home').hidden = false;
 });
 
+// 其他原有功能保持不变...
 
-// 整块点击：资源列表 <li.res> 点击任意空白都打开内部链接
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('#resList .res').forEach(li => {
-    const a = li.querySelector('a');
-    if(!a) return;
-    li.addEventListener('click', (e) => { e.stopPropagation();
-      // 如果是点到 <a> 自己，就让默认行为执行；否则整块打开
-      if(e.target.tagName === 'A') return;
-      // 锁定的禁止
-      if(li.classList.contains('locked')){ blockClick.call(li, e); return; }
-      window.location.href = a.href;
-    });
-  });
-  // 栅格卡片（.tile）已经是 <a>，但为了兼容空白内边距，补一个 click 代理
-  document.querySelectorAll('.grid .tile').forEach(el => {
-    // 有可能是 <a> 或非 <a>
-    if(el.tagName === 'A'){
-      // 补充：点击内部空白与子元素都触发 a
-      el.addEventListener('click', (e) => {
-        // 默认就行，这里确保有手型和 hover
-      });
-    }else{
-      const a = el.querySelector('a');
-      if(!a) return;
-      el.addEventListener('click', (e) => {
-        if(el.classList.contains('locked')){ blockClick.call(el, e); return; }
-        window.location.href = a.href;
-      });
-    }
-  });
-});
-
-
-/** ===== 防盗功能（前端增强） ===== */
-/* 1) 链接解码：XOR + base64，SALT 写入页面 */
-const PROTECT_SALT = Uint8Array.from(atob("XDxdE8LSUuw="), c=>c.charCodeAt(0));
-function xorDecode(base64str) {
-  const bin = Uint8Array.from(atob(base64str.replace(/-/g,'+').replace(/_/g,'/')), c=>c.charCodeAt(0));
-  const out = bin.map((b,i)=> b ^ PROTECT_SALT[i % PROTECT_SALT.length]);
-  return new TextDecoder().decode(out);
-}
-function openProtected(el) {
-  const enc = el.getAttribute('data-u');
-  if(!enc) return;
-  const url = xorDecode(enc);
-  window.location.href = url;
-}
-
-/* 2) 将资源与卡片整块点击（并使用受保护链接） */
-document.addEventListener('DOMContentLoaded', () => {
-  // 资源列表整块
-  document.querySelectorAll('#resList .res').forEach(li => {
-    const a = li.querySelector('a[data-u]');
-    if(!a) return;
-    li.addEventListener('click', (e) => { e.stopPropagation();
-      if(li.classList.contains('locked')){ blockClick.call(li, e); return; }
-      if(e.target.tagName==='A'){ e.preventDefault(); }
-      openProtected(a);
-    });
-    // 防止右键复制链接
-    a.addEventListener('contextmenu', e=> e.preventDefault());
-  });
-  // 栅格卡片
-  document.querySelectorAll('.grid a[data-u]').forEach(a=>{
-    const card = a; // 本身就是 a
-    card.addEventListener('click',(e)=>{ e.preventDefault(); e.stopPropagation();
-      e.preventDefault();
-      const host = card.closest('[data-tier]');
-      if(host && host.classList.contains('locked')){ blockClick.call(host, e); return; }
-      openProtected(card);
-    });
-    card.addEventListener('contextmenu', e=> e.preventDefault());
-  });
-});
-
-/* 3) 防拷贝/防右键/防拖拽（输入框除外） */
-function isInEditable(el){ return !!el.closest('input,textarea,[contenteditable="true"]'); }
-document.addEventListener('contextmenu',e=>{ if(!isInEditable(e.target)) e.preventDefault(); });
-['copy','cut','paste','selectstart','dragstart'].forEach(evt=>{
-  document.addEventListener(evt, e=>{ if(!isInEditable(e.target)) e.preventDefault(); }, true);
-});
-
-/* 4) 简易开发者工具侦测：打开时模糊资源区，关闭恢复 */
-(function devtoolsGuard(){
-  let blurApplied = false;
-  function applyBlur(on) {
-    document.querySelectorAll('.panel, .resource-list, .grid').forEach(el=>{
-      el.classList.toggle('protect-blur', on);
-    });
-    if(on) toast('为安全已隐藏资源，关闭开发者工具后恢复');
+/* 一键清空所有本地数据：回到第一次打开的样子 */
+function clearAllData(){
+  try{
+    localStorage.clear();
+    sessionStorage.clear();
+    toast('已清空本地数据，页面将刷新');
+    setTimeout(()=>{
+      location.reload();
+    }, 1000);
+  }catch(e){
+    toast('清空失败: ' + e.message);
   }
-  setInterval(()=>{
-    const threshold = 160; // 大概判断
-    const opened = (window.outerWidth - window.innerWidth > threshold) ||
-                   (window.outerHeight - window.innerHeight > threshold);
-    if(opened && !blurApplied){ blurApplied=true; applyBlur(true); }
-    if(!opened && blurApplied){ blurApplied=false; applyBlur(false); }
-  }, 700);
-})();
-
-/* 5) 全局水印：UID + 时间戳（截图可追溯） */
-(function watermark(){
-  const id = localStorage.getItem('uid') || (()=>{const s=Math.random().toString(36).slice(2,8);localStorage.setItem('uid',s);return s;})();
-  const cvs = document.createElement('canvas');
-  cvs.width=380; cvs.height=160;
-  const ctx = cvs.getContext('2d');
-  ctx.clearRect(0,0,cvs.width,cvs.height);
-  ctx.globalAlpha = 0.18;
-  ctx.translate(0,0);
-  ctx.rotate(-Math.PI/8);
-  ctx.font = 'bold 18px Inter, sans-serif';
-  ctx.fillStyle = '#0f172a';
-  const text = '内部使用 · 禁止外传 · UID:'+id+' · '+new Date().toLocaleString();
-  ctx.fillText(text, 20, 100);
-  if(localStorage.getItem('wmOff')!=='1'){
-  const overlay = document.createElement('div');
-  overlay.className = 'protect-overlay';
-  overlay.style.backgroundImage = 'url('+cvs.toDataURL('image/png')+')';
-  document.body.appendChild(overlay);
 }
-})();
-
-/* 6) 反 iframe 嵌套（点击劫持） */
-try{ if(self!==top) top.location = self.location; }catch(err){}
-
-/* 7) 禁止键盘常见导出（Ctrl+S / Ctrl+U / F12 等）— 可绕过，但能阻挡一部分人 */
-document.addEventListener('keydown', (e)=>{
-  if(isInEditable(e.target)) return;
-  const k = e.key.toLowerCase();
-  if((e.ctrlKey||e.metaKey) && (k==='s' || k==='u' || k==='p' || k==='c' || k==='a')) { e.preventDefault(); toast('已禁止快捷键复制/保存'); }
-  if(k==='f12'){ e.preventDefault(); toast('已禁止打开开发者工具'); }
-});
-
 
 // 回车触发登录
 const pwdInput = document.getElementById('pwd');
@@ -669,173 +801,38 @@ if(pwdInput){
     }
   });
 }
-
-
-// 修复：资源区 <a> 自身点击不再触发默认 "#/回到首页"，而是打开受保护链接
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('#resList .res a[data-u]').forEach(a => {
-    // 把 href 改为 void(0) 彻底去除默认跳转
-    a.setAttribute('href', 'javascript:void(0)');
-    a.removeAttribute('target');
-    a.addEventListener('click', (e) => {
+</script>
+<script>
+// ===== 链接防泄露：解密并打开 =====
+(function(){
+  const KEY = 23;
+  function dec(str){
+    try{
+      const bin = atob(str.replace(/-/g,'+').replace(/_/g,'/'));
+      const bytes = new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++){ bytes[i] = bin.charCodeAt(i) ^ KEY; }
+      // 将 bytes 转回字符串（UTF-8）
+      const dec = new TextDecoder('utf-8').decode(bytes);
+      return dec;
+    }catch(e){
+      return null;
+    }
+  }
+  function handleClick(e){
+    const t = e.target.closest('a[data-u], .tile[data-u], .res a[data-u]');
+    if(!t) return;
+    const code = t.getAttribute('data-u');
+    if(!code) return;
+    const url = dec(code);
+    if(url){
       e.preventDefault();
-      e.stopPropagation();
-      const host = a.closest('.res');
-      if(host && host.classList.contains('locked')) { blockClick.call(host, e); return; }
-      openProtected(a);
-    });
-  });
-});
-
-
-// 简单节流器
-function throttle(fn, interval){
-  let last = 0;
-  return function(...args){
-    const now = Date.now();
-    if(now - last >= interval){
-      last = now; fn.apply(this, args);
+      try{ window.open(url, '_blank', 'noopener'); }catch(_){ location.href = url; }
     }
   }
-}
-
-
-
-// 右键被禁用时也给出提示（每 2 秒最多提示一次）
-const toastRightClick = throttle(()=>toast('已禁用右键'), 2000);
-document.addEventListener('contextmenu', (e)=>{
-  const isEditable = !!e.target.closest('input,textarea,[contenteditable="true"]');
-  if(localStorage.getItem('rcAllow')==='1') return; 
-  if(!isEditable){ toastRightClick(); }
-}, true);
-
-
-
-// 进入“我的”页时，将下载链接应用防护编码
-document.addEventListener('DOMContentLoaded', ()=>{
-  const a = document.querySelector('#mineRes a[href^="https://github.com/"]');
-  if(a && typeof PROTECT_SALT !== 'undefined'){
-    // 运行时按与 protect_href 相同的逻辑进行编码
-    const raw = new TextEncoder().encode(a.getAttribute('href'));
-    const out = raw.map((b,i)=> b ^ PROTECT_SALT[i % PROTECT_SALT.length]);
-    const b64 = btoa(String.fromCharCode(...out)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-    a.setAttribute('data-u', b64);
-    a.setAttribute('href', 'javascript:void(0)');
-    a.addEventListener('click', (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      openProtected(a);
-    }, true);
-  }
-});
-
-
-function clearLocalData(){
-  try{
-    localStorage.removeItem('lv');
-    localStorage.removeItem('uid');
-    localStorage.removeItem('loginLock');
-    localStorage.removeItem('wmOff');
-    localStorage.removeItem('rcAllow');
-    toast('已清空：登录等级/UID/锁定/水印/右键设置');
-  }catch(_){};
-}
-
-function toggleWatermark(){
-  const off = localStorage.getItem('wmOff')==='1';
-  if(off){
-    localStorage.setItem('wmOff','0');
-    // 如果没有 overlay 就生成
-    if(!document.querySelector('.protect-overlay')){
-      (function(){ 
-        const cvs = document.createElement('canvas');
-        cvs.width=380; cvs.height=160;
-        const ctx = cvs.getContext('2d');
-        ctx.globalAlpha = 0.18;
-        ctx.rotate(-Math.PI/8);
-        ctx.font = 'bold 18px Inter, sans-serif';
-        ctx.fillStyle = '#0f172a';
-        const id = localStorage.getItem('uid') || Math.random().toString(36).slice(2,8);
-        ctx.fillText('内部使用 · 禁止外传 · UID:'+id+' · '+new Date().toLocaleString(), 20, 100);
-        const overlay = document.createElement('div');
-        overlay.className = 'protect-overlay';
-        overlay.style.backgroundImage = 'url('+cvs.toDataURL('image/png')+')';
-        document.body.appendChild(overlay);
-      })();
-    }else{
-      document.querySelector('.protect-overlay').style.display='block';
-    }
-    toast('水印：已开启');
-  }else{
-    localStorage.setItem('wmOff','1');
-    const ov = document.querySelector('.protect-overlay');
-    if(ov) ov.style.display='none';
-    toast('水印：已关闭');
-  }
-}
-
-function toggleRightClick(){
-  const allow = localStorage.getItem('rcAllow')==='1';
-  localStorage.setItem('rcAllow', allow ? '0' : '1');
-  toast('右键：' + (allow ? '已关闭' : '已开启'));
-}
-
-
-
-
-
-
-
-
-var toastTimeout;
-function safeToast(msg){
-  // 统一到顶层 toast，支持可打断/立即刷新
-  try{ toast(String(msg)); }catch(_){ /* 忽略 */ }
-}
-
-/* 一键清空所有本地数据：回到第一次打开的样子 */
-async function clearAllData(){
-  try{ toast('正在清空本地数据…'); }catch(_){}
-  try{
-    // 1) 本地存储
-    try{ localStorage.clear(); }catch(_){}
-    try{ sessionStorage.clear(); }catch(_){}
-    // 2) IndexedDB
-    try{
-      if('databases' in indexedDB){
-        const dbs = await indexedDB.databases();
-        if(Array.isArray(dbs)){
-          await Promise.all(dbs.map(d=>{ try{ indexedDB.deleteDatabase(d.name); }catch(_){}}));
-        }
-      }else{
-        // 删除常用库名（兜底）
-        ['keyval-store','idb-keyval','localforage','workbox-expiration'].forEach(n=>{ try{ indexedDB.deleteDatabase(n); }catch(_){} });
-      }
-    }catch(_){}
-    // 3) Cache Storage / Service Worker
-    try{
-      if('caches' in window){
-        const keys = await caches.keys();
-        await Promise.all(keys.map(k=>caches.delete(k)));
-      }
-      if('serviceWorker' in navigator){
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r=>r.unregister()));
-      }
-    }catch(_){}
-    // 4) Cookie（若有）
-    try{
-      document.cookie.split(';').forEach(c=>{
-        const eq = c.indexOf('=');
-        const name = (eq> -1 ? c.substr(0, eq) : c).trim();
-        if(name){
-          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-        }
-      });
-    }catch(_){}
-  }catch(_){}
-  try{ toast('已清空，本页将自动刷新'); }catch(_){}
-  setTimeout(()=>{ try{ location.reload(true); }catch(_){ location.reload(); } }, 800);
-}
+  document.addEventListener('click', handleClick, true);
+  // 鼠标悬停不显示真实链接
+  document.querySelectorAll('a[data-u]').forEach(a=>{ a.rel = 'noreferrer noopener'; a.href = '#'; });
+})();
 
 </script>
 </body>
