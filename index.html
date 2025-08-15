@@ -51,7 +51,7 @@
   .tile:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
   .panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:12px}
   .resource-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:.2s;position:relative;cursor: pointer;}
+  .res{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:.2s;position:relative}
   .res:hover{transform:translateY(-2px);box-shadow:var(--shadow2);border-color:#dbeafe}
   .res a{color:var(--brand2);font-weight:800;text-decoration:none;word-break:break-all}
   /* 底部导航 */
@@ -134,6 +134,263 @@ html{scroll-padding-bottom:160px}
 /* 我的页：单卡时铺满一列 */
 section#mine .grid{grid-template-columns:1fr}
 
+/* 免责声明和防骗警告样式 */
+.disclaimer-section {
+  margin-bottom: 16px;
+}
+
+.disclaimer-card {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.disclaimer-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.disclaimer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #92400e;
+}
+
+.disclaimer-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.disclaimer-content {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #78350f;
+  margin-bottom: 12px;
+}
+
+.disclaimer-content p {
+  margin-bottom: 8px;
+}
+
+.disclaimer-content p:last-child {
+  margin-bottom: 0;
+}
+
+.warning-card {
+  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+  border: 2px solid #ef4444;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.warning-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #991b1b;
+}
+
+.warning-content {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7f1d1d;
+}
+
+.warning-list {
+  margin: 8px 0;
+  padding-left: 16px;
+}
+
+.warning-list li {
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.warning-list li::marker {
+  color: #dc2626;
+}
+
+.warning-highlight {
+  background: rgba(239, 68, 68, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 4px solid #ef4444;
+  margin: 8px 0;
+  font-weight: 700;
+  color: #991b1b;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 20px;
+  width: min(90%, 600px);
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--brand), var(--brand2));
+  color: white;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.close {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.modal-body {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+.modal-body h3 {
+  color: var(--brand2);
+  font-size: 16px;
+  font-weight: 800;
+  margin: 20px 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-body h3:first-child {
+  margin-top: 0;
+}
+
+.modal-body p {
+  margin-bottom: 12px;
+  color: #374151;
+  font-size: 14px;
+}
+
+.modal-body ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.modal-body li {
+  margin-bottom: 8px;
+  color: #374151;
+  font-size: 14px;
+}
+
+.modal-body strong {
+  color: var(--brand2);
+  font-weight: 700;
+}
+
+.modal-footer {
+  background: #f8fafc;
+  padding: 16px 24px;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+@media(max-width:640px) {
+  .modal-content {
+    margin: 10% auto;
+    width: 95%;
+  }
+  
+  .modal-header {
+    padding: 16px 20px;
+  }
+  
+  .modal-title {
+    font-size: 16px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .disclaimer-header, .warning-header {
+    font-size: 14px;
+  }
+  
+  .disclaimer-content, .warning-content {
+    font-size: 12px;
+  }
+}
 
 .toast {
   position: fixed;
@@ -142,208 +399,6 @@ section#mine .grid{grid-template-columns:1fr}
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-}
-
-/* 新增：免责声明模态框样式 */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 10000;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.modal.show {
-  display: flex;
-  opacity: 1;
-}
-
-.modal-content {
-  background: white;
-  width: min(90%, 600px);
-  max-height: 80vh;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
-}
-
-.modal.show .modal-content {
-  transform: translateY(0);
-}
-
-.modal-header {
-  background: linear-gradient(90deg, var(--brand), var(--brand2));
-  color: white;
-  padding: 20px;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-title {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.close-modal {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-
-.close-modal:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.modal-body {
-  padding: 25px;
-  overflow-y: auto;
-  max-height: 60vh;
-}
-
-.disclaimer-content {
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--text);
-}
-
-.disclaimer-content h3 {
-  margin: 20px 0 10px;
-  font-size: 16px;
-  color: var(--brand2);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 5px;
-}
-
-.disclaimer-content p {
-  margin-bottom: 15px;
-}
-
-.disclaimer-content ul {
-  padding-left: 20px;
-  margin-bottom: 15px;
-}
-
-.disclaimer-content li {
-  margin-bottom: 8px;
-}
-
-.disclaimer-footer {
-  background: var(--bg);
-  padding: 15px 25px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-}
-
-/* 防骗声明特殊样式 */
-.warning-icon {
-  background: #fef3c7;
-  color: #d97706;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  font-size: 24px;
-}
-
-/* ======= Mobile Polishing Overrides ======= */
-@media(max-width:640px){
-  .brand-inner{padding:10px 12px}
-  .acct input{height:40px}
-  .acct button{height:40px}
-  .container{padding-left:12px;padding-right:12px}
-  .card{border-radius:18px;padding:12px}
-  .hero h1{font-size:19px;margin-bottom:4px}
-  .stats{gap:8px}
-  .stat{border-radius:14px;padding:8px}
-  .num{font-size:16px}
-  .lab{font-size:11px}
-  .head{margin:10px 4px}
-  .h-title{font-size:16px}
-  .h-note{font-size:11px}
-  .panel{border-radius:18px;padding:12px}
-  .search{gap:8px}
-  .search input{padding:12px 14px;border-radius:14px;font-size:14px}
-  .search button{padding:12px 16px;border-radius:14px;font-size:14px}
-  /* 资源列表：左右排布、徽标垂直居中 */
-  .resource-list{gap:10px}
-  .res{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 14px;border-radius:18px;min-height:56px
-  }
-  .res a{display:block;flex:1;font-size:16px;font-weight:800;color:#0f172a}
-  [data-tier]::after{
-    top:50%; transform:translateY(-50%); right:12px;
-    font-size:11px; padding:4px 8px; border-radius:999px
-  }
-  /* 卡片按钮更轻盈一些 */
-  .tile{min-height:64px;border-radius:18px;font-size:15px}
-  /* 底部导航：毛玻璃 + 更大点击区 */
-  .nav{
-    backdrop-filter: saturate(150%) blur(8px);
-    background: rgba(255,255,255,.85);
-    padding:10px; gap:8px; border-radius:20px
-  }
-  .nav a{padding:12px 6px;border-radius:14px;font-size:14px}
-  /* Toast 不被手指挡住 */
-  .toast{top:16px}
-}
-
-/* ======= Mobile Relaxed Typography (v2) ======= */
-@media(max-width:640px){
-  body{font-size:16px; line-height:1.6}
-
-  /* 顶部标题与段落更舒展 */
-  .hero h1{font-size:20px; line-height:1.45; letter-spacing:.2px}
-  .hero p{font-size:14px; line-height:1.7}
-
-  /* 搜索框与按钮：字号和占比 */
-  .search input{font-size:16px; line-height:1.5; padding:14px 16px}
-  .search input::placeholder{font-size:15px; opacity:.85}
-  .search button{font-size:16px; padding:14px 18px}
-
-  /* 资源列表的行高与间距 */
-  .resource-list{gap:12px}
-  .res{min-height:64px; padding:14px 16px; border-radius:20px}
-  .res a{font-size:17px; line-height:1.55; letter-spacing:.1px}
-
-  /* “天使/恶魔”徽标尺寸与间距（伪元素） */
-  [data-tier]::after{
-    font-size:12px;
-    padding:5px 10px;
-    right:14px;
-    top:50%;
-    transform:translateY(-50%);
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
-  }
-
-  /* 底部导航文字更清晰 */
-  .nav a{font-size:15px; padding:13px 8px}
 }
 </style>
 <meta content="frame-ancestors 'none'; upgrade-insecure-requests; form-action 'self'" http-equiv="Content-Security-Policy"/><meta content="noindex,noarchive,nosnippet,noimageindex" name="robots"/><meta content="no-referrer" name="referrer"/></head>
@@ -385,8 +440,8 @@ section#mine .grid{grid-template-columns:1fr}
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Obwg4JKThMN1vC20w7b47nygTLnujoDfDaQxuJKfkZNVoX2h19us23z1daXKj5GeIP148I6ezZIlxfnhW9fcTrnkFZDaH5neuHhlkK-eXaskeCHhR-_cX1Hl9GzaAl3epaxkcK-fqEMkZCXgq8vdq1Hl5ZDb7kHfUag==" href="#">B站付费合集 </a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9oLM7iCkSPnyv_SHDbUsPWJGRH4UoWCRqobwbrgtvHkqMthPTLEs5LqTmIoh_UDRgtv0ijShUYDbwlCGEPU44f6u8Od5rDmsg9eBk3WURZCTz4mTYagRuK_DmZt55Dhs2h-d3rmUZH1Dnl2fJHgx4K4T3F9R5fWw2--Z3qWoZZVbnk2fJGQl4K_f3E9R5eWQ2-uF3rWQZGCvnkxTJHnl4VvX3E9R5BB81srMgiTJIDXK2um_Jbnoue6OgN4A1UjYh9eBk32sOayL7_2vbbQxrJ_TqYdRuCGkh" href="#">幼小衔接课程</a>
 <a class="tile" data-tier="devil" data-tier-label="恶魔" data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2PZVk4IfvrMI8-BGkw7b47nygTLnujoDc=" href="#">图书馆资源</a>
-<a class="tile" data-tier="devil" data-tier-label="恶魔" href="#" data-u="N3R7dmRkKjVjfntyNTdzdmN2OmN-cmUqNXNyYX57NTdzdmN2OmN-cmU6e3Z1cnsqNfGWof66gzU=">李一舟合集</a>
-<a class="tile" data-tier="devil" data-tier-label="恶魔" href="#" data-u="N3R7dmRkKjVjfntyNTdzdmN2OmN-cmUqNXNyYX57NTdzdmN2OmN-cmU6e3Z1cnsqNfGWof66gzU=">李一舟互联网创业课</a></div>
+<a class="tile" data-tier="devil" data-tier-label="恶魔" href="https://pan.quark.cn/s/8b8fde9f9213#/list/share" target="_blank">李一舟合集</a>
+</div>
 <div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 <!-- 平台区 -->
 <section class="section" hidden="" id="videos" role="tabpanel">
@@ -454,75 +509,146 @@ section#mine .grid{grid-template-columns:1fr}
 <li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ebVhocvHgMd1sDGsw7b47nygTLnujoDc=" href="#">11. Deepseek保姆喂饭级使用技巧大全</a></li>
 <li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Ibg5sKvrkMYhoWD4=" href="#">12. 小H书资源账号采集器(独家版)</a></li>
 <li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3abQk8JffgYYk5BG8=" href="#">13. TV软件专区(去除收费版)</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UbQpsK_awMdRuBGo=" href="#">14. 11款可用磁力软件(资源不限速)</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ZOgtuJqGzY90-D2g=" href="#">15. [win]数据免费恢复软件x64</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fZQ4_IaOxYtg9CGU=" href="#">16. 1DM中文版下载利器</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3Zbw1uK_vjY4hrDm8=" href="#">17. 美图秀秀(高级版，已解所有功能)</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3aOF44Kvfgat45DD8=" href="#">18. 短视频-键搬运（会员解锁版.apk）</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2KbVllJPvkato_Dms=" href="#">19. 虚拟机</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3dbl04I6fmZI9tXTg=" href="#">20. 音乐软件</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UaQltKqbrZNxuWW8=" href="#">21. 下载工具</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3dbg87JPW2Z4k6XWk=" href="#">22. 学习软件</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2POQxkcaDmN95vCzs=" href="#">23. 系统相关</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UOg44I_vhNolsCWw=" href="#">24. 热门AI工具</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3VOFplKqfkZt0-BG8=" href="#">25. 语音转文字合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2JOF85JaGzYY4-CDg=" href="#">26. PPT模板大全</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2ObF1uJKPhMNVvXm0=" href="#">27. 冷门实用合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UPlk4cqPmYtVlCjg=" href="#">28. 喜马拉雅音频课</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3cOgVuIvbma9hoXm8=" href="#">29. PDF全能工具</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3faghpcqPjNts9WmQ=" href="#">30. AI工具合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fawQ_K6O3ZdluXjk=" href="#">31. 搜题神器包</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3cagxpI6PgYNg5Cm4=" href="#">32. 免费K歌神器</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ebllkdaPhYt1rDm4=" href="#">33. 酷狗概念版</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3cbQo8d_LiYY5sCj8=" href="#">34. 剪映魔法版</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3cPl08I_OxZo9sXmw=" href="#">35. 格式转换合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ZOA45JKPjY4hqWWk=" href="#">36. 数据恢复工具</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3bbA1vI6TkatlsWWs=" href="#">37. B站优质UP主视频合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eago_dqHqMNptCzk=" href="#">38. 零基础学唱歌（完结）</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2POQlqcqPhao1qDjs=" href="#">39. 沟通高手训练手册</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2JOlhuJqfka4huDjk=" href="#">40. 古代野史珍藏集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OPwpqcabkZNg-WDs=" href="#">41. 清华附小《妙解成语》动画全集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2KPgpqcaDqMdU_Dmk=" href="#">42. 影响孩子一生的电影合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3bOQhqdfvjN4hqDGQ=" href="#">43. 四季养生食疗课</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3Vbg47cKOwNNo_Wj8=" href="#">44. 自动点击器（免费手机版）</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMrSyo9uKo1hj4SPnyv_SSFOFkyPKa9JYI=" href="#">45. 在线工具宝：视频处理平台</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fOQtrKvawZdtpWGQ=" href="#">46. 文案设计辅助工具</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3dbw1uJvqzYtRrBW0=" href="#">47. 批量无水印短视频下载器</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2JOllkd_HmY9s-WGQ=" href="#">48. AI APK应用大全</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fZAhrJqHnZ446DG0=" href="#">49. 多格式媒体处理工具箱</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3dbVpkdffmM9VsC2Q=" href="#">50. 资源整合</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9oLM7iCkSPnyv_SHDbVs-IaamIN5pcTNai70m3QtPNXermTXTLEs5LrDqY4o=" href="#">51. 语聊音频变声器</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2PZF1rJqazN4puDz8w7b47nygTLnujoDc=" href="#">52. 每日更新软件</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9uqc8gDlVc3Ctv32fc2oSRfSCOJU4DhtnqaImpw5IG3aY5yGoLH1sLLKlNtEvBDxi" href="#">53. C盘系统清理</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3Ual9tJvPnMN44Dzkw7b47nygTLnujoDc=" href="#">54. Win10-11激活永久工具</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2NZA9qI6PgN9lqX28w7b47nygTLnujoDc=" href="#">55. 自动生成专属AI数字人</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eOFppIfXrM9w_Djk=" href="#">56. 个性签名生成器</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2JbF9lJvKwNIlrXTk=" href="#">57. 人像摄影课程</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3bPgtkdvrgYd4_Xjg=" href="#">58. 30款永久VIP软件合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2IPg84KvDmYtpvBG4=" href="#">59. 32款自媒体免费必备APP</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UPwhuKvC3Z4o4Djg=" href="#">60. 万能WiFi直连版</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3YZQppcPHnY9o6Czw=" href="#">61. 变声器语音包大师</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OawRlIfu0MYlsD20=" href="#">62. 网易云音乐解锁版</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2KZF87dfvnMNhoBGk=" href="#">63. 小吃教程合集</a></li>
-<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9uqc8gDlVc3Ctv32fc2oSRaeVMKRrZDQh9qpg2AsOJELy5ySgJX1sLLKlNtFkSWog" href="#">64. 打工人桌面壁纸</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eaQ44dvrgMN5rWWUw7b47nygTLnujoDc=" href="#">14. 科技插件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OPw08cPSzZI46Cz4w7b47nygTLnujoDc=" href="#">15. 安卓软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOV1scaS3Y99tDW0w7b47nygTLnujoDc=" href="#">16. 摄影剪辑</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Jaw9oIvDgY9hkWGsw7b47nygTLnujoDc=" href="#">17. 媒体运营</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UPgw-IvGwMN5lX2Q=" href="#">18. 去马赛克</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM7VSl7t7B8jzNRciT762HYbg9lIe2_PYo9Ey92rrcznzlPcnetpTyAM105PLTjfNxyDXJSi_wznDc=" href="#">19. 本站有APP方便进入</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM3WDJwsfwxgnNQcnCunjCtJFYkWKGwIA==" href="#">20. 短剧百度搜索</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fbllvdqe0YdttD24=" href="#">21. 当众说话</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOF1pJ_q0YIk4Cjw=" href="#">22. 情绪自救课（含训练营）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ebVhocvHgMd1sDGsw7b47nygTLnujoDc=" href="#">23. Deepseek保姆喂饭级使用技巧大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Ibg5sKvrkMYhoWD4=" href="#">24. 小H书资源账号采集器(独家版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3abQk8JffgYYk5BG8=" href="#">25. TV软件专区(去除收费版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eaQ44dvrgMN5rWWUw7b47nygTLnujoDc=" href="#">26. 科技插件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OPw08cPSzZI46Cz4w7b47nygTLnujoDc=" href="#">27. 安卓软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOV1scaS3Y99tDW0w7b47nygTLnujoDc=" href="#">28. 摄影剪辑</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Jaw9oIvDgY9hkWGsw7b47nygTLnujoDc=" href="#">29. 媒体运营</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UPgw-IvGwMN5lX2Q=" href="#">30. 去马赛克</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM7VSl7t7B8jzNRciT762HYbg9lIe2_PYo9Ey92rrcznzlPcnetpTyAM105PLTjfNxyDXJSi_wznDc=" href="#">31. 本站有APP方便进入</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM3WDJwsfwxgnNQcnCunjCtJFYkWKGwIA==" href="#">32. 短剧百度搜索</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fbllvdqe0YdttD24=" href="#">33. 当众说话</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOF1pJ_q0YIk4Cjw=" href="#">34. 情绪自救课（含训练营）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ebVhocvHgMd1sDGsw7b47nygTLnujoDc=" href="#">35. Deepseek保姆喂饭级使用技巧大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Ibg5sKvrkMYhoWD4=" href="#">36. 小H书资源账号采集器(独家版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3abQk8JffgYYk5BG8=" href="#">37. TV软件专区(去除收费版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eaQ44dvrgMN5rWWUw7b47nygTLnujoDc=" href="#">38. 科技插件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OPw08cPSzZI46Cz4w7b47nygTLnujoDc=" href="#">39. 安卓软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOV1scaS3Y99tDW0w7b47nygTLnujoDc=" href="#">40. 摄影剪辑</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Jaw9oIvDgY9hkWGsw7b47nygTLnujoDc=" href="#">41. 媒体运营</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UPgw-IvGwMN5lX2Q=" href="#">42. 去马赛克</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM7VSl7t7B8jzNRciT762HYbg9lIe2_PYo9Ey92rrcznzlPcnetpTyAM105PLTjfNxyDXJSi_wznDc=" href="#">43. 本站有APP方便进入</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM3WDJwsfwxgnNQcnCunjCtJFYkWKGwIA==" href="#">44. 短剧百度搜索</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fbllvdqe0YdttD24=" href="#">45. 当众说话</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOF1pJ_q0YIk4Cjw=" href="#">46. 情绪自救课（含训练营）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ebVhocvHgMd1sDGsw7b47nygTLnujoDc=" href="#">47. Deepseek保姆喂饭级使用技巧大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Ibg5sKvrkMYhoWD4=" href="#">48. 小H书资源账号采集器(独家版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3abQk8JffgYYk5BG8=" href="#">49. TV软件专区(去除收费版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eaQ44dvrgMN5rWWUw7b47nygTLnujoDc=" href="#">50. 科技插件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OPw08cPSzZI46Cz4w7b47nygTLnujoDc=" href="#">51. 安卓软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOV1scaS3Y99tDW0w7b47nygTLnujoDc=" href="#">52. 摄影剪辑</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Jaw9oIvDgY9hkWGsw7b47nygTLnujoDc=" href="#">53. 媒体运营</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3UPgw-IvGwMN5lX2Q=" href="#">54. 去马赛克</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM7VSl7t7B8jzNRciT762HYbg9lIe2_PYo9Ey92rrcznzlPcnetpTyAM105PLTjfNxyDXJSi_wznDc=" href="#">55. 本站有APP方便进入</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcM3WDJwsfwxgnNQcnCunjCtJFYkWKGwIA==" href="#">56. 短剧百度搜索</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3fbllvdqe0YdttD24=" href="#">57. 当众说话</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOF1pJ_q0YIk4Cjw=" href="#">58. 情绪自救课（含训练营）</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3ebVhocvHgMd1sDGsw7b47nygTLnujoDc=" href="#">59. Deepseek保姆喂饭级使用技巧大全</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2Ibg5sKvrkMYhoWD4=" href="#">60. 小H书资源账号采集器(独家版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3abQk8JffgYYk5BG8=" href="#">61. TV软件专区(去除收费版)</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX3eaQ44dvrgMN5rWWUw7b47nygTLnujoDc=" href="#">62. 科技插件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OPw08cPSzZI46Cz4w7b47nygTLnujoDc=" href="#">63. 安卓软件</a></li>
+<li class="res" data-tier="angel" data-tier-label="天使"><a data-u="NEgpY7HofcMsXTM9s6cznjcSPn3toX2OOV1scaS3Y99tDW0w7b47nygTLnujoDc=" href="#">64. 摄影剪辑</a></li>
 </ul>
-<div id="noTip" style="display:none;color:var(--muted);text-align:center;padding:10px">没有找到相关资源～</div>
 </div>
 <div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 <!-- 我的 -->
 <section class="section" hidden="" id="mine" role="tabpanel">
 <div class="head"><div class="h-title">我的账号</div><div class="h-note">仅本地显示</div></div>
 
+<!-- 免责声明和防骗警告区域 -->
+<div class="disclaimer-section">
+  <div class="disclaimer-card">
+    <div class="disclaimer-header">
+      <span class="disclaimer-icon">⚖️</span>
+      <span>免责声明</span>
+    </div>
+    <div class="disclaimer-content">
+      <p>本平台所提供之所有信息、工具及资源，仅供学习、研究与交流之用。本平台不保证内容的准确性、完整性、及时性或适用性。</p>
+      <p>用户在使用本平台任何内容时，应自行判断并承担所有风险。本平台不对因使用或无法使用本平台内容而导致的任何损害承担责任。</p>
+      <p style="text-align: center; margin-top: 8px;">
+        <a href="javascript:void(0)" onclick="showDisclaimerModal()" style="color: #92400e; text-decoration: underline; font-weight: 700;">查看完整声明</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="warning-card">
+    <div class="warning-header">
+      <span class="disclaimer-icon">🚨</span>
+      <span>防骗警告</span>
+    </div>
+    <div class="warning-content">
+      <p>敬请广大用户提高警惕，谨防各类网络诈骗行为：</p>
+      <ul class="warning-list">
+        <li>本平台不会通过非官方渠道索取个人信息或进行收费</li>
+        <li>请勿轻信任何声称代表本平台的虚假宣传</li>
+        <li>如需联系，请务必通过下方官方联系方式</li>
+      </ul>
+      <div class="warning-highlight">
+        请牢记：天下没有免费的午餐，保护好您的财产安全！
+      </div>
+      <p style="text-align: center; margin-top: 8px;">
+        <a href="javascript:void(0)" onclick="showDisclaimerModal()" style="color: #991b1b; text-decoration: underline; font-weight: 700;">查看详细警告</a>
+      </p>
+    </div>
+  </div>
+</div>
+
 <ul class="resource-list" id="mineRes">
-<li class="res" onclick="showModal('disclaimer')">免责声明</li>
-<li class="res" onclick="showModal('antiFraud')">防骗声明</li>
 <li class="res"><a href="javascript:void(0)" onclick="copyWeChat()">联系站长微信</a></li>
 <li class="res"><a href="javascript:void(0)" onclick="copyPC()">PC端入口复制</a></li>
 <li class="res"><a href="javascript:void(0)" onclick="clearAllData()">清空本地数据（回到初次访问）</a></li>
 </ul>
-
 <div class="global-declare-tip" style="margin:14px 0 6px 0;color:#64748b;font-size:12px;line-height:1.6;text-align:center;">声明：本平台仅供内部学习与交流使用，严禁外传或用于任何商业用途。违者必究。</div></section>
 </div>
+
+<!-- 免责声明和防骗警告模态框 -->
+<div id="disclaimerModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">免责声明与防骗警告</h2>
+      <span class="close" onclick="closeDisclaimerModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <h3>免责声明</h3>
+      <p>本平台所提供之所有信息、工具及资源，仅供学习、研究与交流之用。本平台不保证内容的准确性、完整性、及时性或适用性。用户在使用本平台任何内容时，应自行判断并承担所有风险。本平台不对因使用或无法使用本平台内容而导致的任何直接、间接、附带、特殊或衍生性损害承担任何责任，包括但不限于利润损失、数据丢失或其他无形损失。</p>
+      
+      <p>本平台所包含的外部链接仅为方便用户而设，并不构成对该等外部网站内容的认可或推荐。用户访问外部链接时，应自行遵守相关网站的使用条款及隐私政策。本平台不对任何外部链接的内容或其可能造成的损害承担责任。</p>
+      
+      <p>本平台保留随时修改、更新或终止部分或全部服务的权利，恕不另行通知。用户继续使用本平台即表示接受本声明的所有条款。</p>
+
+      <h3>防骗警告</h3>
+      <p>敬请广大用户提高警惕，谨防各类网络诈骗行为。本平台郑重声明：</p>
+      
+      <ol>
+        <li><strong>官方渠道唯一性</strong>：本平台不会通过任何非官方渠道（如不明链接、陌生电话、短信、社交媒体私信等）向您索取个人敏感信息、账号密码或进行任何形式的收费。</li>
+        <li><strong>警惕虚假宣传</strong>：请勿轻信任何声称代表本平台或与本平台合作，并承诺高额回报、内部信息或特殊权限的虚假宣传。</li>
+        <li><strong>保护个人信息</strong>：请勿向任何第三方透露您的平台口令、个人身份信息、银行卡信息或任何其他敏感数据。</li>
+        <li><strong>核实联系方式</strong>：如需联系本平台，请务必通过本平台"我的"页面中提供的官方联系方式进行沟通。对于任何未经核实的联系方式，请保持高度警惕。</li>
+        <li><strong>谨防冒充客服</strong>：本平台不会主动联系您提供"客服"服务或解决"账号异常"等问题。如遇此类情况，请务必通过官方渠道核实。</li>
+      </ol>
+      
+      <p>如您遭遇任何可疑情况或发现诈骗行为，请立即停止操作，并及时向当地公安机关报案。本平台将积极配合相关部门，共同打击网络违法犯罪行为。</p>
+      
+      <p><strong>请牢记：天下没有免费的午餐，高额回报往往伴随着高风险。保护好您的财产安全，从自身做起。</strong></p>
+    </div>
+    <div class="modal-footer">
+      本声明最终解释权归本平台所有。
+    </div>
+  </div>
+</div>
+
 <!-- 底部导航 -->
 <nav class="nav">
 <a class="cur" data-tab="home" href="#">首页</a>
@@ -531,296 +657,158 @@ section#mine .grid{grid-template-columns:1fr}
 <a data-tab="mine" href="#">我的</a>
 </nav>
 <div class="toast" id="toast"></div>
-<!-- 免责声明模态框 -->
-<div class="modal" id="disclaimerModal">
-<div class="modal-content">
-<div class="modal-header">
-<div class="modal-title">免责声明</div>
-<button class="close-modal" onclick="hideModal('disclaimer')">×</button>
-</div>
-<div class="modal-body">
-<div class="disclaimer-content">
-<p>欢迎使用AI工具平台（以下简称"本平台"）。在使用本平台提供的任何服务前，请您务必仔细阅读并理解本免责声明的全部内容。如果您不同意本声明的任何条款，请立即停止使用本平台。</p>
-<h3>一、服务性质与内容</h3>
-<p>本平台是AI工具聚合平台，旨在为用户提供便捷的AI工具访问入口。平台内展示的所有工具、资源、链接均来源于互联网公开信息，本平台不对其内容的合法性、准确性、完整性、适用性或安全性作任何明示或暗示的保证。</p>
-<h3>二、用户责任与义务</h3>
-<ul>
-<li>用户应自行判断使用平台内工具的风险，并承担因使用工具而产生的全部责任</li>
-<li>用户承诺不将本平台用于任何非法目的，不侵犯任何第三方的合法权益</li>
-<li>用户应遵守各工具提供方的使用条款和隐私政策</li>
-<li>用户不得对本平台进行反向工程、反编译、破解或任何形式的非法操作</li>
-</ul>
-<h3>三、知识产权声明</h3>
-<p>本平台展示的商标、标识、产品名称等均属于其合法权利人所有。本平台尊重知识产权，如您认为平台内容侵犯了您的合法权益，请通过官方渠道联系我们，我们将及时处理。</p>
-<h3>四、免责条款</h3>
-<ul>
-<li>本平台不保证服务的连续性、及时性、安全性和准确性</li>
-<li>对于因使用或无法使用本平台而造成的任何损失（包括但不限于直接、间接、偶然、特殊损失），本平台不承担任何责任</li>
-<li>因不可抗力（如自然灾害、政府行为、黑客攻击等）导致的服务中断或数据丢失，本平台不承担责任</li>
-<li>用户通过本平台访问第三方工具或网站时产生的一切纠纷，由用户与第三方自行解决</li>
-</ul>
-<h3>五、平台使用规则</h3>
-<p>本平台采用分阶级权限管理机制，不同等级用户享有不同权限。用户不得以任何形式转让、出售或泄露账号及权限信息，不得尝试绕过平台权限管理系统。</p>
-<h3>六、声明更新</h3>
-<p>本平台保留随时修改本免责声明的权利，修改后的声明将在平台公布后立即生效。用户继续使用本平台即视为接受修改后的声明。</p>
-</div>
-</div>
-<div class="disclaimer-footer">
-      AI工具平台运营团队 · 最终解释权归本平台所有
-    </div>
-</div>
-</div>
-<!-- 防骗声明模态框 -->
-<div class="modal" id="antiFraudModal">
-<div class="modal-content">
-<div class="modal-header">
-<div class="modal-title">防骗声明</div>
-<button class="close-modal" onclick="hideModal('antiFraud')">×</button>
-</div>
-<div class="modal-body">
-<div class="disclaimer-content">
-<div class="warning-icon">⚠️</div>
-<p>近期我们发现有第三方冒用本平台名义进行非法活动，为保护您的权益，请务必阅读本防骗声明：</p>
-<h3>官方唯一声明</h3>
-<p>本平台为官方唯一正版AI工具聚合平台，未授权任何个人或组织进行代理、分销或收费服务。任何声称与本平台合作的收费行为均为诈骗。</p>
-<h3>警惕常见诈骗手段</h3>
-<ul>
-<li><strong>虚假客服：</strong>声称提供"特殊渠道"、"内部账号"、"高级权限"等收费服务</li>
-<li><strong>钓鱼网站：</strong>模仿本平台界面诱导输入账号密码或支付信息</li>
-<li><strong>付费加群：</strong>以"官方交流群"名义收取入群费、资料费</li>
-<li><strong>代充服务：</strong>声称可低价代充平台会员或代购高级权限</li>
-<li><strong>投资诈骗：</strong>以"平台合作项目"名义诱导投资或参与传销</li>
-</ul>
-<h3>官方服务说明</h3>
-<ul>
-<li>本平台所有服务均为免费提供，不会以任何形式向用户收取费用</li>
-<li>平台升级需通过官方指定入口完成，无需额外付费</li>
-<li>官方客服不会主动添加用户微信、QQ等社交账号</li>
-<li>官方不会通过私信、评论等方式向用户索要密码、验证码等敏感信息</li>
-</ul>
-<h3>防骗指南</h3>
-<ul>
-<li>仅通过官方渠道（本平台）获取服务</li>
-<li>警惕要求转账、充值、付费的"客服人员"</li>
-<li>不点击不明来源的链接，不扫描非官方二维码</li>
-<li>不向任何人透露账号密码、验证码等敏感信息</li>
-<li>定期修改密码，使用强密码保护账户安全</li>
-</ul>
-<h3>举报渠道</h3>
-<p>如您遇到可疑行为或诈骗活动，请立即通过以下官方渠道举报：</p>
-<ul>
-<li>官方邮箱：security@ai-tools-platform.com</li>
-<li>平台内"联系站长"功能</li>
-</ul>
-</div>
-</div>
-<div class="disclaimer-footer">
-      安全提示：提高警惕，谨防上当受骗 · 本平台不对任何非官方渠道交易负责
-    </div>
-</div>
-</div>
 <script>
-// ===== 模态框控制函数 =====
-function showModal(type) {
-  if (type === 'disclaimer') {
-    document.getElementById('disclaimerModal').classList.add('show');
-  } else if (type === 'antiFraud') {
-    document.getElementById('antiFraudModal').classList.add('show');
-  }
-  // 防止背景滚动
-  document.body.style.overflow = 'hidden';
-}
-
-function hideModal(type) {
-  if (type === 'disclaimer') {
-    document.getElementById('disclaimerModal').classList.remove('show');
-  } else if (type === 'antiFraud') {
-    document.getElementById('antiFraudModal').classList.remove('show');
-  }
-  // 恢复背景滚动
-  document.body.style.overflow = '';
-}
-
-// 点击模态框外部关闭
-window.addEventListener('click', function(event) {
-  if (event.target.classList.contains('modal')) {
-    event.target.classList.remove('show');
-    document.body.style.overflow = '';
-  }
-});
-
 // ===== 渐进式封锁机制 =====
 function getLockState(){
-  const data = JSON.parse(localStorage.getItem('loginLock') || '{"count":0,"until":0}');
-  return data;
+  const now = Date.now();
+  const key = 'loginLock';
+  const stored = localStorage.getItem(key);
+  if(!stored) return 0;
+  try{
+    const data = JSON.parse(stored);
+    if(now - data.time > 24*60*60*1000) return 0; // 24h 过期
+    return data.count || 0;
+  }catch(_){ return 0; }
 }
-function setLockState(count, until){
-  localStorage.setItem('loginLock', JSON.stringify({count:count, until:until}));
-}
-function checkLock(){
-  const st = getLockState();
-  const now = Math.floor(Date.now()/1000);
-  if(st.until > now){
-    const remain = st.until - now;
-    toast('已锁定，请等待 ' + remain + ' 秒后再试');
-    disableLogin(remain);
-    return true;
-  }
-  return false;
-}
-function disableLogin(sec){
-  const btn = document.getElementById('login');
-  if(!btn) return;
-  btn.disabled = true;
-  let left = sec;
-  btn.textContent = '等待 ' + left + ' 秒';
-  const t = setInterval(()=>{
-    left--;
-    if(left <= 0){
-      clearInterval(t);
-      btn.disabled = false;
-      btn.textContent = '登录';
-    }else{
-      btn.textContent = '等待 ' + left + ' 秒';
-    }
-  },1000);
+function setLockState(count){
+  localStorage.setItem('loginLock', JSON.stringify({count, time: Date.now()}));
 }
 
-function recordFailure(){
-  const st = getLockState();
-  st.count++;
-  let lockSec = 0;
-  if(st.count >= 30) lockSec = 3*24*60*60; // 3天
-  else if(st.count >= 20) lockSec = 20*60; // 20分钟
-  else if(st.count >= 10) lockSec = 10*60; // 10分钟
-  else if(st.count >= 3)  lockSec = 10;    // 10秒
-  if(lockSec > 0){
-    st.until = Math.floor(Date.now()/1000) + lockSec;
-    toast('多次错误，已锁定 ' + lockSec + ' 秒');
-    disableLogin(lockSec);
-  }
-  setLockState(st.count, st.until);
-}
+// ===== 状态管理 =====
+const state = {
+  lv: parseInt(localStorage.getItem('lv')) || 0,
+  currentTab: 'home'
+};
 
-function resetFailure(){
-  setLockState(0, 0);
-}
-
-
-const LEVELS = { angel: 0, devil: 1 };
-const NAMES  = { 0: "天使账号", 1: "恶魔账号" };
-const PASS   = { angel: "", devil: "520131419" };
-
-const state = { lv: Number(localStorage.getItem('lv') ?? 0) };
-
-function setLv(n){
-  state.lv = n;
-  localStorage.setItem('lv', String(n));
-  document.getElementById('lv').textContent = NAMES[n] + "（当前）";
-  var _lvName=document.getElementById('lvName'); if(_lvName){ _lvName.textContent = NAMES[n]; }
-  document.getElementById('logout').style.display = n>0 ? 'inline-block' : 'none';
+// ===== 登录逻辑 =====
+function setLv(level){
+  state.lv = level;
+  localStorage.setItem('lv', level);
+  const lbl = level === 0 ? '未登录（默认天使）' : level === 1 ? '恶魔' : '未知';
+  document.getElementById('lv').textContent = lbl;
   applyLocks();
 }
 
-document.getElementById('login').addEventListener('click',()=>{
-  if(checkLock()) return;
-  const v = (document.getElementById('pwd').value || '').trim();
-  if(!v){ toast('请输入口令'); return; }
-  if(v === PASS.angel){ setLv(0); toast('已登录：天使账号'); resetFailure(); }
-  else if(v === PASS.devil){ setLv(1); toast('已登录：恶魔账号'); resetFailure(); }
-  else { setLv(0); toast('口令不正确，已回到天使账号'); recordFailure(); }
-  document.getElementById('pwd').value='';
-});
-
-document.getElementById('logout').addEventListener('click',()=>{
-  setLv(0);
-  toast('已退出，回到天使账号');
-});
-
 function applyLocks(){
-  document.querySelectorAll('[data-tier]').forEach(el=>{
-    const need = el.getAttribute('data-tier') === 'devil' ? 1 : 0;
-    const ok = state.lv >= need;
-    el.classList.remove('locked');
-    const a = el.tagName==='A' ? el : el.querySelector('a');
-    if(!ok){
+  document.querySelectorAll('[data-tier]').forEach(el => {
+    const tier = el.getAttribute('data-tier');
+    const needLv = tier === 'devil' ? 1 : 0;
+    if(state.lv >= needLv){
+      el.classList.remove('locked');
+    } else {
       el.classList.add('locked');
-      if(a) a.addEventListener('click', blockClick, true);
-    }else{
-      if(a) a.removeEventListener('click', blockClick, true);
     }
   });
 }
 
 function blockClick(e){
   e.preventDefault();
-  toast('此内容需要 恶魔账号');
-  try{ window.scrollTo({top:0, behavior:'smooth'}); const inp = document.getElementById('pwd'); if(inp) inp.focus(); }catch(_){}
+  e.stopPropagation();
+  toast('需要更高权限才能访问');
 }
 
-const tabs = document.querySelectorAll('.nav a');
-const panes = ['home','videos','resources','mine'].map(id=>document.getElementById(id));
-
-tabs.forEach(btn=>btn.addEventListener('click',e=>{
-  e.preventDefault();
-  tabs.forEach(b=>b.classList.remove('cur'));
-  btn.classList.add('cur');
-  panes.forEach(p=>p.hidden = p.id !== btn.dataset.tab);
-  window.scrollTo({ top:0, behavior:'smooth' });
-  if(btn.dataset.tab === 'resources'){
-    const inp = document.getElementById('resSearch');
-    if(inp) inp.focus();
+document.addEventListener('click', e => {
+  if(e.target.closest('.locked')){
+    blockClick(e);
   }
-}));
+});
 
-function filterRes(){
-  const q = (document.getElementById('resSearch').value || '').toLowerCase();
-  const items = document.querySelectorAll('#resList .res');
-  let show = 0;
-  items.forEach(li=>{
-    const txt = li.textContent.toLowerCase();
-    const hit = txt.includes(q);
-    li.style.display = hit ? '' : 'none';
-    if(hit) show++;
+document.getElementById('login').addEventListener('click', () => {
+  const pwd = document.getElementById('pwd').value.trim();
+  const lockCount = getLockState();
+  
+  if(lockCount >= 5){
+    toast('尝试次数过多，请24小时后再试');
+    return;
+  }
+  
+  if(pwd === '520131419'){
+    setLv(1);
+    setLockState(0);
+    document.getElementById('pwd').value = '';
+    document.getElementById('logout').style.display = 'inline-block';
+    document.getElementById('login').style.display = 'none';
+    toast('登录成功，已升级为恶魔权限');
+  } else if(pwd === ''){
+    setLv(0);
+    toast('已设为天使权限（默认）');
+  } else {
+    setLockState(lockCount + 1);
+    toast(`口令错误，剩余尝试次数：${5 - lockCount - 1}`);
+  }
+});
+
+document.getElementById('logout').addEventListener('click', () => {
+  setLv(0);
+  document.getElementById('logout').style.display = 'none';
+  document.getElementById('login').style.display = 'inline-block';
+  toast('已退出登录，回到天使权限');
+});
+
+// ===== 标签页切换 =====
+function switchTab(tabName){
+  state.currentTab = tabName;
+  
+  // 隐藏所有 section
+  document.querySelectorAll('.section').forEach(s => s.hidden = true);
+  // 显示目标 section
+  const target = document.getElementById(tabName);
+  if(target) target.hidden = false;
+  
+  // 更新导航样式
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('cur'));
+  document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('cur');
+}
+
+document.querySelectorAll('[data-tab]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const tab = a.getAttribute('data-tab');
+    switchTab(tab);
   });
-  const tip = document.getElementById('noTip');
-  if(tip) tip.style.display = show ? 'none' : 'block';
-  applyLocks();
+});
+
+// ===== 资源搜索 =====
+function filterRes(){
+  const query = document.getElementById('resSearch').value.toLowerCase();
+  const items = document.querySelectorAll('#resList .res');
+  
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(query) ? 'block' : 'none';
+  });
 }
 
-
-// ===== 即时高质感 Toast（可打断、无排队） =====
-let __toastTimer = 0;
-function toast(msg, opts) {
-  const t = document.getElementById('toast');
-  if(!t) return;
-  const dur = Math.max(800, (opts && opts.duration) ? Number(opts.duration) : 1800);
-  clearTimeout(__toastTimer);
-  t.textContent = String(msg);
-  t.classList.remove('show');
-  // 回流以重启动画
-  void t.offsetWidth;
-  t.classList.add('show');
-  __toastTimer = setTimeout(()=>{
-    t.classList.remove('show');
-  }, dur);
+// ===== Toast 提示 =====
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
 }
 
-// 通用复制到剪贴板（含降级与提示）
-async function copyText(text, okMsg, failMsg){
+// ===== 复制功能 =====
+function copyText(text, okMsg, failMsg){
   try{
     if(navigator.clipboard && window.isSecureContext){
-      await navigator.clipboard.writeText(String(text));
-    }else{
-      // 降级：使用临时 textarea 选中复制
+      navigator.clipboard.writeText(text).then(()=>{
+        toast(okMsg || '已复制');
+      }).catch(()=>{
+        fallbackCopy();
+      });
+    } else {
+      fallbackCopy();
+    }
+    
+    function fallbackCopy(){
       const ta = document.createElement('textarea');
-      ta.value = String(text);
+      ta.value = text;
       ta.style.position = 'fixed';
-      ta.style.top = '-9999px';
+      ta.style.opacity = '0';
       document.body.appendChild(ta);
-      ta.focus(); ta.select();
+      ta.select();
       const ok = document.execCommand('copy');
-      ta.remove();
+      document.body.removeChild(ta);
       if(!ok) throw new Error('execCommand failed');
     }
     toast(okMsg || '已复制');
@@ -843,29 +831,162 @@ function copyPC(){
   navigator.clipboard.writeText(location.href).then(()=>toast('PC 入口已复制'));
 }
 
+// ===== 免责声明和防骗警告模态框 =====
+function showDisclaimerModal() {
+  document.getElementById('disclaimerModal').style.display = 'block';
+}
+
+function closeDisclaimerModal() {
+  document.getElementById('disclaimerModal').style.display = 'none';
+}
+
+// 点击模态框外部关闭
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('disclaimerModal');
+  if (event.target === modal) {
+    closeDisclaimerModal();
+  }
+});
+
 document.addEventListener('DOMContentLoaded',()=>{
   setLv(state.lv || 0);
   applyLocks();
-  
-  // 初始化页面显示
-  document.getElementById('home').hidden = false;
 });
 
-// 其他原有功能保持不变...
 
-/* 一键清空所有本地数据：回到第一次打开的样子 */
-function clearAllData(){
-  try{
-    localStorage.clear();
-    sessionStorage.clear();
-    toast('已清空本地数据，页面将刷新');
-    setTimeout(()=>{
-      location.reload();
-    }, 1000);
-  }catch(e){
-    toast('清空失败: ' + e.message);
-  }
+// 整块点击：资源列表 <li.res> 点击任意空白都打开内部链接
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#resList .res').forEach(li => {
+    const a = li.querySelector('a');
+    if(!a) return;
+    li.addEventListener('click', (e) => { e.stopPropagation();
+      // 如果是点到 <a> 自己，就让默认行为执行；否则整块打开
+      if(e.target.tagName === 'A') return;
+      // 锁定的禁止
+      if(li.classList.contains('locked')){ blockClick.call(li, e); return; }
+      window.location.href = a.href;
+    });
+  });
+  // 栅格卡片（.tile）已经是 <a>，但为了兼容空白内边距，补一个 click 代理
+  document.querySelectorAll('.grid .tile').forEach(el => {
+    // 有可能是 <a> 或非 <a>
+    if(el.tagName === 'A'){
+      // 补充：点击内部空白与子元素都触发 a
+      el.addEventListener('click', (e) => {
+        // 默认就行，这里确保有手型和 hover
+      });
+    }else{
+      const a = el.querySelector('a');
+      if(!a) return;
+      el.addEventListener('click', (e) => {
+        if(el.classList.contains('locked')){ blockClick.call(el, e); return; }
+        window.location.href = a.href;
+      });
+    }
+  });
+});
+
+
+/** ===== 防盗功能（前端增强） ===== */
+/* 1) 链接解码：XOR + base64，SALT 写入页面 */
+const PROTECT_SALT = Uint8Array.from(atob("XDxdE8LSUuw="), c=>c.charCodeAt(0));
+function xorDecode(base64str) {
+  const bin = Uint8Array.from(atob(base64str.replace(/-/g,'+').replace(/_/g,'/')), c=>c.charCodeAt(0));
+  const out = bin.map((b,i)=> b ^ PROTECT_SALT[i % PROTECT_SALT.length]);
+  return new TextDecoder().decode(out);
 }
+function openProtected(el) {
+  const enc = el.getAttribute('data-u');
+  if(!enc) return;
+  const url = xorDecode(enc);
+  window.location.href = url;
+}
+
+/* 2) 将资源与卡片整块点击（并使用受保护链接） */
+document.addEventListener('DOMContentLoaded', () => {
+  // 资源列表整块
+  document.querySelectorAll('#resList .res').forEach(li => {
+    const a = li.querySelector('a[data-u]');
+    if(!a) return;
+    li.addEventListener('click', (e) => { e.stopPropagation();
+      if(li.classList.contains('locked')){ blockClick.call(li, e); return; }
+      if(e.target.tagName==='A'){ e.preventDefault(); }
+      openProtected(a);
+    });
+    // 防止右键复制链接
+    a.addEventListener('contextmenu', e=> e.preventDefault());
+  });
+  // 栅格卡片
+  document.querySelectorAll('.grid a[data-u]').forEach(a=>{
+    const card = a; // 本身就是 a
+    card.addEventListener('click',(e)=>{ e.preventDefault(); e.stopPropagation();
+      e.preventDefault();
+      const host = card.closest('[data-tier]');
+      if(host && host.classList.contains('locked')){ blockClick.call(host, e); return; }
+      openProtected(card);
+    });
+    card.addEventListener('contextmenu', e=> e.preventDefault());
+  });
+});
+
+/* 3) 防拷贝/防右键/防拖拽（输入框除外） */
+function isInEditable(el){ return !!el.closest('input,textarea,[contenteditable="true"]'); }
+document.addEventListener('contextmenu',e=>{ if(!isInEditable(e.target)) e.preventDefault(); });
+['copy','cut','paste','selectstart','dragstart'].forEach(evt=>{
+  document.addEventListener(evt, e=>{ if(!isInEditable(e.target)) e.preventDefault(); }, true);
+});
+
+/* 4) 简易开发者工具侦测：打开时模糊资源区，关闭恢复 */
+(function devtoolsGuard(){
+  let blurApplied = false;
+  function applyBlur(on) {
+    document.querySelectorAll('.panel, .resource-list, .grid').forEach(el=>{
+      el.classList.toggle('protect-blur', on);
+    });
+    if(on) toast('为安全已隐藏资源，关闭开发者工具后恢复');
+  }
+  setInterval(()=>{
+    const threshold = 160; // 大概判断
+    const opened = (window.outerWidth - window.innerWidth > threshold) ||
+                   (window.outerHeight - window.innerHeight > threshold);
+    if(opened && !blurApplied){ blurApplied=true; applyBlur(true); }
+    if(!opened && blurApplied){ blurApplied=false; applyBlur(false); }
+  }, 700);
+})();
+
+/* 5) 全局水印：UID + 时间戳（截图可追溯） */
+(function watermark(){
+  const id = localStorage.getItem('uid') || (()=>{const s=Math.random().toString(36).slice(2,8);localStorage.setItem('uid',s);return s;})();
+  const cvs = document.createElement('canvas');
+  cvs.width=380; cvs.height=160;
+  const ctx = cvs.getContext('2d');
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  ctx.globalAlpha = 0.18;
+  ctx.translate(0,0);
+  ctx.rotate(-Math.PI/8);
+  ctx.font = 'bold 18px Inter, sans-serif';
+  ctx.fillStyle = '#0f172a';
+  const text = '内部使用 · 禁止外传 · UID:'+id+' · '+new Date().toLocaleString();
+  ctx.fillText(text, 20, 100);
+  if(localStorage.getItem('wmOff')!=='1'){
+  const overlay = document.createElement('div');
+  overlay.className = 'protect-overlay';
+  overlay.style.backgroundImage = 'url('+cvs.toDataURL('image/png')+')';
+  document.body.appendChild(overlay);
+}
+})();
+
+/* 6) 反 iframe 嵌套（点击劫持） */
+try{ if(self!==top) top.location = self.location; }catch(err){}
+
+/* 7) 禁止键盘常见导出（Ctrl+S / Ctrl+U / F12 等）— 可绕过，但能阻挡一部分人 */
+document.addEventListener('keydown', (e)=>{
+  if(isInEditable(e.target)) return;
+  const k = e.key.toLowerCase();
+  if((e.ctrlKey||e.metaKey) && (k==='s' || k==='u' || k==='p' || k==='c' || k==='a')) { e.preventDefault(); toast('已禁止快捷键复制/保存'); }
+  if(k==='f12'){ e.preventDefault(); toast('已禁止打开开发者工具'); }
+});
+
 
 // 回车触发登录
 const pwdInput = document.getElementById('pwd');
@@ -876,39 +997,174 @@ if(pwdInput){
     }
   });
 }
-</script>
-<script>
-// ===== 链接防泄露：解密并打开 =====
-(function(){
-  const KEY = 23;
-  function dec(str){
-    try{
-      const bin = atob(str.replace(/-/g,'+').replace(/_/g,'/'));
-      const bytes = new Uint8Array(bin.length);
-      for(let i=0;i<bin.length;i++){ bytes[i] = bin.charCodeAt(i) ^ KEY; }
-      // 将 bytes 转回字符串（UTF-8）
-      const dec = new TextDecoder('utf-8').decode(bytes);
-      return dec;
-    }catch(e){
-      return null;
-    }
-  }
-  function handleClick(e){
-    const t = e.target.closest('a[data-u], .tile[data-u], .res a[data-u]');
-    if(!t) return;
-    const code = t.getAttribute('data-u');
-    if(!code) return;
-    const url = dec(code);
-    if(url){
+
+
+// 修复：资源区 <a> 自身点击不再触发默认 "#/回到首页"，而是打开受保护链接
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#resList .res a[data-u]').forEach(a => {
+    // 把 href 改为 void(0) 彻底去除默认跳转
+    a.setAttribute('href', 'javascript:void(0)');
+    a.removeAttribute('target');
+    a.addEventListener('click', (e) => {
       e.preventDefault();
-      try{ window.open(url, '_blank', 'noopener'); }catch(_){ location.href = url; }
+      e.stopPropagation();
+      const host = a.closest('.res');
+      if(host && host.classList.contains('locked')) { blockClick.call(host, e); return; }
+      openProtected(a);
+    });
+  });
+});
+
+
+// 简单节流器
+function throttle(fn, interval){
+  let last = 0;
+  return function(...args){
+    const now = Date.now();
+    if(now - last >= interval){
+      last = now; fn.apply(this, args);
     }
   }
-  document.addEventListener('click', handleClick, true);
-  // 鼠标悬停不显示真实链接
-  document.querySelectorAll('a[data-u]').forEach(a=>{ a.rel = 'noreferrer noopener'; a.href = '#'; });
-})();
+}
+
+
+// 右键被禁用时也给出提示（每 2 秒最多提示一次）
+const toastRightClick = throttle(()=>toast('已禁用右键'), 2000);
+document.addEventListener('contextmenu', (e)=>{
+  const isEditable = !!e.target.closest('input,textarea,[contenteditable="true"]');
+  if(localStorage.getItem('rcAllow')==='1') return; 
+  if(!isEditable){ toastRightClick(); }
+}, true);
+
+
+
+// 进入"我的"页时，将下载链接应用防护编码
+document.addEventListener('DOMContentLoaded', ()=>{
+  const a = document.querySelector('#mineRes a[href^="https://github.com/"]');
+  if(a && typeof PROTECT_SALT !== 'undefined'){
+    // 运行时按与 protect_href 相同的逻辑进行编码
+    const raw = new TextEncoder().encode(a.getAttribute('href'));
+    const out = raw.map((b,i)=> b ^ PROTECT_SALT[i % PROTECT_SALT.length]);
+    const b64 = btoa(String.fromCharCode(...out)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+    a.setAttribute('data-u', b64);
+    a.setAttribute('href', 'javascript:void(0)');
+    a.addEventListener('click', (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      openProtected(a);
+    }, true);
+  }
+});
+
+
+function clearLocalData(){
+  try{
+    localStorage.removeItem('lv');
+    localStorage.removeItem('uid');
+    localStorage.removeItem('loginLock');
+    localStorage.removeItem('wmOff');
+    localStorage.removeItem('rcAllow');
+    toast('已清空：登录等级/UID/锁定/水印/右键设置');
+  }catch(_){};
+}
+
+function toggleWatermark(){
+  const off = localStorage.getItem('wmOff')==='1';
+  if(off){
+    localStorage.setItem('wmOff','0');
+    // 如果没有 overlay 就生成
+    if(!document.querySelector('.protect-overlay')){
+      (function(){ 
+        const cvs = document.createElement('canvas');
+        cvs.width=380; cvs.height=160;
+        const ctx = cvs.getContext('2d');
+        ctx.globalAlpha = 0.18;
+        ctx.rotate(-Math.PI/8);
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.fillStyle = '#0f172a';
+        const id = localStorage.getItem('uid') || Math.random().toString(36).slice(2,8);
+        ctx.fillText('内部使用 · 禁止外传 · UID:'+id+' · '+new Date().toLocaleString(), 20, 100);
+        const overlay = document.createElement('div');
+        overlay.className = 'protect-overlay';
+        overlay.style.backgroundImage = 'url('+cvs.toDataURL('image/png')+')';
+        document.body.appendChild(overlay);
+      })();
+    }else{
+      document.querySelector('.protect-overlay').style.display='block';
+    }
+    toast('水印：已开启');
+  }else{
+    localStorage.setItem('wmOff','1');
+    const ov = document.querySelector('.protect-overlay');
+    if(ov) ov.style.display='none';
+    toast('水印：已关闭');
+  }
+}
+
+function toggleRightClick(){
+  const allow = localStorage.getItem('rcAllow')==='1';
+  localStorage.setItem('rcAllow', allow ? '0' : '1');
+  toast('右键：' + (allow ? '已关闭' : '已开启'));
+}
+
+
+
+
+
+
+
+
+var toastTimeout;
+function safeToast(msg){
+  // 统一到顶层 toast，支持可打断/立即刷新
+  try{ toast(String(msg)); }catch(_){ /* 忽略 */ }
+}
+
+/* 一键清空所有本地数据：回到第一次打开的样子 */
+async function clearAllData(){
+  try{ toast('正在清空本地数据…'); }catch(_){}
+  try{
+    // 1) 本地存储
+    try{ localStorage.clear(); }catch(_){}
+    try{ sessionStorage.clear(); }catch(_){}
+    // 2) IndexedDB
+    try{
+      if('databases' in indexedDB){
+        const dbs = await indexedDB.databases();
+        if(Array.isArray(dbs)){
+          await Promise.all(dbs.map(d=>{ try{ indexedDB.deleteDatabase(d.name); }catch(_){}}));
+        }
+      }else{
+        // 删除常用库名（兜底）
+        ['keyval-store','idb-keyval','localforage','workbox-expiration'].forEach(n=>{ try{ indexedDB.deleteDatabase(n); }catch(_){} });
+      }
+    }catch(_){}
+    // 3) Cache Storage / Service Worker
+    try{
+      if('caches' in window){
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k=>caches.delete(k)));
+      }
+      if('serviceWorker' in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r=>r.unregister()));
+      }
+    }catch(_){}
+    // 4) Cookie（若有）
+    try{
+      document.cookie.split(';').forEach(c=>{
+        const eq = c.indexOf('=');
+        const name = (eq> -1 ? c.substr(0, eq) : c).trim();
+        if(name){
+          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+        }
+      });
+    }catch(_){}
+  }catch(_){}
+  try{ toast('已清空，本页将自动刷新'); }catch(_){}
+  setTimeout(()=>{ try{ location.reload(true); }catch(_){ location.reload(); } }, 800);
+}
 
 </script>
 </body>
 </html>
+
