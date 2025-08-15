@@ -313,6 +313,38 @@ section#mine .grid{grid-template-columns:1fr}
   /* Toast 不被手指挡住 */
   .toast{top:16px}
 }
+
+/* ======= Mobile Relaxed Typography (v2) ======= */
+@media(max-width:640px){
+  body{font-size:16px; line-height:1.6}
+
+  /* 顶部标题与段落更舒展 */
+  .hero h1{font-size:20px; line-height:1.45; letter-spacing:.2px}
+  .hero p{font-size:14px; line-height:1.7}
+
+  /* 搜索框与按钮：字号和占比 */
+  .search input{font-size:16px; line-height:1.5; padding:14px 16px}
+  .search input::placeholder{font-size:15px; opacity:.85}
+  .search button{font-size:16px; padding:14px 18px}
+
+  /* 资源列表的行高与间距 */
+  .resource-list{gap:12px}
+  .res{min-height:64px; padding:14px 16px; border-radius:20px}
+  .res a{font-size:17px; line-height:1.55; letter-spacing:.1px}
+
+  /* “天使/恶魔”徽标尺寸与间距（伪元素） */
+  [data-tier]::after{
+    font-size:12px;
+    padding:5px 10px;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+  }
+
+  /* 底部导航文字更清晰 */
+  .nav a{font-size:15px; padding:13px 8px}
+}
 </style>
 <meta content="frame-ancestors 'none'; upgrade-insecure-requests; form-action 'self'" http-equiv="Content-Security-Policy"/><meta content="noindex,noarchive,nosnippet,noimageindex" name="robots"/><meta content="no-referrer" name="referrer"/></head>
 <body>
