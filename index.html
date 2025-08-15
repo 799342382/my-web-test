@@ -270,6 +270,49 @@ section#mine .grid{grid-template-columns:1fr}
   margin: 0 auto 20px;
   font-size: 24px;
 }
+
+/* ======= Mobile Polishing Overrides ======= */
+@media(max-width:640px){
+  .brand-inner{padding:10px 12px}
+  .acct input{height:40px}
+  .acct button{height:40px}
+  .container{padding-left:12px;padding-right:12px}
+  .card{border-radius:18px;padding:12px}
+  .hero h1{font-size:19px;margin-bottom:4px}
+  .stats{gap:8px}
+  .stat{border-radius:14px;padding:8px}
+  .num{font-size:16px}
+  .lab{font-size:11px}
+  .head{margin:10px 4px}
+  .h-title{font-size:16px}
+  .h-note{font-size:11px}
+  .panel{border-radius:18px;padding:12px}
+  .search{gap:8px}
+  .search input{padding:12px 14px;border-radius:14px;font-size:14px}
+  .search button{padding:12px 16px;border-radius:14px;font-size:14px}
+  /* 资源列表：左右排布、徽标垂直居中 */
+  .resource-list{gap:10px}
+  .res{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;border-radius:18px;min-height:56px
+  }
+  .res a{display:block;flex:1;font-size:16px;font-weight:800;color:#0f172a}
+  [data-tier]::after{
+    top:50%; transform:translateY(-50%); right:12px;
+    font-size:11px; padding:4px 8px; border-radius:999px
+  }
+  /* 卡片按钮更轻盈一些 */
+  .tile{min-height:64px;border-radius:18px;font-size:15px}
+  /* 底部导航：毛玻璃 + 更大点击区 */
+  .nav{
+    backdrop-filter: saturate(150%) blur(8px);
+    background: rgba(255,255,255,.85);
+    padding:10px; gap:8px; border-radius:20px
+  }
+  .nav a{padding:12px 6px;border-radius:14px;font-size:14px}
+  /* Toast 不被手指挡住 */
+  .toast{top:16px}
+}
 </style>
 <meta content="frame-ancestors 'none'; upgrade-insecure-requests; form-action 'self'" http-equiv="Content-Security-Policy"/><meta content="noindex,noarchive,nosnippet,noimageindex" name="robots"/><meta content="no-referrer" name="referrer"/></head>
 <body>
