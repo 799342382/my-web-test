@@ -1331,7 +1331,48 @@ footer .footer-content p{
   .resource-btn{ min-width: auto; width: 100%; }
 }
 </style>
-</head>
+<style>
+/* 手机端隐藏滚动条外观，避免出现滚轮导致内容左移；仅移动端生效 */
+@media (max-width: 1024px){
+  /* 全局：不显示滚动条轨道（仍然可以正常滚动） */
+  :root{
+    /* 避免滚动条出现/消失造成的布局抖动 */
+    scrollbar-gutter: stable both-edges;
+  }
+  html, body {
+    -ms-overflow-style: none;  /* IE/Old Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar{      /* Chrome/Safari */
+    width: 0;
+    height: 0;
+    display: none;
+    background: transparent;
+  }
+
+  /* 横向可滑容器：隐藏横向滚动条外观，保留手势滑动 */
+  .nav-wrap, .tabs, .tablist {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .nav-wrap::-webkit-scrollbar,
+  .tabs::-webkit-scrollbar,
+  .tablist::-webkit-scrollbar{
+    width: 0; height: 0; display: none; background: transparent;
+  }
+
+  /* 防止任何子容器强制出现滚动条 */
+  [style*="overflow"], .card-grid, .resource-list {
+    scrollbar-width: none;
+  }
+  [style*="overflow"]::-webkit-scrollbar,
+  .card-grid::-webkit-scrollbar,
+  .resource-list::-webkit-scrollbar{
+    width: 0; height: 0; display: none;
+  }
+}
+</style></head>
 <body>
 <header>
 <div class="container">
