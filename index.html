@@ -1372,7 +1372,51 @@ footer .footer-content p{
     width: 0; height: 0; display: none;
   }
 }
-</style></head>
+</style>
+<!-- App 模式修正：当打包成APP/内置WebView时，避免右侧滚轮导致布局左移 -->
+<style>
+/* 方式A（最推荐）：在 <body> 加 class="app-mode" 即可开启补偿。 */
+/* 仅移动端生效，PC不影响 */
+@media (max-width: 1024px){
+  /* 1) 预留一个稳定的“右边距”来抵消系统滚轮占位（通常 6–12px） */
+  body.app-mode {
+    padding-right: 10px; /* 你可以改成 8/12 视机型微调 */
+  }
+  /* 2) 让容器始终居中且不贴边，避免被滚轮覆盖 */
+  .container{
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  /* 3) 彻底隐藏WebView显示的滚动条外观（仍可滑动） */
+  html, body{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar, body::-webkit-scrollbar{width:0;height:0;display:none}
+  /* 4) 禁止横向滚动，防止内容被“挤歪”出现水平条 */
+  html, body{overflow-x:hidden}
+  /* 5) 避免橡皮筋回弹带来的闪动 */
+  body{overscroll-behavior-y: contain;}
+}
+</style>
+
+<script>
+/* 方式B（自动识别尝试）：如果检测到是在App内或小窗口，自动加上 app-mode */
+(function(){
+  try{
+    var isSmall = Math.max(window.innerWidth, document.documentElement.clientWidth) <= 420;
+    var isStandalone = (window.navigator.standalone === true) || window.matchMedia('(display-mode: standalone)').matches;
+    var isAndroidWebView = (/(wv|Android).*AppleWebKit/i).test(navigator.userAgent) && !/Chrome\/\d+/i.test(navigator.userAgent);
+    if(isSmall || isStandalone || isAndroidWebView){
+      document.addEventListener('DOMContentLoaded', function(){
+        document.body.classList.add('app-mode');
+      });
+    }
+  }catch(e){}
+})();
+</script>
+
+</head>
 <body>
 <header>
 <div class="container">
