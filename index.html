@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 
 <html lang="zh">
@@ -1093,7 +1094,7 @@
 /* ===== 全站统一 · 高级版心与卡片规范 ===== */
 
 /* 版心：所有主区块（首页/学习资源/个人中心）统一宽度与居中 */
-#home, #learn, #mine {
+#home, #learn, #profile {
   max-width: 1120px;          /* 统一版心宽度 */
   margin: 0 auto;
   padding-left: 12px;
@@ -1101,7 +1102,7 @@
 }
 
 /* 卡片统一视觉（边框/圆角/阴影） */
-#home .card, #learn .card, #mine .card {
+#home .card, #learn .card, #profile .card {
   border: 1px solid #e5e7eb;  /* gray-200 细描边 */
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(2,6,23,.05);
@@ -1110,19 +1111,19 @@
 }
 
 /* 卡片顶部细条统一为柔和灰蓝渐变 */
-#home .card::before, #learn .card::before, #mine .card::before {
+#home .card::before, #learn .card::before, #profile .card::before {
   background: linear-gradient(90deg, #94a3b8, #cbd5e1);
 }
 
 /* 卡片内边距统一 */
 #home .card .card-body, 
 #learn .card .card-body,
-#mine .card .card-body {
+#profile .card .card-body {
   padding: 20px 24px;
 }
 
 /* 标题区统一：图标尺寸/间距/标题字号 */
-#home .card-header i, #learn .card-header i, #mine .card-header i{
+#home .card-header i, #learn .card-header i, #profile .card-header i{
   font-size: 20px;
   width: 40px; height: 40px;
   display: inline-flex; align-items:center; justify-content:center;
@@ -1130,7 +1131,7 @@
   background: #e2e8f0;          /* slate-200 */
   border-radius: 10px;
 }
-#home .card-header h3, #learn .card-header h3, #mine .card-header h3{
+#home .card-header h3, #learn .card-header h3, #profile .card-header h3{
   font-size: 1.15rem;
   font-weight: 800;
   color: #0f172a;
@@ -1196,7 +1197,7 @@ main.container, .container.nav-container {
 }
 
 /* 学习资源/个人中心卡片占满容器宽度 */
-#learn .card, #mine .card { width: 100%; margin: 0 auto; }
+#learn .card, #profile .card { width: 100%; margin: 0 auto; }
 
 
 /* ===== 个人中心(#mine) 与 学习资源同宽 ===== */
@@ -1454,6 +1455,85 @@ main.container{ margin-top: 4px; }
   }catch(e){}
 })();
 </script>
+
+
+<!-- ===== Patch: 保证“学习资源”长标题完整显示（不再省略号） ===== -->
+<style id="fix-learn-title-wrap">
+/* 桌面端：左文字可换行，右按钮固定宽度，整体仍然一行排列 */
+#learn .card ul li {
+  align-items: flex-start;                 /* 标题多行时，顶部对齐更整齐 */
+  column-gap: 12px;
+}
+#learn .card ul li strong{
+  /* 允许中文自动换行，彻底取消省略号与隐藏 */
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: break-word;
+  /* 预留右侧按钮空间，避免被挤压；按钮最小宽度在原样式中为 112px */
+  max-width: calc(100% - 140px);
+}
+/* 极窄屏：按钮下移成第二行，标题占满整行（沿用你原来的移动端策略，但确保不限宽、可换行） */
+@media (max-width: 540px){
+  #learn .card ul li{ 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 8px;
+  }
+  #learn .card ul li strong{
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word;
+  }
+  #learn .card ul li a{ 
+    align-self: flex-start; 
+    min-width: 0;           /* 允许按钮自适应，不挤压标题 */
+  }
+}
+</style>
+
+
+<!-- ===== Patch 2: 预留左侧图标占位，避免遮挡标题 ===== -->
+<style id="fix-learn-icon-space">
+/* 仅作用于 #learn 学习资源列表 */
+#learn .card ul li{
+  display:flex;
+  align-items:flex-start;
+  gap: 10px;                 /* 图标与标题/按钮之间的间距 */
+}
+/* 列表项第一个子元素（图标容器）固定宽度，防遮挡 */
+#learn .card ul li > *:first-child{
+  flex: 0 0 36px;            /* 宽度可按你的图标实际大小微调为 32/36/40 */
+  width: 36px;
+  min-width: 36px;
+}
+/* 兼容不同实现：若图标是 img/svg，确保不撑破布局 */
+#learn .card ul li > *:first-child img,
+#learn .card ul li > *:first-child svg{
+  display:block;
+  max-width:100%;
+  height:auto;
+}
+/* 当移动端改为上下布局时，同样保留图标占位 */
+@media (max-width:540px){
+  #learn .card ul li{ gap:8px; }
+  #learn .card ul li > *:first-child{ flex:0 0 32px; width:32px; min-width:32px; }
+}
+</style>
+
+
+<!-- ===== Patch 3: 兼容绝对定位的图标 —— 给标题让出安全边距 ===== -->
+<style id="fix-learn-absolute-icon-overlap">
+#learn .card ul li{ position: relative; }
+#learn .card ul li strong{
+  margin-left: 40px !important;  /* 为左侧下载小图标让出空间，避免压住文字 */
+}
+@media (max-width:540px){
+  #learn .card ul li strong{ margin-left: 40px !important; }
+}
+</style>
 
 </head>
 <body>
