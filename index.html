@@ -1414,6 +1414,28 @@ footer .footer-content p{
 
 /* 首屏保护距离，防止极端机型/模拟器遮挡 */
 main.container{ margin-top: 4px; }
+
+
+
+/* —— 报名弹窗可滚动优化（仅移动端生效） —— */
+@media (max-width:1024px){
+  .modal{
+    max-height: min(90vh, 720px);
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-header{ flex: 0 0 auto; }
+  .modal-body{
+    flex: 1 1 auto;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(90vh - 120px);
+  }
+  body.modal-open{
+    overflow: hidden !important;
+    touch-action: none;
+  }
+}
 </style>
 
 <script>
@@ -1668,5 +1690,37 @@ main.container{ margin-top: 4px; }
       showTab('home');
     });
   </script>
+
+<script>
+// 让“立即报名”弹窗打开时允许内部滚动，同时禁用背景滚动
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  // 包装原方法
+  var _open = window.openEnrollModal;
+  var _close = window.closeEnrollModal;
+
+  window.openEnrollModal = function(){
+    if (typeof _open === 'function') _open();
+    document.body.classList.add('modal-open');
+    // 确保遮罩开启
+    var mask = byId('enrollMask');
+    if (mask){ mask.style.display = 'flex'; }
+  };
+  window.closeEnrollModal = function(){
+    if (typeof _close === 'function') _close();
+    document.body.classList.remove('modal-open');
+    var mask = byId('enrollMask');
+    if (mask){ mask.style.display = 'none'; }
+  };
+
+  // 点击遮罩关闭
+  window.maskClick = function(e){
+    if(e && e.target && e.target.id === 'enrollMask'){
+      window.closeEnrollModal();
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
