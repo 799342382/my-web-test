@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="zh">
@@ -1092,7 +1093,7 @@
 /* ===== 全站统一 · 高级版心与卡片规范 ===== */
 
 /* 版心：所有主区块（首页/学习资源/个人中心）统一宽度与居中 */
-#home, #learn, #profile {
+#home, #learn, #mine {
   max-width: 1120px;          /* 统一版心宽度 */
   margin: 0 auto;
   padding-left: 12px;
@@ -1100,7 +1101,7 @@
 }
 
 /* 卡片统一视觉（边框/圆角/阴影） */
-#home .card, #learn .card, #profile .card {
+#home .card, #learn .card, #mine .card {
   border: 1px solid #e5e7eb;  /* gray-200 细描边 */
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(2,6,23,.05);
@@ -1109,19 +1110,19 @@
 }
 
 /* 卡片顶部细条统一为柔和灰蓝渐变 */
-#home .card::before, #learn .card::before, #profile .card::before {
+#home .card::before, #learn .card::before, #mine .card::before {
   background: linear-gradient(90deg, #94a3b8, #cbd5e1);
 }
 
 /* 卡片内边距统一 */
 #home .card .card-body, 
 #learn .card .card-body,
-#profile .card .card-body {
+#mine .card .card-body {
   padding: 20px 24px;
 }
 
 /* 标题区统一：图标尺寸/间距/标题字号 */
-#home .card-header i, #learn .card-header i, #profile .card-header i{
+#home .card-header i, #learn .card-header i, #mine .card-header i{
   font-size: 20px;
   width: 40px; height: 40px;
   display: inline-flex; align-items:center; justify-content:center;
@@ -1129,7 +1130,7 @@
   background: #e2e8f0;          /* slate-200 */
   border-radius: 10px;
 }
-#home .card-header h3, #learn .card-header h3, #profile .card-header h3{
+#home .card-header h3, #learn .card-header h3, #mine .card-header h3{
   font-size: 1.15rem;
   font-weight: 800;
   color: #0f172a;
@@ -1195,7 +1196,7 @@ main.container, .container.nav-container {
 }
 
 /* 学习资源/个人中心卡片占满容器宽度 */
-#learn .card, #profile .card { width: 100%; margin: 0 auto; }
+#learn .card, #mine .card { width: 100%; margin: 0 auto; }
 
 
 /* ===== 个人中心(#mine) 与 学习资源同宽 ===== */
