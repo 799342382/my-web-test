@@ -1230,226 +1230,38 @@ footer .footer-content p{
   font-size: 0.88rem;      /* 字体略小，更克制 */
   color: #475569;          /* slate-600，中性灰蓝，显专业 */
 }
-
-/* 手机端字体精修，仅 <=540px 生效 */
-@media (max-width: 540px) {
-  h1 { font-size: 1.15rem; }
-  h2 { font-size: 1.05rem; }
-  h3 { font-size: 1rem; }
-
-  body, p, .card p, .resource-title {
-    font-size: 0.95rem;
-    line-height: 1.65;
-  }
-
-  .btn, .btn-primary, .resource-btn {
-    font-size: 0.95rem;
-    line-height: 1.3;
-    min-height: 42px;
-  }
-
-  .header-sub, .hint, footer {
-    font-size: 0.8rem;
-  }
-}
-
 </style>
 
-<!-- 移动端专用补丁：仅在 <=1024px 生效，PC端完全不改变 -->
+<!-- 📌 Minimal mobile scroll-fix (PC unchanged) -->
 <style>
-/* 移动端专用补丁：仅在 <=1024px 生效，PC端完全不改变 */
 @media (max-width: 1024px){
-  /* 1) 基础排版：更易读的流体字号与行高 */
-  html{ font-size: clamp(15px, 3.5vw, 17px); }
-  body{ line-height: 1.7; -webkit-text-size-adjust: 100%; }
-
-  /* 2) 页面左右留白：避免贴边，兼容刘海屏安全区 */
-  .container, .wrap, .inner, main, section{
-    padding-left: max(12px, env(safe-area-inset-left));
-    padding-right: max(12px, env(safe-area-inset-right));
-  }
-  footer{
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
-  }
-
-  /* 3) 顶部导航：横向可滑动的胶囊标签（如果不存在，忽略） */
-  nav, .top-tabs, .tabbar{
-    position: sticky; top: 0; z-index: 50;
-    backdrop-filter: blur(10px);
-  }
-  .nav-wrap, .tabs, .tablist{
-    display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory; padding: 8px 0;
-  }
-  .nav-wrap > *, .tabs > *, .tablist > *{ scroll-snap-align: start; }
-
-  /* 4) 卡片网格：手机上一列排列（不影响PC列数） */
-  .card-grid{ display: grid; grid-template-columns: 1fr !important; gap: 12px; }
-  .card{ border-radius: 16px; overflow: hidden; }
-  .card-hd{ padding: 12px 14px; }
-  .card-bd{ padding: 14px 14px; }
-
-  /* 5) 列表型资源行：左文字右按钮；过长标题自动省略 */
-  .resource-list{ list-style: none; margin: 0; padding: 0; }
-  .resource-list li{
-    display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
-    padding: 12px 14px; border-radius: 12px;
-  }
-  .resource-left{ display: flex; gap: 8px; align-items: center; width: 100%; min-width: 0; }
-  .resource-title{ flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .resource-btn{ align-self: stretch; display: inline-flex; justify-content: center; padding: 10px 14px; border-radius: 999px; }
-
-  /* 6) 主要按钮触控热区更大，保持一行不换行 */
-  .btn, .btn-primary, .btn-closed, button, a.button{
-    min-height: 44px; padding: 12px 16px; line-height: 1.2; word-break: keep-all;
-  }
-
-  /* 7) 弹窗：宽度自适应，二维码与说明分层 */
-  .modal{ width: min(900px, calc(100% - 24px)); margin: 0 auto; border-radius: 18px; }
-  .enroll-grid{ display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .qr img{ width: 200px; height: 200px; border-radius: 12px; }
-
-  /* 8) 图片与媒体：最大宽度不溢出 */
-  img, video{ max-width: 100%; height: auto; }
-
-  /* 9) 轻量化悬浮：手机端禁用强悬浮，避免错触和性能损耗 */
-  .card:hover, .resource-list li:hover{ transform: none !important; box-shadow: none !important; }
-}
-
-/* 更小屏（<=540px）进一步优化 */
-@media (max-width: 540px){
-  /* 收紧上下间距，让首屏信息密度更合理 */
-  header, .hero, .banner{ padding-top: 14px !important; padding-bottom: 14px !important; }
-  main{ padding-top: 14px !important; padding-bottom: 14px !important; }
-
-  /* 标题字号略微调小，保持层级 */
-  h1{ font-size: 1.35rem; }
-  h2{ font-size: 1.15rem; }
-  h3{ font-size: 1.05rem; }
-
-  /* 资源按钮宽度=整行，便于点击 */
-  .resource-btn{ min-width: auto; width: 100%; }
-}
-</style>
-<style>
-/* 手机端隐藏滚动条外观，避免出现滚轮导致内容左移；仅移动端生效 */
-@media (max-width: 1024px){
-  /* 全局：不显示滚动条轨道（仍然可以正常滚动） */
-  :root{
-    /* 避免滚动条出现/消失造成的布局抖动 */
-    scrollbar-gutter: stable both-edges;
-  }
-  html, body {
-    -ms-overflow-style: none;  /* IE/Old Edge */
-    scrollbar-width: none;     /* Firefox */
-  }
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar{      /* Chrome/Safari */
-    width: 0;
-    height: 0;
-    display: none;
-    background: transparent;
-  }
-
-  /* 横向可滑容器：隐藏横向滚动条外观，保留手势滑动 */
-  .nav-wrap, .tabs, .tablist {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .nav-wrap::-webkit-scrollbar,
-  .tabs::-webkit-scrollbar,
-  .tablist::-webkit-scrollbar{
-    width: 0; height: 0; display: none; background: transparent;
-  }
-
-  /* 防止任何子容器强制出现滚动条 */
-  [style*="overflow"], .card-grid, .resource-list {
-    scrollbar-width: none;
-  }
-  [style*="overflow"]::-webkit-scrollbar,
-  .card-grid::-webkit-scrollbar,
-  .resource-list::-webkit-scrollbar{
-    width: 0; height: 0; display: none;
-  }
-}
-</style>
-<!-- App 模式修正：当打包成APP/内置WebView时，避免右侧滚轮导致布局左移 -->
-<style>
-/* 方式A（最推荐）：在 <body> 加 class="app-mode" 即可开启补偿。 */
-/* 仅移动端生效，PC不影响 */
-@media (max-width: 1024px){
-  /* 1) 预留一个稳定的“右边距”来抵消系统滚轮占位（通常 6–12px） */
-  body.app-mode {
-    padding-right: 10px; /* 你可以改成 8/12 视机型微调 */
-  }
-  /* 2) 让容器始终居中且不贴边，避免被滚轮覆盖 */
-  .container{
-    padding-left: max(12px, env(safe-area-inset-left));
-    padding-right: max(12px, env(safe-area-inset-right));
-  }
-  /* 3) 彻底隐藏WebView显示的滚动条外观（仍可滑动） */
-  html, body{
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  html::-webkit-scrollbar, body::-webkit-scrollbar{width:0;height:0;display:none}
-  /* 4) 禁止横向滚动，防止内容被“挤歪”出现水平条 */
-  html, body{overflow-x:hidden}
-  /* 5) 避免橡皮筋回弹带来的闪动 */
-  body{overscroll-behavior-y: contain;}
-}
-</style>
-
-<script>
-/* 方式B（自动识别尝试）：如果检测到是在App内或小窗口，自动加上 app-mode */
-(function(){
-  try{
-    var isSmall = Math.max(window.innerWidth, document.documentElement.clientWidth) <= 420;
-    var isStandalone = (window.navigator.standalone === true) || window.matchMedia('(display-mode: standalone)').matches;
-    var isAndroidWebView = (/(wv|Android).*AppleWebKit/i).test(navigator.userAgent) && !/Chrome\/\d+/i.test(navigator.userAgent);
-    if(isSmall || isStandalone || isAndroidWebView){
-      document.addEventListener('DOMContentLoaded', function(){
-        document.body.classList.add('app-mode');
-      });
-    }
-  }catch(e){}
-})();
-</script>
-
-<style>
-/* === 跟随 AI神器 的滚动与安全区策略（仅移动端）=== */
-@media (max-width: 1024px){
-  :root{ --safe-bottom: env(safe-area-inset-bottom); }
-  html, body { height:100%; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling: touch; }
-  /* 统一底部安全区，避免被APP滚轮/系统条影响布局判定 */
-  .container{ padding-bottom: calc(160px + var(--safe-bottom)); }
-  html{ scroll-padding-bottom: calc(160px + var(--safe-bottom)); }
-  /* 稳定滚动槽，避免出现/消失引起左移（支持的浏览器生效） */
+  /* 让滚动槽稳定，出现/消失不挤布局（支持则生效） */
   :root{ scrollbar-gutter: stable both-edges; }
-  /* 禁止任何子级造成横向滚动 */
-  * { max-width: 100vw; }
-  [style*="width:100vw"], [style*="100vw"]{ width: 100%; }
-  /* 隐藏滚轮外观（仍可滚动），以适配部分 WebView 显示滚轮的情况 */
-  html, body{ -ms-overflow-style: none; scrollbar-width: none; }
-  html::-webkit-scrollbar, body::-webkit-scrollbar{ width:0; height:0; display:none; background:transparent; }
+  /* 禁止任何水平滚动引发的横向滚条 */
+  html, body{ overflow-x: hidden; }
+  /* 隐藏页面内部滚条外观（仍可滚动），避免视觉干扰 */
+  *{ -ms-overflow-style: none; scrollbar-width: none; }
+  *::-webkit-scrollbar{ width:0; height:0; display:none; background:transparent; }
 }
 </style>
 
 <script>
-// 运行时再稳一次：如果不支持 scrollbar-gutter，则在小屏统一补偿 10px（可按机型调整）
+// 自适应补偿：在移动端给 body 右侧加一个极小的稳定内边距，抵消 App/WebView 的滚轮占位
 (function(){
-  try{
-    var small = Math.max(window.innerWidth, document.documentElement.clientWidth) <= 420;
-    var supportGutter = CSS && CSS.supports && CSS.supports('scrollbar-gutter: stable both-edges');
-    if(small && !supportGutter){
-      document.addEventListener('DOMContentLoaded', function(){
-        document.body.style.paddingRight = '10px';
-      });
+  function applyCompensation(){
+    if(!window.matchMedia('(max-width: 1024px)').matches){
+      document.body.style.paddingRight = ''; return;
     }
-  }catch(e){}
+    var sbw = window.innerWidth - document.documentElement.clientWidth;
+    // 部分 WebView 返回 0，这里给一个保守兜底 8px；如果测到更大则以实测为准
+    var fallback = 8;
+    var w = Math.max(sbw, fallback);
+    document.body.style.paddingRight = w + 'px';
+  }
+  window.addEventListener('resize', applyCompensation, {passive:true});
+  document.addEventListener('DOMContentLoaded', applyCompensation);
 })();
 </script>
-
 </head>
 <body>
 <header>
