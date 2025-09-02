@@ -3,7 +3,7 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>高端赠品学习中心</title>
 <!-- 二维码生成库 -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -1400,6 +1400,20 @@ footer .footer-content p{
   /* 5) 避免橡皮筋回弹带来的闪动 */
   body{overscroll-behavior-y: contain;}
 }
+
+/* —— 顶部安全区适配（刘海/状态栏/模拟器工具条） —— */
+@media (max-width: 1024px){
+  :root{ --safe-top: env(safe-area-inset-top); }
+  /* 给整页预留顶部安全区，避免标题被遮住 */
+  body{ padding-top: max(0px, var(--safe-top, 0px)); }
+  /* 让粘性导航贴在安全区之下 */
+  nav{ top: var(--safe-top, 0px); }
+  /* 头部高度适配，避免和导航重叠 */
+  header{ padding-top: calc(14px + var(--safe-top, 0px)); }
+}
+
+/* 首屏保护距离，防止极端机型/模拟器遮挡 */
+main.container{ margin-top: 4px; }
 </style>
 
 <script>
