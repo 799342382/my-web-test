@@ -158,23 +158,50 @@
     .page.active{ display:block; }
   
 
-/* —— 悬浮球（手机端）：线下课报名 —— */
-@media (max-width: 600px){
-  .nav-actions .cta{ display:none !important; } /* 手机端隐藏顶部报名按钮，避免遮挡 */
-  .float-ball{
-    position: fixed;
-    right: max(14px, env(safe-area-inset-right));
-    bottom: max(14px, env(safe-area-inset-bottom));
-    z-index: 90;
-    width: 54px; height: 54px; border-radius: 50%;
-    display:flex; align-items:center; justify-content:center;
-    font-weight: 800; letter-spacing: .5px;
-    background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    color: #001828; border: 1px solid rgba(255,255,255,.25);
-    box-shadow: 0 12px 26px rgba(0,0,0,.35);
-    user-select:none; touch-action:none;
+
+}
+
+
+/* —— 移动端专用报名行 —— */
+.signup-mobile-row{ display:none; }
+@media (max-width: 768px){
+  .nav-actions .cta{ display:none !important; } /* 隐藏导航栏的报名按钮 */
+  .signup-mobile-row{ display:block; }
+  .signup-mobile-row .btn{ display:inline-flex; margin:0 auto; }
+  .signup-mobile-row > div{ display:flex; justify-content:center; margin:10px 0; }
+}
+
+
+.signup-mobile-row > div{ display:flex; justify-content:center; margin:10px 0; }
+.signup-mobile-row .btn{ display:inline-flex; }
+
+
+
+/* 默认：显示第二行报名、隐藏导航右侧按钮（照顾到把宽度识别成980px的WebView） */
+.signup-mobile-row{ display:block; }
+.nav-actions .cta{ display:none !important; }
+
+/* 仅当视口>=1400px（桌面端）时：隐藏第二行，显示右上角按钮 */
+@media (min-width: 1400px){
+  .signup-mobile-row{ display:none; }
+  .nav-actions .cta{ display:inline-flex !important; }
+}
+
+/* 居中排版 */
+.signup-mobile-row > div{ display:flex; justify-content:center; margin:10px 0; }
+.signup-mobile-row .btn{ display:inline-flex; }
+
+
+
+@media (max-width: 1400px){
+  .signup-mobile-row > div{ display:flex; justify-content:center; margin:10px 0; width:100%; }
+  .signup-mobile-row .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:100%; max-width: none;
+    padding:10px 14px;              /* 小高度，接近搜索框 */
+    font-size:14px; font-weight:800;
+    border-radius:999px;             /* 和搜索框一致的圆角 */
   }
-  .float-ball:active{ transform: scale(.98); }
 }
 
 </style>
@@ -227,7 +254,7 @@
               <div><b>课程地点：</b>广东</div>
             </div>
             <div style="height:12px"></div>
-            <a class="btn brand" href="#signup" data-nav>📝 线下课报名</a>
+            <a class="btn brand" href="#signup" data-nav>线下课报名</a>
           </div>
 
           <!-- 历史线下课程（已截止） -->
@@ -571,74 +598,11 @@
 })();
 
 
-// —— 悬浮球（手机端）：拖拽 + 点击报名 ——
-(function(){
-  const ball = document.getElementById('signupBall');
-  if(!ball) return;
 
-  const STORAGE_KEY = 'signup_ball_pos_v1';
-  function restore(){
-    try{
-      const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if(s && typeof s.x==='number' && typeof s.y==='number'){
-        ball.style.left = s.x + 'px';
-        ball.style.top  = s.y + 'px';
-        ball.style.right = 'auto';
-        ball.style.bottom = 'auto';
-      }
-    }catch{}
-  }
-  restore();
 
-  let dragging = false, startX=0, startY=0, offX=0, offY=0;
-  const vp = () => ({w: window.innerWidth, h: window.innerHeight});
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-  function onDown(e){
-    dragging = true;
-    const p = e.touches ? e.touches[0] : e;
-    const r = ball.getBoundingClientRect();
-    startX = p.clientX; startY = p.clientY;
-    offX = startX - r.left; offY = startY - r.top;
-    ball.style.transition = 'none';
-  }
-  function onMove(e){
-    if(!dragging) return;
-    const p = e.touches ? e.touches[0] : e;
-    const x = p.clientX - offX;
-    const y = p.clientY - offY;
-    const {w,h} = vp();
-    const size = ball.offsetWidth;
-    const nx = clamp(x, 6, w - size - 6);
-    const ny = clamp(y, 6, h - size - 6);
-    ball.style.left = nx + 'px';
-    ball.style.top  = ny + 'px';
-    ball.style.right = 'auto';
-    ball.style.bottom = 'auto';
-    if(e.cancelable) e.preventDefault();
-  }
-  function onUp(){
-    if(!dragging) return;
-    dragging = false;
-    ball.style.transition = '';
-    const r = ball.getBoundingClientRect();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({x:r.left, y:r.top}));
-  }
 
-  ball.addEventListener('mousedown', onDown);
-  ball.addEventListener('touchstart', onDown, {passive:true});
-  window.addEventListener('mousemove', onMove, {passive:false});
-  window.addEventListener('touchmove', onMove, {passive:false});
-  window.addEventListener('mouseup', onUp);
-  window.addEventListener('touchend', onUp);
 
-  // 点击跳转报名页（非拖拽才触发）
-  ball.addEventListener('click', ()=>{
-    if(dragging) return;
-    if(typeof showPageById === 'function'){ showPageById('#signup'); }
-    else{ location.hash = '#signup'; }
-  });
-})();
 
 </script>
 
@@ -647,6 +611,5 @@
 </div>
 
 
-<button class="float-ball" id="signupBall" aria-label="线下课报名" title="线下课报名">课</button>
 </body>
 </html>
