@@ -1499,6 +1499,59 @@ main.container{ margin-top: 4px; }
     touch-action: none;
   }
 }
+
+/* ===== 移动端优化补丁（最终版） ===== */
+@media (max-width: 540px) {
+  /* 卡片收紧内边距 */
+  .card {
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .card-header {
+    padding: 10px 12px;
+  }
+  .card-body {
+    padding: 12px 14px;
+  }
+
+  /* 字体更紧凑 */
+  body, p, .card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.25rem; }
+  h2 { font-size: 1.1rem; }
+  h3 { font-size: 1rem; }
+
+  /* 导航按钮紧凑化 */
+  .nav-btn {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    gap: 4px;
+  }
+  .nav-btn i {
+    font-size: 1rem;
+  }
+
+  /* 避免滚动条挤压内容 */
+  html, body {
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 页脚文字再收紧 */
+  footer {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    padding: 6px 0;
+  }
+}
+
 </style>
 
 <script>
