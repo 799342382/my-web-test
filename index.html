@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="zh">
@@ -7,7 +9,7 @@
 <title>高端赠品学习中心</title>
 <!-- 二维码生成库 -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://github.com/799342382/AIToolbox/releases/download/%E5%AE%89%E8%A3%85/AI.apk" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
     :root {
@@ -1105,7 +1107,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 62%;                  /* 预留右侧按钮空间 */
+                    /* 预留右侧按钮空间 */
 }
 
 /* 隐藏原本换行 <br>，让布局一行完成 */
@@ -1127,7 +1129,7 @@
     gap: 8px;
   }
   #learn .card ul li strong{
-    max-width: 100%;
+    
   }
   #learn .card ul li a{
     align-self: flex-start;
@@ -1136,11 +1138,7 @@
 
 
 /* ===== 学习资源卡片收窄布局 ===== */
-#learn .card{
-  max-width: 860px;             /* 控制卡片最大宽度，更紧凑 */
-  margin: 0 auto;               /* 居中 */
-  padding: 20px 28px;           /* 内边距优化 */
-}
+#learn .card {width: 100%;  margin: 0 auto; padding: 20px 28px;}
 
 /* 标题和内容整体保持舒适行长 */
 #learn .card-header h3{
@@ -1161,13 +1159,7 @@
 }
 
 /* 卡片统一视觉（边框/圆角/阴影） */
-#home .card, #learn .card, #profile .card {
-  border: 1px solid #e5e7eb;  /* gray-200 细描边 */
-  border-radius: 18px;
-  box-shadow: 0 6px 18px rgba(2,6,23,.05);
-  overflow: hidden;
-  background: #fff;
-}
+#home .card, #learn .card, #profile .card {width: 100%;  margin: 0 auto;}
 
 /* 卡片顶部细条统一为柔和灰蓝渐变 */
 #home .card::before, #learn .card::before, #profile .card::before {
@@ -1197,10 +1189,7 @@
 }
 
 /* 学习资源列表：行对齐与按钮样式继承之前规则（保持显眼但不刺眼） */
-#learn .card {
-  max-width: 1080px;            /* 比 860px 更宽，观感更饱满 */
-  margin: 0 auto;
-}
+#learn .card {width: 100%;  margin: 0 auto; padding: 20px 28px;}
 
 /* 行距微调，让整卡更紧凑 */
 #learn .card ul li{ padding: 12px 18px; }
@@ -1256,16 +1245,11 @@ main.container, .container.nav-container {
 }
 
 /* 学习资源/个人中心卡片占满容器宽度 */
-#learn .card, #profile .card { width: 100%; margin: 0 auto; }
+#learn .card, #profile .card {width: 100%;  margin: 0 auto;}
 
 
 /* ===== 个人中心(#mine) 与 学习资源同宽 ===== */
-#mine .card{
-  max-width: 1080px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
+#mine .card {width: 100%;  margin-left: auto; margin-right: auto;}
 /* 占位框（开发中）的虚线盒子适配全宽卡片的内边距 */
 #mine .coming-soon{
   max-width: 100%;
@@ -1315,6 +1299,19 @@ footer .footer-content p{
     font-size: 0.8rem;
   }
 }
+
+
+/* —— 个人中心宽度修正：与首页/学习资源一致 —— */
+.profile-mine{ display:block; width:100%; }
+.profile-mine .mine-group{
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(2,6,23,.05);
+  overflow: hidden;
+}
+.profile-mine .mine-item{ height: 50px; padding: 0 16px; }
 
 </style>
 
@@ -1808,6 +1805,22 @@ main.container{ margin-top: 4px; }
   }
   .nav-btn{ height: 24px !important; padding: 0 5px !important; font-size: 11px !important; }
   .nav-btn i{ font-size: 12.5px !important; }
+}
+
+
+/* ===== 个人中心 · 微信风列表按钮 ===== */
+.profile-mine{ padding: max(6px, env(safe-area-inset-top)) max(6px, env(safe-area-inset-right)) 10px max(6px, env(safe-area-inset-left)); display:none; }
+.mine-group{ background:#fff; border-radius:14px; overflow:hidden; margin:8px 12px; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+.mine-item{ display:flex; align-items:center; height:52px; padding:0 12px; border-bottom:1px solid #f1f5f9; }
+.mine-item:last-child{ border-bottom:none; }
+.mine-icon{ width:24px; height:24px; margin-right:12px; display:grid; place-items:center; border-radius:6px; background:#f1f5f9; }
+.mine-text{ flex:1; font-size:16px; color:#0f172a; }
+.mine-right{ color:#94a3b8; display:flex; align-items:center; gap:6px; }
+.mine-right .badge{ background:#ef4444; color:#fff; font-size:12px; line-height:1; padding:2px 6px; border-radius:999px; }
+.mine-chevron{ width:18px; height:18px; opacity:.6; }
+@media(max-width:360px){
+  .mine-item{ height:48px; }
+  .mine-text{ font-size:15px; }
 }
 
 </style>
@@ -2341,5 +2354,48 @@ main.container{ margin-top: 4px; }
 })();
 </script>
 
-</body>
-</html>
+
+<script>
+(function(){
+  // 创建个人中心 DOM
+  const mine = document.createElement('section');
+  mine.className = 'profile-mine';
+  mine.innerHTML = `<div class="mine-group">
+      <a class="mine-item" data-noprotect="1" href="https://github.com/799342382/AI-Toolbox/releases/latest/download/AI.apk" target="_blank" rel="noopener">
+        <div class="mine-icon">📦</div>
+        <div class="mine-text">APP下载</div>
+        <div class="mine-right"><svg class="mine-chevron" viewBox="0 0 24 24"><path fill="currentColor" d="M9 6l6 6-6 6"/></svg></div>
+      </a>
+    </div>`;
+  // 把个人中心区块插入到主内容前面（不破坏原有结构）
+  const main = document.querySelector('main') || document.body;
+  main.parentNode.insertBefore(mine, main);
+
+  function showMine(show){
+    mine.style.display = show ? 'block' : 'none';
+    if (main) main.style.display = show ? 'none' : '';
+  }
+
+  // 监听导航点击：当点击“个人中心”时切换到 mine
+  function bindNav(){
+    const navBtns = Array.from(document.querySelectorAll('.nav-btn'));
+    navBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const t = btn.textContent.trim();
+        if (t.includes('个人中心')){
+          showMine(true);
+        } else {
+          showMine(false);
+        }
+      });
+    });
+    // 如果当前激活的是“个人中心”，默认显示 mine
+    const active = navBtns.find(b => b.classList.contains('active'));
+    if (active && active.textContent.includes('个人中心')) showMine(true);
+  }
+  // 初次绑定 & 延迟重绑（兼容你的脚本动态渲染）
+  bindNav();
+  setTimeout(bindNav, 500);
+})();
+</script>
+</body></html>
