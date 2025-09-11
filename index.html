@@ -206,6 +206,32 @@
 }
 
 </style>
+<style>
+/* —— 板块右上角搜索 —— */
+.section-title{display:flex; align-items:center; gap:10px;}
+.section-title .section-search{margin-left:auto; min-width:160px; position:relative;}
+.section-title .section-search input{
+  width:220px; max-width:38vw;
+  padding:8px 12px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.08); color:#e7ecff; outline:0;
+  font-size:14px;
+}
+@media (max-width:680px){
+  .section-title .section-search input{ width: 56vw; }
+}
+.btn[data-hidden="1"]{ display:none !important; }
+.btn .num-prefix{ color:#a6c4ff; margin-right:6px; }
+</style>
+<style>
+/* 清除按钮触控友好（增强移动端） */
+#searchClear{ padding:10px; border-radius:50%; }
+@media (max-width:680px){
+  #searchClear{ right:6px; font-size:18px; padding:12px; }
+  #searchBox{ padding-right:44px; /* 给清除钮留空间 */ }
+}
+</style>
+
 </head>
 <body>
 <!-- 顶部导航：按钮一行可滑动（带可视按区） -->
@@ -312,8 +338,8 @@
 <section aria-labelledby="tools-tab" class="section page" id="tools">
 <div class="wrap">
 <div class="card">
-<div class="section-title">工具合集 <span class="tag">常用工具</span></div>
-<div class="btns" id="toolList">
+<div class="section-title">工具合集 <span class="tag">常用工具</span><div class="section-search"></div></div>
+<div class="btns" data-numbered="true" id="toolList">
 <a class="btn brand" href="https://snapany.com/zh" rel="noopener" target="_blank">视频无水印下载</a>
 </div>
 <div style="height:10px"></div>
@@ -324,10 +350,12 @@
 <section aria-labelledby="prompts-tab" class="section page" id="prompts">
 <div class="wrap">
 <div class="card">
-<div class="section-title">提示词 <span class="tag">分享区</span></div>
-<div class="btns" id="promptList">
-<a class="btn" href="#" rel="noopener" target="_blank">示例提示词 1</a>
-<a class="btn" href="#" rel="noopener" target="_blank">示例提示词 2</a>
+<div class="section-title">提示词 <span class="tag">分享区</span><div class="section-search"></div></div>
+<div class="btns" data-numbered="true" id="promptList">
+<a class="btn" data-nav="true" href="#dajuprompt">大橘制作视频</a>
+
+
+
 </div>
 <div style="height:10px"></div>
 </div>
@@ -337,8 +365,8 @@
 <section aria-labelledby="resources-tab" class="section page" id="resources">
 <div class="wrap">
 <div class="card">
-<div class="section-title">资源 <span class="tag">学习大全</span></div>
-<div class="btns" id="resList">
+<div class="section-title">资源 <span class="tag">学习大全</span><div class="section-search"></div></div>
+<div class="btns" data-numbered="true" id="resList">
 <a class="btn" href="https://pan.quark.cn/s/21d5a32c1006#/list/share" rel="noopener" target="_blank">DeepSeek使用手册</a>
 <a class="btn" href="https://pan.quark.cn/s/ce57aa38a62f#/list/share/ef7d7b6b4dba403ea4192b4ca6413c64" rel="noopener" target="_blank">如何成为沟通高手</a>
 </div>
@@ -351,15 +379,71 @@
 <section aria-labelledby="profile-tab" class="section page" id="profile">
 <div class="wrap">
 <div class="card">
-<div class="section-title">我的 <span class="tag">我的</span></div>
+<div class="section-title">我的 <span class="tag">我的</span><div class="section-search"></div></div>
 <p class="note">目前仅保留 <b>APP下载</b> 按钮，其他功能后续再开启。</p>
-<div class="btns">
+<div class="btns" data-numbered="true">
 <a class="btn accent" href="https://github.com/799342382/AI-Toolbox/releases/download/%E5%AE%89%E8%A3%85/AI.apk" id="appLink" rel="noopener" target="_blank">APP下载</a>
 </div>
 <div style="height:10px"></div>
 </div>
 </div>
 </section>
+
+<!-- 大橘制作视频 提示词页面 -->
+<section aria-labelledby="dajuprompt-tab" class="section page" id="dajuprompt">
+<div class="wrap">
+<div class="card">
+<div class="section-title">大橘制作视频 <span class="tag">提示词</span></div>
+
+<pre id="dajupromptText" style="white-space:pre-wrap;line-height:1.6;font-size:14px;background:rgba(255,255,255,.05);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);">
+接下来我要分段描述故事，请将生成的图片包含以下关键点:超级逼真的风格，猫咪表情和动作拟人化，夸张的手法
+
+大橘常年在外面工地上班
+大橘下班后，独自在出租屋吃外卖
+晚上大橘自己做家务，洗衣服
+第二天大橘收到过年放假通知
+晚上大橘接到妈妈关心的电话让小橘回家过年
+夜里，大橘猫梦见了妈妈
+早上大橘早早到了火车站
+火车上，大橘很期待见到家人
+妈妈早早在门口等候，见到大橘很开心
+晚上，大橘一家吃着年夜饭
+饭后，大家一起幸福地看着烟花
+</pre>
+
+<!-- 复制按钮和返回按钮 -->
+<div class="btns" style="margin-top:12px;grid-template-columns: repeat(2, minmax(0,1fr));">
+  <button class="btn accent" id="copyDaju">📋 复制提示词</button>
+  <a class="btn brand" data-nav="true" href="#prompts">返回提示词</a>
+</div>
+
+<script>
+  // 大橘提示词复制功能
+  const copyDaju = document.getElementById('copyDaju');
+  const dajuText = document.getElementById('dajupromptText');
+  if(copyDaju && dajuText){
+    copyDaju.addEventListener('click', async ()=>{
+      const text = dajuText.innerText.trim();
+      try{
+        await navigator.clipboard.writeText(text);
+        copyDaju.textContent = '已复制 ✅';
+        setTimeout(()=> copyDaju.textContent = '📋 复制提示词', 1600);
+      }catch(e){
+        // 备用方案
+        const h = document.createElement('textarea');
+        h.value = text; document.body.appendChild(h); h.select();
+        try{ document.execCommand('copy'); copyDaju.textContent='已复制 ✅'; }
+        catch{ alert('复制失败，请手动复制'); }
+        finally{ document.body.removeChild(h); setTimeout(()=> copyDaju.textContent='📋 复制提示词', 1600); }
+      }
+    });
+  }
+</script>
+
+</div>
+</div>
+</section>
+
 </main>
 <!-- 底部声明（和GPT一样放在最底部） -->
 <footer>
@@ -602,5 +686,231 @@ document.addEventListener('click', function(e){
     location.hash = '#home';
   }
 }, true);
-</script></body>
+</script>
+<script>
+(function(){
+  // 找到所有带 data-numbered 的按钮容器
+  const containers = Array.from(document.querySelectorAll('[data-numbered]'));
+
+  function getBaseName(a){
+    // 基础名：优先 data-name，否则取文本去掉已有的序号前缀
+    const ds = a.getAttribute('data-name');
+    let name = ds ? ds.trim() : (a.textContent || '').trim();
+    // 去掉已存在的前缀 "数字 " 或 "数字. "（宽松处理）
+    name = name.replace(/^\s*\d+\s*[\.、]?\s*/,'').trim();
+    return name;
+  }
+
+  function applyNumbers(cont){
+    const links = Array.from(cont.querySelectorAll('a.btn'));
+    links.forEach((a, i) => {
+      const idx = i + 1;
+      const base = getBaseName(a);
+      a.setAttribute('data-index', String(idx));
+      a.setAttribute('data-keywords', base.toLowerCase());
+      // 生成 "序号 + 名字" 的可控结构，避免重复叠加
+      // 尝试找到/创建 num-prefix 和 name-span
+      let numSpan = a.querySelector('.num-prefix');
+      if(!numSpan){
+        numSpan = document.createElement('span');
+        numSpan.className = 'num-prefix';
+        a.prepend(numSpan);
+      }
+      numSpan.textContent = idx;
+
+      // 名字部分：如果内部第一个文本节点就是名字，这里统一放进 name-span，尽量不破坏原有图标
+      let nameSpan = a.querySelector('.name-span');
+      if(!nameSpan){
+        nameSpan = document.createElement('span');
+        nameSpan.className = 'name-span';
+        // 将按钮中的纯文本合并为名字（去掉前缀），保留其他内联元素（如图标）
+        // 简化处理：如果按钮里只有文本，就直接覆盖；如果有其他元素，则在末尾补一个名字span
+        const hasOther = Array.from(a.childNodes).some(n => n.nodeType !== Node.TEXT_NODE && !n.classList?.contains('num-prefix'));
+        if(!hasOther){
+          a.textContent = ''; // 清空
+          a.appendChild(numSpan);
+          nameSpan.textContent = base;
+          a.appendChild(nameSpan);
+        }else{
+          nameSpan.textContent = base;
+          a.appendChild(nameSpan);
+        }
+      }else{
+        nameSpan.textContent = base;
+      }
+    });
+  }
+
+  // 每个容器绑定搜索框（位于其所属板块的 .section-title .section-search）
+  function setupSearchForSection(sectionEl){
+    const searchBox = sectionEl.querySelector('.section-title .section-search');
+    const cont = sectionEl.querySelector('[data-numbered]');
+    if(!searchBox || !cont) return;
+
+    // 如果还没插入输入框，就插入一个
+    if(!searchBox.querySelector('input')){
+      const input = document.createElement('input');
+      input.type = 'search';
+      input.placeholder = '搜序号或名字…';
+      searchBox.appendChild(input);
+
+      const doFilter = () => {
+        const q = (input.value || '').trim().toLowerCase();
+        const links = Array.from(cont.querySelectorAll('a.btn'));
+        if(!q){
+          links.forEach(a => a.removeAttribute('data-hidden'));
+          return;
+        }
+        const isNum = /^\d+$/.test(q);
+        links.forEach(a => {
+          const hit = isNum
+            ? (a.getAttribute('data-index') || '') === q.replace(/\D/g,'')
+            : (a.getAttribute('data-keywords') || '').includes(q);
+          a.setAttribute('data-hidden', hit ? '0' : '1');
+        });
+      };
+
+      input.addEventListener('input', doFilter);
+      input.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape'){ input.value=''; input.dispatchEvent(new Event('input')); }
+        if(e.key === 'Enter'){
+          const vis = Array.from(cont.querySelectorAll('a.btn')).filter(a => a.getAttribute('data-hidden') !== '1');
+          if(vis.length === 1){ vis[0].click(); }
+        }
+      });
+    }
+  }
+
+  // 初始化：为每个板块编号 + 绑定搜索
+  const sections = ['tools','prompts','resources','profile']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  sections.forEach(sec => {
+    const cont = sec.querySelector('[data-numbered]');
+    if(cont){
+      applyNumbers(cont);
+      setupSearchForSection(sec);
+
+      // 监听容器子元素变化，自动重新编号（以后你加按钮自动更新）
+      const mo = new MutationObserver(muts => {
+        let need = false;
+        muts.forEach(m => { if(m.type === 'childList') need = true; });
+        if(need) applyNumbers(cont);
+      });
+      mo.observe(cont, { childList:true });
+    }else{
+      setupSearchForSection(sec);
+    }
+  });
+
+  // 暴露手动重排函数（需要时可在控制台调）
+  window.renumberSections = function(){
+    containers.forEach(applyNumbers);
+  };
+})();
+</script>
+<script>
+/* ====== 移动端搜索增强（不改动原有逻辑，只做补强） ====== */
+(function(){
+  if (window.__MOBILE_SEARCH_PATCH__) return;
+  window.__MOBILE_SEARCH_PATCH__ = true;
+
+  const searchBox = document.getElementById('searchBox');
+  const noHint = document.getElementById('noSearchHint');
+  if(!searchBox) return;
+
+  // UI: 右侧清除按钮
+  (function createClearBtn(){
+    const wrapper = searchBox.parentElement || searchBox;
+    if (!wrapper) return;
+    if (getComputedStyle(wrapper).position === 'static') {
+      wrapper.style.position = 'relative';
+    }
+    const clearBtn = document.createElement('button');
+    clearBtn.id = 'searchClear';
+    clearBtn.type = 'button';
+    clearBtn.title = '清除';
+    clearBtn.innerText = '✕';
+    Object.assign(clearBtn.style, {
+      display: 'none',
+      position: 'absolute',
+      right: '8px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      border: 'none',
+      background: 'transparent',
+      color: '#cfe7ff',
+      fontSize: '16px',
+      padding: '8px',
+      cursor: 'pointer',
+      zIndex: 60,
+      WebkitTapHighlightColor: 'transparent',
+    });
+    wrapper.appendChild(clearBtn);
+
+    clearBtn.addEventListener('click', ()=>{
+      searchBox.value='';
+      // 触发原有逻辑：手动触发 input 事件
+      searchBox.dispatchEvent(new Event('input', {bubbles:true}));
+      searchBox.focus();
+      clearBtn.style.display='none';
+    }, {passive:true});
+
+    clearBtn.addEventListener('touchstart', (e)=>{ e.stopPropagation(); }, {passive:true});
+
+    // 跟随输入显隐
+    function toggleClear(){
+      clearBtn.style.display = searchBox.value.trim() ? '' : 'none';
+    }
+    searchBox.addEventListener('input', toggleClear);
+    searchBox.addEventListener('focus', toggleClear);
+    searchBox.addEventListener('blur', toggleClear);
+  })();
+
+  // “无结果时自动清空”的稳固实现（不干扰有结果场景）
+  let blurClearTimer = null;
+  function shouldShowNoResult(){
+    // 如果页面里显示了你原本的“无结果提示”元素，就认为是无结果
+    return noHint && noHint.style && noHint.style.display !== 'none';
+  }
+
+  // 失焦时：若无结果则立即清空
+  searchBox.addEventListener('blur', ()=>{
+    if (searchBox.value && shouldShowNoResult()){
+      searchBox.value='';
+      searchBox.dispatchEvent(new Event('input', {bubbles:true}));
+    }
+  });
+
+  // 软键盘收起检测：visualViewport 变化时
+  if (window.visualViewport){
+    let lastH = window.visualViewport.height;
+    window.visualViewport.addEventListener('resize', ()=>{
+      const nowH = window.visualViewport.height;
+      const keyboardClosing = nowH > lastH + 80;
+      if (document.activeElement !== searchBox && keyboardClosing && searchBox.value && shouldShowNoResult()){
+        // 键盘刚收起且无结果 => 清空
+        clearTimeout(blurClearTimer);
+        blurClearTimer = setTimeout(()=>{
+          searchBox.value='';
+          searchBox.dispatchEvent(new Event('input', {bubbles:true}));
+        }, 0);
+      }
+      lastH = nowH;
+    });
+  }
+
+  // ESC 快捷：在桌面或外接键盘也同样可用
+  window.addEventListener('keydown', (e)=>{
+    const active = document.activeElement;
+    const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+    if(e.key === 'Escape' && isTyping && active === searchBox){
+      searchBox.value='';
+      searchBox.dispatchEvent(new Event('input', {bubbles:true}));
+    }
+  });
+})();
+</script>
+</body>
 </html>
