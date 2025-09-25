@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="zh-CN">
@@ -369,6 +370,7 @@
 <div class="section-title">提示词 <span class="tag">分享区</span><div class="section-search"></div></div>
 <div class="btns" data-numbered="true" id="promptList">
 <a class="btn" data-nav="true" href="#dajuprompt">大橘制作视频</a>
+<a class="btn" data-nav="true" href="#yuanbaoprompt">元宝文案提取</a>
 
 
 
@@ -459,6 +461,25 @@
 
 </div>
 </div>
+</section>
+
+
+<!-- 元宝文案提取 提示词页面 -->
+<section aria-labelledby="yuanbaoprompt-tab" class="section page" id="yuanbaoprompt">
+  <div class="wrap">
+    <div class="card">
+      <div class="section-title">元宝文案提取 <span class="tag">提示词</span></div>
+
+      <pre id="yuanbaopromptText" style="white-space:pre-wrap;line-height:1.6;font-size:14px;background:rgba(255,255,255,.05);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);">
+请给我【视频逐字稿】，要求严格逐字对应原文，不添加任何总结、解读或额外内容，仅输出原文完整文字内容，适配口语化讲述节奏即可
+      </pre>
+
+      <div class="btns" style="margin-top:12px;grid-template-columns: repeat(2, minmax(0,1fr));">
+        <button class="btn accent" id="copyYuanbao">📋 复制提示词</button>
+        <a class="btn brand" data-nav="true" href="#prompts">返回提示词</a>
+      </div>
+    </div>
+  </div>
 </section>
 
 </main>
@@ -929,5 +950,113 @@ document.addEventListener('click', function(e){
   });
 })();
 </script>
+
+<div id="globalToast" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%) scale(0.98);
+background:rgba(0,0,0,.75);color:#fff;padding:10px 14px;border-radius:10px;
+font-size:14px;line-height:1;opacity:0;pointer-events:none;transition:.18s ease;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.35);">
+  已复制
+</div>
+
+
+<script>
+// —— 统一提示条 ——
+(function(){
+  window.showToast = function(msg){
+    var el = document.getElementById('globalToast');
+    if(!el) return;
+    el.textContent = msg || '已完成';
+    el.style.opacity = '1';
+    el.style.transform = 'translateX(-50%) scale(1)';
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(function(){
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(-50%) scale(0.98)';
+    }, 1200);
+  }
+})();
+</script>
+
+<script>
+// —— 元宝文案提取：复制按钮 ——
+(function(){
+  const btn = document.getElementById('copyYuanbao');
+  const box = document.getElementById('yuanbaopromptText');
+  if(!btn || !box) return;
+  btn.addEventListener('click', async ()=>{
+    const text = (box.innerText || box.textContent || '').trim();
+    const done = ()=>{
+      if(window.showToast) showToast('已复制');
+      btn.textContent = '已复制 ✅';
+      setTimeout(()=> btn.textContent='📋 复制提示词', 1200);
+    };
+    try{
+      await navigator.clipboard.writeText(text);
+      done();
+    }catch(e){
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }
+      catch{ alert('复制失败，请手动复制'); }
+      finally{ document.body.removeChild(ta); }
+    }
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  window.showToast = function(msg){
+    var el = document.getElementById('globalToast');
+    if(!el) return;
+    el.textContent = msg || '已完成';
+    el.style.opacity = '1';
+    el.style.transform = 'translateX(-50%) scale(1)';
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(function(){
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(-50%) scale(0.98)';
+    }, 1200);
+  }
+})();
+</script>
+
+<script>
+// —— 统一：提示词板块复制 & 提示条 ——
+(function(){
+  function bindCopy(btn, getText){
+    if(!btn || btn.dataset.boundCopy==='1') return;
+    btn.dataset.boundCopy = '1';
+    btn.addEventListener('click', async function(){
+      var text = (typeof getText==='function' ? getText() : '') || '';
+      text = (text || '').trim();
+      const done = ()=>{
+        if(window.showToast) showToast('已复制');
+        try{ btn.textContent = '已复制 ✅'; }catch(e){}
+        setTimeout(()=>{ try{ btn.textContent = '📋 复制提示词'; }catch(e){} }, 1200);
+      };
+      try{
+        await navigator.clipboard.writeText(text);
+        done();
+      }catch(e){
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); done(); }
+        catch{ alert('复制失败，请手动复制'); }
+        finally{ document.body.removeChild(ta); }
+      }
+    });
+  }
+  // 已有ID适配
+  bindCopy(document.getElementById('copyDaju'), function(){ var el=document.getElementById('dajupromptText'); return el ? (el.innerText||el.textContent||''):''; });
+  bindCopy(document.getElementById('copyYuanbao'), function(){ var el=document.getElementById('yuanbaopromptText'); return el ? (el.innerText||el.textContent||''):''; });
+  // 通用：任何 data-copy-target 也支持
+  document.querySelectorAll('[data-copy-target]').forEach(function(btn){
+    var sel = btn.getAttribute('data-copy-target');
+    bindCopy(btn, function(){ var el = document.querySelector(sel); return el ? (el.innerText||el.textContent||''):''; });
+  });
+})();
+</script>
+
 </body>
 </html>
