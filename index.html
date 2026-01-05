@@ -232,8 +232,92 @@
   #searchBox{ padding-right:44px; /* 给清除钮留空间 */ }
 }
 </style>
+
+<style>
+/* —— 顶部滑动指示点 —— */
+.swipe-dots{
+  position:fixed;
+  top:64px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:6px;
+  z-index:99;
+}
+.swipe-dots span{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:rgba(255,255,255,.35);
+  transition:.2s;
+}
+.swipe-dots span.active{
+  background:#4cc9f0;
+  transform:scale(1.3);
+}
+@media(min-width:900px){
+  .swipe-dots{display:none;}
+}
+</style>
+
+<style>
+/* —— 首次滑动引导 —— */
+#swipeGuide{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:16px;
+  text-align:center;
+  padding:24px;
+}
+#swipeGuide .box{
+  background:rgba(20,30,60,.9);
+  border-radius:16px;
+  padding:22px;
+  max-width:280px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+#swipeGuide .arrow{
+  font-size:28px;
+  margin:12px 0;
+}
+</style>
+
+
+<style>
+/* —— 页面滑动过渡动画 —— */
+.page{
+  transition: transform .28s ease, opacity .28s ease;
+}
+.page.slide-in-left{ transform: translateX(-12px); opacity:0; }
+.page.slide-in-right{ transform: translateX(12px); opacity:0; }
+.page.active{
+  transform: translateX(0);
+  opacity:1;
+}
+</style>
+
 </head>
 <body>
+
+<div class="swipe-dots" id="swipeDots">
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<div id="swipeGuide" style="display:none">
+  <div class="box">
+    <div>👋 左右滑动页面</div>
+    <div class="arrow">⬅️ ➡️</div>
+    <div style="font-size:14px;opacity:.8">
+      像微信一样滑动<br>不用再点导航
+    </div>
+  </div>
+</div>
+
 <!-- 顶部导航：按钮一行可滑动（带可视按区） -->
 <div class="nav">
 <div class="wrap nav-inner">
@@ -1166,6 +1250,78 @@ font-size:14px;line-height:1;opacity:0;pointer-events:none;transition:.18s ease;
   document.addEventListener('touchend', function(){
     isMoving = false;
   });
+})();
+</script>
+
+
+<script>
+(function(){
+  const pagesOrder = ['home','tools','prompts','resources','profile','signup'];
+  const dots = document.querySelectorAll('#swipeDots span');
+  const guide = document.getElementById('swipeGuide');
+
+  function updateDots(){
+    const cur = (location.hash||'#home').replace('#','');
+    const idx = pagesOrder.indexOf(cur);
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  }
+
+  window.addEventListener('hashchange', updateDots);
+  updateDots();
+
+  // First-time guide
+  if(!localStorage.getItem('swipeGuideSeen')){
+    guide.style.display='flex';
+    guide.addEventListener('click',()=>{
+      guide.style.display='none';
+      localStorage.setItem('swipeGuideSeen','1');
+    });
+  }
+})();
+</script>
+
+
+<script>
+/* —— 滑动动画 + 智能默认首页 —— */
+(function(){
+  const pagesOrder = ['home','tools','prompts','resources','profile','signup'];
+  let lastIndex = null;
+
+  function applyAnimation(target){
+    const idx = pagesOrder.indexOf(target.replace('#',''));
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p=>p.classList.remove('slide-in-left','slide-in-right'));
+    if(lastIndex !== null && idx !== -1){
+      pages.forEach(p=>{
+        if(p.id === target.replace('#','')){
+          p.classList.add(idx > lastIndex ? 'slide-in-right' : 'slide-in-left');
+        }
+      });
+    }
+    lastIndex = idx;
+  }
+
+  // Hook into page switch
+  const _show = window.showPageById;
+  window.showPageById = function(id){
+    applyAnimation(id);
+    _show(id);
+    // record stay
+    const key = 'stay_' + id.replace('#','');
+    localStorage.setItem(key, (parseInt(localStorage.getItem(key)||0) + 1));
+  }
+
+  // Smart default homepage
+  if(!location.hash){
+    let best = 'home', max = 0;
+    pagesOrder.forEach(p=>{
+      const v = parseInt(localStorage.getItem('stay_'+p)||0);
+      if(v > max){ max = v; best = p; }
+    });
+    if(best !== 'home'){
+      setTimeout(()=>window.showPageById('#'+best), 0);
+    }
+  }
 })();
 </script>
 
