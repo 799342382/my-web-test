@@ -1,6 +1,4 @@
 
-
-
 <!DOCTYPE html>
 
 <html lang="zh-CN">
@@ -206,6 +204,19 @@
     font-size:14px; font-weight:800;
     border-radius:999px;             /* 和搜索框一致的圆角 */
   }
+}
+
+
+/* 防止手机左右滑动触发页面跳转（不影响上下滚动） */
+html, body{
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+}
+.page{
+  touch-action: pan-y;
+}
+iframe{
+  touch-action: pan-y;
 }
 
 </style>
