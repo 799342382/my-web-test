@@ -221,6 +221,16 @@ iframe{
   touch-action: pan-y;
 }
 
+
+/* ===== 彻底禁止横向滑动切页（防止跨页/跳页） ===== */
+html, body {
+  touch-action: pan-y !important;
+  overscroll-behavior-x: none;
+}
+.page, .wrap, .card {
+  touch-action: pan-y !important;
+}
+
 </style>
 <style>
 /* —— 板块右上角搜索 —— */
@@ -1237,6 +1247,28 @@ font-size:14px;line-height:1;opacity:0;pointer-events:none;transition:.18s ease;
   document.addEventListener('touchend', function(){
     isMoving = false;
   });
+})();
+</script>
+
+
+
+
+
+<script>
+/* ===== Hash 切页保护：防止一次操作触发多次跳转 ===== */
+(function(){
+  let lastSwitch = 0;
+  const MIN_INTERVAL = 400; // ms
+
+  const _show = window.showPageById;
+  if(typeof _show === 'function'){
+    window.showPageById = function(id){
+      const now = Date.now();
+      if(now - lastSwitch < MIN_INTERVAL) return;
+      lastSwitch = now;
+      _show(id);
+    }
+  }
 })();
 </script>
 
