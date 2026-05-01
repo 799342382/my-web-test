@@ -1,26 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI训练营</title>
+<title>AI实战训练营</title>
 
 <style>
 body{
     margin:0;
     font-family:"Microsoft YaHei";
-    background:#000;
-    color:white;
-    text-align:center;
+    background:#0b0f1a;
+    color:#fff;
 }
 
-.cover{
-    height:100vh;
-    background:url('https://picsum.photos/800/1400') center/cover no-repeat;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    padding-bottom:80px;
+.header{
+    padding:30px 20px;
+    text-align:center;
 }
 
 .title{
@@ -28,25 +23,90 @@ body{
     font-weight:bold;
 }
 
+.sub{
+    color:#aaa;
+    margin-top:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    padding:20px;
+}
+
+.card{
+    background:#121826;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,0.4);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.03);
+}
+
+.thumb{
+    height:140px;
+    background:#333;
+}
+
 .btn{
-    margin:20px auto;
+    display:block;
     padding:15px;
-    width:70%;
-    background:#22c55e;
-    border-radius:10px;
+    text-align:center;
     text-decoration:none;
-    color:black;
+    color:#fff;
     font-weight:bold;
 }
+
+.btn:hover{
+    background:#22c55e;
+}
 </style>
+
 </head>
 
 <body>
 
-<div class="cover">
+<div class="header">
     <div class="title">AI实战训练营</div>
+    <div class="sub">点击任意视频观看</div>
+</div>
 
-    <a class="btn" href="video.html">▶ 点击观看视频</a>
+<div class="grid">
+
+<a class="card" href="video.html?v=1">
+<div class="thumb"></div>
+<div class="btn">视频1</div>
+</a>
+
+<a class="card" href="video.html?v=2">
+<div class="thumb"></div>
+<div class="btn">视频2</div>
+</a>
+
+<a class="card" href="video.html?v=3">
+<div class="thumb"></div>
+<div class="btn">视频3</div>
+</a>
+
+<a class="card" href="video.html?v=4">
+<div class="thumb"></div>
+<div class="btn">视频4</div>
+</a>
+
+<a class="card" href="video.html?v=5">
+<div class="thumb"></div>
+<div class="btn">视频5</div>
+</a>
+
+<a class="card" href="video.html?v=6">
+<div class="thumb"></div>
+<div class="btn">视频6</div>
+</a>
+
 </div>
 
 </body>
