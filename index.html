@@ -7,7 +7,10 @@
   <title>AI工具入口（登录权限）</title>
   <style>
     :root{
-      --bg1:#ffd1f3;
+      
+      --kb:0px;
+      --vvh:100vh;
+--bg1:#ffd1f3;
       --bg2:#cfe6ff;
       --bg3:#d9d2ff;
 
@@ -365,7 +368,7 @@
 
     .sheet{
       position:fixed;
-      left:0; right:0; bottom:0;
+      left:0; right:0; bottom: var(--kb, 0px);
       z-index:9999;
       padding: 0 14px calc(12px + env(safe-area-inset-bottom));
       transform: translateY(110%);
@@ -379,9 +382,11 @@
       border: 1px solid rgba(255,255,255,.92);
       box-shadow: 0 22px 70px rgba(0,0,0,.25);
       padding:14px;
-      backdrop-filter: blur(16px);
+      
+      max-height: calc(var(--vvh, 100vh) - 24px - env(safe-area-inset-top));
+backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      overflow:hidden;
+      overflow:auto;
       position:relative;
     }
     .sheetCard::before{
@@ -599,23 +604,23 @@
 
         <div class="list" id="list"></div>
 
-        <!-- 底部声明：默认收起 -->
-        <div class="footer" id="footer">
+        <!-- 底部声明：默认展示（可收起） -->
+        <div class="footer open" id="footer">
           <div class="footerTop" id="footerTop">
             <div class="footerLeft">
               <div class="infoDot">i</div>
               <div class="footerTitle">
                 <b>使用声明</b>
-                <span>不影响体验，点一下可展开查看</span>
+                <span>默认展示，不遮挡内容（点一下可收起）</span>
               </div>
             </div>
             <div class="footerArrow">⌄</div>
           </div>
           <div class="footerBody" id="footerBody">
-            <p>1）本页面仅用于工具入口导航与学习辅助展示；点击后将跳转到第三方页面或资源。</p>
-            <p>2）第三方内容的版权、服务与合规责任归原作者/平台所有；本页面不对其内容作任何保证。</p>
+            <p>1）本页面仅用于工具入口导航与学习辅助展示；点击后将打开对应工具/资源页面（可能在新页面打开）。</p>
+            <p>2）相关内容的版权、服务与合规责任以对应作者/平台为准；本页面不对其内容作任何保证。</p>
             <p>3）请在遵守当地法律法规与平台规则的前提下使用相关工具与内容；因不当使用造成的后果由使用者自行承担。</p>
-            <p>4）如你认为页面内容或跳转链接存在侵权/不当，请联系我进行处理或移除。</p>
+            <p>4）如你认为页面内容或链接存在侵权/不当，请联系我进行处理或移除。</p>
             <p class="mini">隐私说明：登录仅用于权限区分，状态保存在本机浏览器中，不会上传账号密码到服务器。</p>
             <p class="mini">更新时间：<span id="updateTime"></span></p>
           </div>
@@ -679,6 +684,19 @@
       { name: "AI工具3", url: "https://snapany.com/zh", needLogin: true,  grad: "g3" },
       { name: "AI工具4", url: "https://snapany.com/zh", needLogin: true,  grad: "g4" },
     ];
+// 存储兼容：在极少数“禁止本地存储”的环境里，也不让页面报错
+const storage = (()=> {
+  try{ return window.localStorage; }
+  catch(e){
+    const mem = Object.create(null);
+    return {
+      getItem:(k)=> (k in mem ? mem[k] : null),
+      setItem:(k,v)=>{ mem[k] = String(v); },
+      removeItem:(k)=>{ delete mem[k]; }
+    };
+  }
+})();
+
 
     // 你设置的账号密码
     const FIX_USER = "131419";
@@ -692,7 +710,7 @@
       clearTimeout(showToast._t);
       showToast._t = setTimeout(()=>toast.classList.remove("show"), 1500);
     }
-    function isLogin(){ return localStorage.getItem(KEY) === "1"; }
+    function isLogin(){ return storage.getItem(KEY) === "1"; }
 
     // 渲染工具
     const list = document.getElementById("list");
@@ -737,12 +755,23 @@
       });
     }
 
-    // 底部声明：默认收起，点击展开/收起
-    const footer = document.getElementById("footer");
-    const footerTop = document.getElementById("footerTop");
-    footerTop.addEventListener("click", ()=>{
-      footer.classList.toggle("open");
-    });
+    // 底部声明：默认展示（可收起，且记住你的选择）
+const footer = document.getElementById("footer");
+const footerTop = document.getElementById("footerTop");
+const FOOTER_KEY = "footerOpen";
+
+// 默认展开；如果你曾经收起过，就按上次状态来
+const savedFooter = storage.getItem(FOOTER_KEY);
+if(savedFooter === null){
+  footer.classList.add("open");
+}else{
+  footer.classList.toggle("open", savedFooter === "1");
+}
+
+footerTop.addEventListener("click", ()=>{
+  const nowOpen = footer.classList.toggle("open");
+  storage.setItem(FOOTER_KEY, nowOpen ? "1" : "0");
+});
     // 更新时间（本地显示，内容可通用）
     const t = new Date();
     const pad = (n)=> String(n).padStart(2,"0");
@@ -770,6 +799,41 @@
     const hintLine = document.getElementById("hintLine");
 
     let loading = false;
+
+// 手机键盘遮挡优化：根据 visualViewport 自动抬升登录抽屉，并把输入框滚动到可见区域
+(function(){
+  const root = document.documentElement;
+  const vv = window.visualViewport;
+
+  function apply(){
+    const vvh = vv ? vv.height : window.innerHeight;
+    root.style.setProperty("--vvh", vvh + "px");
+
+    if(!vv){
+      root.style.setProperty("--kb", "0px");
+      return;
+    }
+    const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    root.style.setProperty("--kb", kb + "px");
+  }
+
+  apply();
+  if(vv){
+    vv.addEventListener("resize", apply);
+    vv.addEventListener("scroll", apply);
+  }else{
+    window.addEventListener("resize", apply);
+  }
+
+  [u, p].forEach(inp=>{
+    inp.addEventListener("focus", ()=>{
+      setTimeout(()=>{
+        try{ inp.scrollIntoView({behavior:"smooth", block:"center"}); }catch(e){}
+      }, 220);
+    });
+  });
+})();
+
 
     function setError(msg){
       if(!msg){
@@ -860,7 +924,7 @@
 
       setTimeout(()=>{
         if(uu === FIX_USER && pp === FIX_PASS){
-          localStorage.setItem(KEY, "1");
+          storage.setItem(KEY, "1");
           showToast("登录成功");
           u.value = ""; p.value = ""; p.type = "password"; eyeBtn.textContent = "显";
           hideSheet();
@@ -878,7 +942,7 @@
     });
 
     logoutBtn.addEventListener("click", ()=>{
-      localStorage.removeItem(KEY);
+      storage.removeItem(KEY);
       showToast("已退出登录");
       refreshTop();
       setError("");
