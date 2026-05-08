@@ -1,113 +1,892 @@
-<!DOCTYPE html>
-<html lang="zh">
+<!doctype html>
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI实战训练营</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffb8ec" />
+  <title>AI工具入口（登录权限）</title>
+  <style>
+    :root{
+      --bg1:#ffd1f3;
+      --bg2:#cfe6ff;
+      --bg3:#d9d2ff;
 
-<style>
-body{
-    margin:0;
-    font-family:"Microsoft YaHei";
-    background:#0b0f1a;
-    color:#fff;
-}
+      --ink:#121212;
+      --muted:rgba(18,18,18,.58);
 
-.header{
-    padding:30px 20px;
-    text-align:center;
-}
+      --glass: rgba(255,255,255,.66);
+      --glass2: rgba(255,255,255,.52);
+      --stroke: rgba(255,255,255,.78);
 
-.title{
-    font-size:28px;
-    font-weight:bold;
-}
+      --shadow: 0 18px 55px rgba(26,18,46,.16);
+      --shadow2: 0 10px 28px rgba(26,18,46,.12);
 
-.sub{
-    color:#aaa;
-    margin-top:10px;
-}
+      --r:22px;
 
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    padding:20px;
-}
+      --gradA: linear-gradient(135deg, rgba(255,118,217,.98), rgba(120,170,255,.98));
+      --gradB: linear-gradient(135deg, rgba(255,210,112,.98), rgba(255,118,217,.98));
+      --gradC: linear-gradient(135deg, rgba(120,255,214,.92), rgba(120,170,255,.98));
+      --gradD: linear-gradient(135deg, rgba(150,120,255,.98), rgba(120,170,255,.98));
 
-.card{
-    background:#121826;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,0.4);
-    transition:0.3s;
-}
+      --vipGrad: linear-gradient(135deg, rgba(255,118,217,.98), rgba(255,210,112,.98));
+    }
 
-.card:hover{
-    transform:scale(1.03);
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 720px at 12% 10%, rgba(255,255,255,.78) 0%, rgba(255,255,255,0) 56%),
+        radial-gradient(900px 640px at 88% 14%, rgba(255,255,255,.62) 0%, rgba(255,255,255,0) 58%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+      overflow-x:hidden;
+    }
 
-.thumb{
-    height:140px;
-    background:#333;
-}
+    .bgWaves{
+      position:fixed;
+      inset:-120px;
+      pointer-events:none;
+      filter: blur(10px);
+      opacity:.55;
+      background:
+        radial-gradient(520px 280px at 18% 30%, rgba(255,120,220,.35), rgba(255,255,255,0) 65%),
+        radial-gradient(560px 320px at 82% 28%, rgba(120,170,255,.35), rgba(255,255,255,0) 65%),
+        radial-gradient(520px 300px at 55% 85%, rgba(150,120,255,.28), rgba(255,255,255,0) 65%);
+      animation: drift 10s ease-in-out infinite alternate;
+    }
+    @keyframes drift{
+      from{transform:translate3d(-10px,-8px,0) scale(1)}
+      to{transform:translate3d(12px,14px,0) scale(1.03)}
+    }
 
-.btn{
-    display:block;
-    padding:15px;
-    text-align:center;
-    text-decoration:none;
-    color:#fff;
-    font-weight:bold;
-}
+    .stage{min-height:100%; display:grid; place-items:center; padding:18px 14px 26px;}
+    .phone{
+      width:min(430px, 100%);
+      border-radius:40px;
+      background: rgba(255,255,255,.35);
+      border: 1px solid rgba(255,255,255,.55);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    @media (max-width:520px){
+      .stage{padding:0}
+      .phone{
+        width:100%;
+        min-height:100vh;
+        border-radius:0;
+        border:none;
+        box-shadow:none;
+        background: transparent;
+      }
+    }
 
-.btn:hover{
-    background:#22c55e;
-}
-</style>
+    .sparkles{position:absolute; inset:0; pointer-events:none;}
+    .sparkles i{
+      position:absolute;
+      width:10px;height:10px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,0) 72%);
+      transform: rotate(45deg);
+      border-radius:2px;
+      opacity:.7;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,.10));
+      animation: tw 3s ease-in-out infinite;
+    }
+    .sparkles i::before,.sparkles i::after{content:""; position:absolute; inset:0; background:inherit; border-radius:inherit; transform:rotate(90deg);}
+    @keyframes tw{
+      0%,100%{transform:translateY(0) rotate(45deg) scale(.9); opacity:.55}
+      50%{transform:translateY(-10px) rotate(45deg) scale(1.1); opacity:.95}
+    }
 
+    .screen{
+      position:relative;
+      padding: calc(14px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:18px;
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow2);
+    }
+    .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+    .logo{
+      width:34px;height:34px;border-radius:13px;
+      background: var(--gradA);
+      box-shadow: 0 14px 30px rgba(120,70,180,.22);
+      border: 1px solid rgba(255,255,255,.7);
+      display:grid; place-items:center;
+      color:#fff;
+      font-weight:1000;
+      letter-spacing:.5px;
+      flex:0 0 auto;
+    }
+    .brandTxt{min-width:0;}
+    .brandTxt b{display:block; font-size:13px; line-height:1.2}
+    .brandTxt span{display:block; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+    .loginBtn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:950;
+      font-size:13px;
+      color:#fff;
+      background: var(--gradA);
+      box-shadow: 0 14px 30px rgba(120,70,180,.22);
+      transition: transform .14s ease, filter .14s ease;
+      flex:0 0 auto;
+    }
+    .loginBtn:active{transform: translateY(1px) scale(.99)}
+    .loginBtn.secondary{
+      color: rgba(0,0,0,.76);
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 12px 26px rgba(25,20,45,.10);
+    }
+
+    .list{margin-top:14px; display:flex; flex-direction:column; gap:12px;}
+
+    .toolCard{
+      position:relative;
+      border-radius: var(--r);
+      padding:1px;
+      background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.35));
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      transform: translateZ(0);
+    }
+    .toolCard::before{
+      content:"";
+      position:absolute; inset:-40px;
+      background:
+        radial-gradient(420px 220px at 15% 20%, rgba(255,120,220,.40), rgba(255,255,255,0) 60%),
+        radial-gradient(420px 220px at 85% 30%, rgba(120,170,255,.40), rgba(255,255,255,0) 60%);
+      opacity:.55;
+      filter: blur(10px);
+      pointer-events:none;
+    }
+
+    .toolInner{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 14px;
+      border-radius: calc(var(--r) - 1px);
+      background: var(--glass2);
+      border: 1px solid rgba(255,255,255,.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .14s ease, filter .14s ease;
+    }
+    .toolInner:active{transform: translateY(1px) scale(.995)}
+
+    .left{display:flex; align-items:center; gap:12px; min-width:0;}
+
+    .icon{
+      width:44px; height:44px;
+      border-radius: 18px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:1000;
+      flex:0 0 auto;
+      box-shadow: 0 16px 36px rgba(120,70,180,.18);
+      border: 1px solid rgba(255,255,255,.7);
+      position:relative;
+      overflow:hidden;
+    }
+    .icon::after{
+      content:"";
+      position:absolute; inset:-20px;
+      background: radial-gradient(22px 22px at 25% 25%, rgba(255,255,255,.85), rgba(255,255,255,0) 70%);
+      opacity:.6;
+      transform: rotate(12deg);
+    }
+
+    .txt{min-width:0}
+    .txt b{display:block; font-size:15px; line-height:1.25; letter-spacing:.2px;}
+
+    .tag{
+      margin-top:7px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.60);
+      border: 1px solid rgba(255,255,255,.78);
+      color: rgba(0,0,0,.68);
+      width: fit-content;
+    }
+    .tag.vip{background: rgba(255,255,255,.58);}
+
+    .vipBadge{
+      position:absolute;
+      right:14px;
+      top:12px;
+      padding:5px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      font-weight:1000;
+      color:#fff;
+      background: var(--vipGrad);
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: 0 14px 30px rgba(120,70,180,.16);
+      letter-spacing:.5px;
+      pointer-events:none;
+    }
+
+    .right{display:flex; align-items:center; gap:10px; flex:0 0 auto;}
+    .arrow{font-size:18px; opacity:.55;}
+
+    .locked .toolInner{filter: saturate(.92);}
+    .locked .toolInner::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,.18);
+      pointer-events:none;
+    }
+
+    .g1{background: var(--gradA);}
+    .g2{background: var(--gradC);}
+    .g3{background: var(--gradB);}
+    .g4{background: var(--gradD);}
+
+    /* 底部声明：默认收起，不影响体验 */
+    .footer{
+      margin-top:12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.52);
+      border: 1px solid rgba(255,255,255,.76);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .footerTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 10px 12px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .footerLeft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .infoDot{
+      width:30px;height:30px;border-radius:12px;
+      background: rgba(0,0,0,.06);
+      border: 1px solid rgba(255,255,255,.78);
+      display:grid; place-items:center;
+      color: rgba(0,0,0,.70);
+      font-weight:1000;
+      flex:0 0 auto;
+    }
+    .footerTitle{
+      min-width:0;
+    }
+    .footerTitle b{
+      display:block;
+      font-size:12px;
+      line-height:1.2;
+    }
+    .footerTitle span{
+      display:block;
+      font-size:11px;
+      color: rgba(0,0,0,.46);
+      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .footerArrow{
+      font-size:16px;
+      opacity:.55;
+      transition: transform .18s ease;
+      flex:0 0 auto;
+    }
+    .footer.open .footerArrow{transform: rotate(180deg);}
+
+    .footerBody{
+      max-height:0;
+      overflow:hidden;
+      transition: max-height .22s ease;
+      border-top: 1px dashed rgba(0,0,0,.10);
+      padding: 0 12px;
+    }
+    .footer.open .footerBody{
+      max-height: 360px;
+      padding-bottom: 10px;
+    }
+    .footerBody p{
+      margin:10px 0 0;
+      font-size:11px;
+      color: rgba(0,0,0,.55);
+      line-height:1.6;
+    }
+    .footerBody .mini{
+      margin-top:8px;
+      font-size:10.5px;
+      color: rgba(0,0,0,.45);
+    }
+
+    /* 登录抽屉（升级版） */
+    .mask{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.35);
+      opacity:0; pointer-events:none;
+      transition: opacity .18s ease;
+      z-index:9998;
+    }
+    .mask.show{opacity:1; pointer-events:auto;}
+
+    .sheet{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      z-index:9999;
+      padding: 0 14px calc(12px + env(safe-area-inset-bottom));
+      transform: translateY(110%);
+      transition: transform .22s ease;
+    }
+    .sheet.show{transform: translateY(0);}
+
+    .sheetCard{
+      border-radius: 24px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.92);
+      box-shadow: 0 22px 70px rgba(0,0,0,.25);
+      padding:14px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow:hidden;
+      position:relative;
+    }
+    .sheetCard::before{
+      content:"";
+      position:absolute; inset:-70px;
+      background:
+        radial-gradient(560px 280px at 22% 18%, rgba(255,120,220,.25), rgba(255,255,255,0) 60%),
+        radial-gradient(560px 280px at 82% 28%, rgba(120,170,255,.25), rgba(255,255,255,0) 60%);
+      filter: blur(10px);
+      opacity:.85;
+      pointer-events:none;
+    }
+
+    .sheetHead{
+      position:relative;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
+    .sheetTitleRow{display:flex; align-items:center; gap:10px;}
+    .sheetMark{
+      width:40px;height:40px;border-radius:16px;
+      background: var(--gradA);
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 14px 30px rgba(120,70,180,.18);
+      display:grid; place-items:center;
+      color:#fff;
+      font-weight:1000;
+      flex:0 0 auto;
+    }
+    .sheetTitle b{display:block; font-size:16px; line-height:1.2}
+    .sheetTitle span{display:block; font-size:12px; color:var(--muted); margin-top:2px}
+
+    .close{
+      appearance:none; border:none; cursor:pointer;
+      width:36px; height:36px; border-radius:14px;
+      background: rgba(0,0,0,.06);
+      color: rgba(0,0,0,.75);
+      font-weight:1000;
+      flex:0 0 auto;
+    }
+
+    .row{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:10px;
+    }
+    .label{
+      font-size:12px;
+      color: rgba(0,0,0,.62);
+      margin: 0 2px 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .label small{
+      color: rgba(0,0,0,.40);
+      font-size:11px;
+    }
+
+    .field{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.94);
+      box-shadow: 0 10px 24px rgba(0,0,0,.06);
+    }
+    .field:focus-within{
+      border-color: rgba(255,118,217,.55);
+      box-shadow: 0 14px 30px rgba(255,118,217,.12);
+    }
+
+    .miniIco{
+      width:34px;height:34px;border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(0,0,0,.05);
+      border: 1px solid rgba(255,255,255,.78);
+      color: rgba(0,0,0,.70);
+      flex:0 0 auto;
+      font-weight:1000;
+    }
+    .input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      font-size:14px;
+      padding: 2px 0;
+      color: var(--ink);
+    }
+    .input::placeholder{color: rgba(0,0,0,.42)}
+
+    .eyeBtn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      width:38px; height:38px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.05);
+      border: 1px solid rgba(255,255,255,.78);
+      color: rgba(0,0,0,.72);
+      font-weight:1000;
+      flex:0 0 auto;
+    }
+    .eyeBtn:active{transform: translateY(1px) scale(.99)}
+
+    .hintLine{
+      margin-top:8px;
+      font-size:12px;
+      color: rgba(0,0,0,.48);
+      line-height:1.45;
+      padding: 0 2px;
+    }
+    .errorLine{
+      display:none;
+      margin-top:8px;
+      font-size:12px;
+      color: rgba(210,30,80,.92);
+      background: rgba(210,30,80,.08);
+      border: 1px solid rgba(210,30,80,.18);
+      padding:8px 10px;
+      border-radius: 14px;
+    }
+    .errorLine.show{display:block;}
+
+    .sheetBtns{
+      position:relative;
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+    .sheetBtns button{
+      flex:1 1 auto;
+      padding:12px 12px;
+      border-radius: 16px;
+      font-weight:950;
+      font-size:14px;
+      border:none;
+      cursor:pointer;
+      transition: transform .14s ease, filter .14s ease, opacity .14s ease;
+    }
+    .sheetBtns button:active{transform: translateY(1px) scale(.99)}
+
+    .primary{
+      color:#fff;
+      background: var(--gradA);
+      box-shadow: 0 14px 30px rgba(120,70,180,.22);
+    }
+    .primary:disabled{
+      opacity:.55;
+      filter:saturate(.8);
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+    .ghost{
+      background: rgba(0,0,0,.06);
+      color: rgba(0,0,0,.78);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      background: rgba(20,20,28,.82);
+      color: rgba(255,255,255,.95);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size:12px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.22);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .22s ease, transform .22s ease;
+      z-index:10000;
+      max-width: calc(100vw - 26px);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(-2px);}
+  </style>
 </head>
-
 <body>
+  <div class="bgWaves" aria-hidden="true"></div>
 
-<div class="header">
-    <div class="title">AI实战训练营</div>
-    <div class="sub">点击任意视频观看</div>
-</div>
+  <div class="stage">
+    <div class="phone">
+      <div class="sparkles" aria-hidden="true">
+        <i style="left:12%; top:14%; animation-delay:.1s"></i>
+        <i style="left:24%; top:42%; animation-delay:.7s"></i>
+        <i style="left:18%; top:74%; animation-delay:1.2s"></i>
+        <i style="left:46%; top:18%; animation-delay:.35s"></i>
+        <i style="left:62%; top:38%; animation-delay:1.05s"></i>
+        <i style="left:78%; top:16%; animation-delay:.85s"></i>
+        <i style="left:86%; top:46%; animation-delay:.2s"></i>
+        <i style="left:84%; top:78%; animation-delay:1.4s"></i>
+      </div>
 
-<div class="grid">
+      <div class="screen">
+        <div class="topbar">
+          <div class="brand">
+            <div class="logo">AI</div>
+            <div class="brandTxt">
+              <b>工具入口</b>
+              <span>AI工具3-4 需要登录</span>
+            </div>
+          </div>
+          <button class="loginBtn" id="loginBtn">登录</button>
+        </div>
 
-<a class="card" href="video.html?v=1">
-<div class="thumb"></div>
-<div class="btn">视频1</div>
-</a>
+        <div class="list" id="list"></div>
 
-<a class="card" href="video.html?v=2">
-<div class="thumb"></div>
-<div class="btn">视频2</div>
-</a>
+        <!-- 底部声明：默认收起 -->
+        <div class="footer" id="footer">
+          <div class="footerTop" id="footerTop">
+            <div class="footerLeft">
+              <div class="infoDot">i</div>
+              <div class="footerTitle">
+                <b>使用声明</b>
+                <span>不影响体验，点一下可展开查看</span>
+              </div>
+            </div>
+            <div class="footerArrow">⌄</div>
+          </div>
+          <div class="footerBody" id="footerBody">
+            <p>1）本页面仅用于工具入口导航与学习辅助展示；点击后将跳转到第三方页面或资源。</p>
+            <p>2）第三方内容的版权、服务与合规责任归原作者/平台所有；本页面不对其内容作任何保证。</p>
+            <p>3）请在遵守当地法律法规与平台规则的前提下使用相关工具与内容；因不当使用造成的后果由使用者自行承担。</p>
+            <p>4）如你认为页面内容或跳转链接存在侵权/不当，请联系我进行处理或移除。</p>
+            <p class="mini">隐私说明：登录仅用于权限区分，状态保存在本机浏览器中，不会上传账号密码到服务器。</p>
+            <p class="mini">更新时间：<span id="updateTime"></span></p>
+          </div>
+        </div>
 
-<a class="card" href="video.html?v=3">
-<div class="thumb"></div>
-<div class="btn">视频3</div>
-</a>
+      </div>
+    </div>
+  </div>
 
-<a class="card" href="video.html?v=4">
-<div class="thumb"></div>
-<div class="btn">视频4</div>
-</a>
+  <!-- 登录抽屉（升级版） -->
+  <div class="mask" id="mask"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheetCard" role="dialog" aria-label="登录">
+      <div class="sheetHead">
+        <div class="sheetTitleRow">
+          <div class="sheetMark">VIP</div>
+          <div class="sheetTitle">
+            <b id="loginTitle">会员登录</b>
+            <span id="loginSub">登录后可使用：AI工具3、AI工具4</span>
+          </div>
+        </div>
+        <button class="close" id="closeSheet">×</button>
+      </div>
 
-<a class="card" href="video.html?v=5">
-<div class="thumb"></div>
-<div class="btn">视频5</div>
-</a>
+      <div class="row">
+        <div>
+          <div class="label">账号 <small>请输入数字账号</small></div>
+          <div class="field">
+            <div class="miniIco">账</div>
+            <input class="input" id="u" placeholder="输入账号" inputmode="numeric" />
+          </div>
+        </div>
 
-<a class="card" href="video.html?v=6">
-<div class="thumb"></div>
-<div class="btn">视频6</div>
-</a>
+        <div>
+          <div class="label">密码 <small>请输入数字密码</small></div>
+          <div class="field">
+            <div class="miniIco">密</div>
+            <input class="input" id="p" placeholder="输入密码" type="password" inputmode="numeric" />
+            <button class="eyeBtn" id="eyeBtn" type="button">显</button>
+          </div>
+        </div>
 
-</div>
+        <div class="hintLine" id="hintLine">提示：支持回车键快速登录。</div>
+        <div class="errorLine" id="errorLine"></div>
 
+        <div class="sheetBtns">
+          <button class="ghost" id="logoutBtn" type="button">退出登录</button>
+          <button class="primary" id="doLogin" type="button" disabled>登录</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ====== 链接占位（UI不显示链接）======
+    const LINKS = [
+      { name: "AI工具1", url: "https://snapany.com/zh", needLogin: false, grad: "g1" },
+      { name: "AI工具2", url: "https://snapany.com/zh", needLogin: false, grad: "g2" },
+      { name: "AI工具3", url: "https://snapany.com/zh", needLogin: true,  grad: "g3" },
+      { name: "AI工具4", url: "https://snapany.com/zh", needLogin: true,  grad: "g4" },
+    ];
+
+    // 你设置的账号密码
+    const FIX_USER = "131419";
+    const FIX_PASS = "16131419";
+    const KEY = "login_ok_pretty_v5";
+
+    const toast = document.getElementById("toast");
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=>toast.classList.remove("show"), 1500);
+    }
+    function isLogin(){ return localStorage.getItem(KEY) === "1"; }
+
+    // 渲染工具
+    const list = document.getElementById("list");
+    function render(){
+      const logged = isLogin();
+      list.innerHTML = LINKS.map((it, idx)=>{
+        const locked = it.needLogin && !logged;
+        const cardCls = locked ? "toolCard locked" : "toolCard";
+        const iconText = String(idx+1);
+        const tagText = it.needLogin ? (locked ? "需登录" : "会员") : "";
+        const showVip = it.needLogin;
+
+        return `
+          <div class="${cardCls}">
+            <div class="toolInner" data-url="${it.url}" data-need="${it.needLogin ? "1":"0"}">
+              <div class="left">
+                <div class="icon ${it.grad}">${iconText}</div>
+                <div class="txt">
+                  <b>${it.name}</b>
+                  ${it.needLogin ? `<span class="tag vip">${tagText}</span>` : ``}
+                </div>
+              </div>
+              <div class="right"><div class="arrow">›</div></div>
+              ${showVip ? `<div class="vipBadge">会员</div>` : ``}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      list.querySelectorAll(".toolInner").forEach(el=>{
+        el.addEventListener("click", ()=>{
+          const need = el.getAttribute("data-need") === "1";
+          if(need && !isLogin()){
+            showToast("该工具需要登录");
+            openSheet();
+            return;
+          }
+          const url = el.getAttribute("data-url");
+          window.open(url, "_blank", "noopener,noreferrer");
+          showToast("已打开");
+        });
+      });
+    }
+
+    // 底部声明：默认收起，点击展开/收起
+    const footer = document.getElementById("footer");
+    const footerTop = document.getElementById("footerTop");
+    footerTop.addEventListener("click", ()=>{
+      footer.classList.toggle("open");
+    });
+    // 更新时间（本地显示，内容可通用）
+    const t = new Date();
+    const pad = (n)=> String(n).padStart(2,"0");
+    document.getElementById("updateTime").textContent =
+      `${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
+
+    // 登录抽屉逻辑（升级版）
+    const loginBtn = document.getElementById("loginBtn");
+    const mask = document.getElementById("mask");
+    const sheet = document.getElementById("sheet");
+    const closeSheet = document.getElementById("closeSheet");
+
+    const doLogin = document.getElementById("doLogin");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const loginTitle = document.getElementById("loginTitle");
+    const loginSub = document.getElementById("loginSub");
+
+    const u = document.getElementById("u");
+    const p = document.getElementById("p");
+
+    const eyeBtn = document.getElementById("eyeBtn");
+
+    const errorLine = document.getElementById("errorLine");
+    const hintLine = document.getElementById("hintLine");
+
+    let loading = false;
+
+    function setError(msg){
+      if(!msg){
+        errorLine.textContent = "";
+        errorLine.classList.remove("show");
+        return;
+      }
+      errorLine.textContent = msg;
+      errorLine.classList.add("show");
+    }
+
+    function updateLoginBtnState(){
+      const uu = (u.value || "").trim();
+      const pp = (p.value || "").trim();
+      const ok = uu.length > 0 && pp.length > 0 && !loading;
+      doLogin.disabled = !ok;
+    }
+
+    function refreshTop(){
+      if(isLogin()){
+        loginBtn.textContent = "已登录";
+        loginBtn.classList.add("secondary");
+        loginTitle.textContent = "已登录";
+        loginSub.textContent = "会员工具已解锁，可直接使用";
+      }else{
+        loginBtn.textContent = "登录";
+        loginBtn.classList.remove("secondary");
+        loginTitle.textContent = "会员登录";
+        loginSub.textContent = "登录后可使用：AI工具3、AI工具4";
+      }
+      render();
+    }
+
+    function openSheet(){
+      mask.classList.add("show");
+      sheet.classList.add("show");
+      setError("");
+      loading = false;
+      doLogin.textContent = isLogin() ? "重新登录" : "登录";
+      updateLoginBtnState();
+      setTimeout(()=>u.focus(), 90);
+    }
+    function hideSheet(){
+      mask.classList.remove("show");
+      sheet.classList.remove("show");
+      setError("");
+    }
+
+    loginBtn.addEventListener("click", openSheet);
+    mask.addEventListener("click", hideSheet);
+    closeSheet.addEventListener("click", hideSheet);
+
+    eyeBtn.addEventListener("click", ()=>{
+      const isPwd = p.type === "password";
+      p.type = isPwd ? "text" : "password";
+      eyeBtn.textContent = isPwd ? "隐" : "显";
+      p.focus();
+    });
+
+    u.addEventListener("input", ()=>{ setError(""); updateLoginBtnState(); });
+    p.addEventListener("input", ()=>{ setError(""); updateLoginBtnState(); });
+
+    function onEnter(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        if(!doLogin.disabled) doLogin.click();
+      }
+    }
+    u.addEventListener("keydown", onEnter);
+    p.addEventListener("keydown", onEnter);
+
+    doLogin.addEventListener("click", ()=>{
+      if(loading) return;
+
+      const uu = (u.value || "").trim();
+      const pp = (p.value || "").trim();
+
+      if(!uu || !pp){
+        setError("请先把账号和密码填完整。");
+        return;
+      }
+
+      loading = true;
+      doLogin.disabled = true;
+      doLogin.textContent = "登录中...";
+      hintLine.textContent = "正在验证，请稍等...";
+      setError("");
+
+      setTimeout(()=>{
+        if(uu === FIX_USER && pp === FIX_PASS){
+          localStorage.setItem(KEY, "1");
+          showToast("登录成功");
+          u.value = ""; p.value = ""; p.type = "password"; eyeBtn.textContent = "显";
+          hideSheet();
+          hintLine.textContent = "提示：支持回车键快速登录。";
+          loading = false;
+          refreshTop();
+        }else{
+          loading = false;
+          doLogin.textContent = "登录";
+          hintLine.textContent = "提示：支持回车键快速登录。";
+          setError("账号或密码不对，请再试一次。");
+          updateLoginBtnState();
+        }
+      }, 650);
+    });
+
+    logoutBtn.addEventListener("click", ()=>{
+      localStorage.removeItem(KEY);
+      showToast("已退出登录");
+      refreshTop();
+      setError("");
+      u.value = ""; p.value = ""; p.type = "password"; eyeBtn.textContent = "显";
+      updateLoginBtnState();
+    });
+
+    refreshTop();
+  </script>
 </body>
 </html>
