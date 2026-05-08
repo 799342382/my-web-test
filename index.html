@@ -604,14 +604,14 @@ backdrop-filter: blur(16px);
 
         <div class="list" id="list"></div>
 
-        <!-- 底部声明：默认展示（可收起） -->
-        <div class="footer open" id="footer">
+        <!-- 底部使用方法：默认收起（可展开） -->
+        <div class="footer" id="footer">
           <div class="footerTop" id="footerTop">
             <div class="footerLeft">
               <div class="infoDot">i</div>
               <div class="footerTitle">
-                <b>使用声明</b>
-                <span>默认展示，不遮挡内容（点一下可收起）</span>
+                <b>使用方法</b>
+                <span>点一下展开查看</span>
               </div>
             </div>
             <div class="footerArrow">⌄</div>
@@ -755,17 +755,17 @@ const storage = (()=> {
       });
     }
 
-    // 底部声明：默认展示（可收起，且记住你的选择）
+    // 底部使用方法：默认收起（可展开，且记住你的选择）
 const footer = document.getElementById("footer");
 const footerTop = document.getElementById("footerTop");
 const FOOTER_KEY = "footerOpen";
 
-// 默认展开；如果你曾经收起过，就按上次状态来
+// 默认收起；如果你曾经展开过，就按上次状态来
 const savedFooter = storage.getItem(FOOTER_KEY);
-if(savedFooter === null){
+if(savedFooter === "1"){
   footer.classList.add("open");
 }else{
-  footer.classList.toggle("open", savedFooter === "1");
+  footer.classList.remove("open");
 }
 
 footerTop.addEventListener("click", ()=>{
