@@ -8,7 +8,8 @@
   <style>
     :root{
       --bg1:#f8dcf2;--bg2:#d6e8ff;
-      --card:rgba(255,255,255,.62);--stroke:rgba(255,255,255,.55);
+      --card:rgba(255,255,255,.62);--card2:rgba(255,255,255,.72);
+      --stroke:rgba(255,255,255,.55);
       --shadow:0 18px 60px rgba(22,25,38,.12);
       --shadow2:0 10px 30px rgba(22,25,38,.10);
       --text:#1f2430;--muted:rgba(31,36,48,.62);
@@ -31,123 +32,240 @@
 
     .shell{
       min-height:100vh;
-      padding: calc(18px + var(--safeT)) 14px calc(88px + var(--safeB));
+      padding: calc(18px + var(--safeT)) 14px calc(110px + var(--safeB));
       display:flex;
       justify-content:center;
     }
-    .frame{width:min(980px, 100%);}
+    .frame{width:min(1040px, 100%);}
 
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:14px 16px;border-radius:var(--radius);
-      background:var(--card);border:1px solid var(--stroke);
-      box-shadow:var(--shadow2);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    /* 顶部招募广告（替代原来的标题条） */
+    .hero{
+      padding: 16px 16px 14px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.58);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow:hidden;
+      position:relative;
     }
-    .brand{display:flex;align-items:center;gap:12px;min-width:0;}
-    .logo{
-      width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
-      background: linear-gradient(135deg, rgba(151,80,255,.9), rgba(64,210,255,.9));
-      color:#fff;font-weight:900;box-shadow:0 10px 24px rgba(88,96,250,.22);
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-40px -60px auto -60px;
+      height:160px;
+      background:
+        radial-gradient(220px 120px at 22% 40%, rgba(255, 112, 198, .22), rgba(255,255,255,0) 65%),
+        radial-gradient(240px 140px at 78% 30%, rgba(74, 218, 255, .24), rgba(255,255,255,0) 70%);
+      pointer-events:none;
+    }
+    .heroTop{ position:relative; display:flex; flex-direction:column; gap:8px; }
+    .heroTag{
+      width:fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 1000;
+      color: rgba(31,36,48,.86);
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.72);
+      box-shadow: 0 10px 24px rgba(22,25,38,.08);
+    }
+    .heroTitle{
+      font-size: 20px;
+      font-weight: 1100;
+      letter-spacing: .5px;
+      line-height: 1.15;
+    }
+    .heroSub{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .heroActions{
+      position:relative;
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .hero.compact .heroGrid,
+    .hero.compact .heroNote{ display:none; }
+
+    .heroGrid{
+      position:relative;
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .job{
+      border-radius: 22px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.74);
+      box-shadow: 0 12px 30px rgba(22,25,38,.10);
+      padding: 14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .jobHead{
+      display:flex; align-items:center; gap:10px; justify-content:space-between;
+    }
+    .jobLeft{
+      display:flex; align-items:center; gap:10px; min-width:0;
+    }
+    .jobIcon{
+      width:44px;height:44px;border-radius:16px;
+      display:grid;place-items:center;
+      font-size:18px;
+      font-weight:1000;
+      color:#fff;
+      box-shadow: 0 10px 24px rgba(22,25,38,.12);
       flex:0 0 auto;
     }
-    .brandText{min-width:0;}
-    .title{font-size:18px;font-weight:1000;letter-spacing:.5px;line-height:1.1;margin:0;}
-
-    /* 顶部说明：强制一行，不换行；小屏自动隐藏右侧规则 pill */
-    .subtitle{
-      margin-top:6px;
+    .jobName{
+      font-weight:1100;
+      font-size:16px;
+      line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .jobMeta{
+      margin-top:4px;
       font-size:12px;
-      color:var(--muted);
+      color: var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .jobPill{
+      flex:0 0 auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 1000;
+      background: rgba(31,36,48,.06);
+      color: rgba(31,36,48,.78);
+      border: 1px solid rgba(31,36,48,.06);
+      user-select:none;
+    }
+    .jobList{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(31,36,48,.82);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .jobList li{ margin: 6px 0; }
+    .jobActions{
+      margin-top: 12px;
       display:flex;
-      align-items:center;
-      gap:6px;
-      flex-wrap:nowrap;
-      white-space:nowrap;
-      overflow:hidden;
+      gap: 10px;
+      flex-wrap:wrap;
     }
-    .pill{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:6px 10px;border-radius:999px;
-      background:rgba(255,255,255,.66);
-      border:1px solid rgba(255,255,255,.65);
-      color:rgba(31,36,48,.72);
-      font-size:12px;box-shadow:0 8px 22px rgba(22,25,38,.08);
-      white-space:nowrap;
+    .btnPrimary{
+      border:0; cursor:pointer;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 1100;
+      color: rgba(31,36,48,.92);
+      background: linear-gradient(90deg, rgba(245,182,235,.85), rgba(169,205,255,.85));
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 12px 26px rgba(22,25,38,.10);
+      user-select:none;
     }
-    .pill .dot{width:8px;height:8px;border-radius:99px;background:rgba(31,36,48,.25);}
-    .pillRule{display:none;}
-    @media (min-width: 520px){ .pillRule{display:inline-flex;} }
+    .btnGhost{
+      border:0; cursor:pointer;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 1100;
+      color: rgba(31,36,48,.78);
+      background: rgba(255,255,255,.68);
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 10px 24px rgba(22,25,38,.08);
+      user-select:none;
+    }
+    .btnPrimary:active,.btnGhost:active{ transform: scale(.99); }
 
+    .heroNote{
+      position:relative;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(31,36,48,.68);
+      line-height: 1.45;
+    }
+
+    /* PC 顶部菜单 */
     .tabs{
-      margin-top:12px;
+      margin-top: 12px;
       display:none;
       gap:10px;
       align-items:center;
       justify-content:flex-start;
+      flex-wrap:wrap;
     }
     .tabBtn{
       border:0;cursor:pointer;
       padding:10px 14px;border-radius:14px;
-      font-weight:1000;
+      font-weight:1100;
       color:rgba(31,36,48,.75);
       background:rgba(255,255,255,.55);
       border:1px solid rgba(255,255,255,.55);
       box-shadow:0 10px 24px rgba(22,25,38,.08);
       user-select:none;
-      transition:transform .12s ease, background .12s ease;
     }
-    .tabBtn.active{background:rgba(255,255,255,.78);color:rgba(31,36,48,.92);}
-    .tabBtn:active{transform:scale(.98);}
+    .tabBtn.active{ background: rgba(255,255,255,.82); color: rgba(31,36,48,.92); }
+    .tabBtn:active{ transform: scale(.98); }
 
     .panel{
       margin-top:14px;padding:14px;border-radius:var(--radius);
-      background:var(--card);border:1px solid var(--stroke);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      background:rgba(255,255,255,.58);
+      border:1px solid var(--stroke);
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       overflow:hidden;
     }
 
-    .view{display:none;}
-    .view.active{display:block;}
+    .view{ display:none; }
+    .view.active{ display:block; }
 
-    .grid{display:grid;grid-template-columns:1fr;gap:var(--gap);}
-    @media (max-width: 820px){
-      .grid{grid-template-columns:1fr;}
-    }
+    .grid{ display:grid; grid-template-columns:1fr; gap: var(--gap); }
+    @media (max-width: 820px){ .grid{ grid-template-columns:1fr; } }
 
     .tool{
       display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding:14px;border-radius:22px;
-      background:rgba(255,255,255,.70);
-      border:1px solid rgba(255,255,255,.70);
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.78);
       box-shadow:0 12px 30px rgba(22,25,38,.10);
       cursor:pointer;user-select:none;
       transition:transform .12s ease, opacity .12s ease;
     }
-    .tool:active{transform:scale(.995);}
-    .tool.disabled{cursor:not-allowed;opacity:.72;}
+    .tool:active{ transform: scale(.995); }
+    .tool.disabled{ cursor:not-allowed; opacity:.72; }
 
-    .left{display:flex;align-items:center;gap:12px;min-width:0;}
+    .left{ display:flex; align-items:center; gap:12px; min-width:0; }
     .num{
       width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
-      font-weight:1000;color:#fff;flex:0 0 auto;
+      font-weight:1100;color:#fff;flex:0 0 auto;
       box-shadow:0 10px 24px rgba(22,25,38,.12);
     }
-    .nameWrap{min-width:0;}
-    .name{font-weight:1000;font-size:16px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .hint{margin-top:4px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+    .nameWrap{ min-width:0; }
+    .name{ font-weight:1100; font-size:16px; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .hint{ margin-top:4px; font-size:12px; color: var(--muted); }
 
     .badge{
       display:inline-flex;align-items:center;gap:6px;
       padding:6px 10px;border-radius:999px;
-      font-weight:1000;font-size:12px;white-space:nowrap;
+      font-weight:1100;font-size:12px;white-space:nowrap;
       border:1px solid rgba(255,255,255,.65);
       box-shadow:0 10px 24px rgba(22,25,38,.08);
       user-select:none;
     }
-    .bDiamond{background:rgba(65,210,255,.22);color:rgba(6,98,140,.95);}
-    .bGold{background:rgba(255,203,88,.26);color:rgba(128,74,0,.96);}
+    .bDiamond{ background: rgba(65,210,255,.22); color: rgba(6,98,140,.95); }
+    .bGold{ background: rgba(255,203,88,.26); color: rgba(128,74,0,.96); }
     .arrow{
       width:34px;height:34px;border-radius:14px;display:grid;place-items:center;
       background:rgba(255,255,255,.55);
@@ -156,191 +274,288 @@
       flex:0 0 auto;
     }
 
-    /* 我的页 */
-    .stack{display:grid;gap:var(--gap);}
+    /* 我的 */
+    .stack{ display:grid; gap: var(--gap); }
     .card{
       padding:16px;border-radius:22px;
       background:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.78);
       box-shadow:0 12px 30px rgba(22,25,38,.10);
       overflow:hidden;
     }
-    .cardTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0;font-weight:1000;font-size:15px;}
-    .cardSub{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5;}
 
-    .memRow{margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-    .memBig{display:flex;align-items:center;gap:10px;}
+    /* 会员中心：更精致 */
+    .memCard{position:relative; overflow:hidden;}
+    .memCard::before{
+      content:"";
+      position:absolute;
+      inset:-60px -80px auto -80px;
+      height:180px;
+      background:
+        radial-gradient(260px 140px at 18% 50%, rgba(74,218,255,.20), rgba(255,255,255,0) 66%),
+        radial-gradient(260px 160px at 78% 40%, rgba(255,112,198,.18), rgba(255,255,255,0) 70%);
+      pointer-events:none;
+    }
+    .memCard .cardTitle, .memCard .cardSub, .memCard .memRow{position:relative;}
+    .memCard .cardSub{font-size:12px; color:rgba(31,36,48,.60);}
+    .memCard .memRow{margin-top:12px; padding:12px; border-radius:18px;
+      background:rgba(255,255,255,.60); border:1px solid rgba(255,255,255,.70);
+      box-shadow:0 12px 26px rgba(22,25,38,.08);
+    }
+    .memCard .memIcon{width:54px;height:54px;border-radius:20px; font-size:20px;}
+    .memCard .memName{font-size:17px;}
+    .memCard .memDesc{font-size:12px;}
+    .memCard .pill{background:rgba(255,255,255,.70); border:1px solid rgba(255,255,255,.78);}
+    .cardTitle{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0; font-weight:1100; font-size:15px; }
+    .cardSub{ margin-top:6px; font-size:12px; color: var(--muted); line-height:1.5; }
+
+    .memRow{ margin-top:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .memBig{ display:flex; align-items:center; gap:10px; }
     .memIcon{
       width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
-      font-size:18px;font-weight:1000;color:#fff;
+      font-size:18px;font-weight:1100;color:#fff;
       box-shadow:0 10px 24px rgba(22,25,38,.12);
     }
-    .memName{font-weight:1000;font-size:16px;line-height:1.1;}
-    .memDesc{font-size:12px;color:var(--muted);margin-top:4px;}
+    .memName{ font-weight:1100; font-size:16px; line-height:1.1; }
+    .memDesc{ font-size:12px; color: var(--muted); margin-top:4px; }
 
-    .btnPrimary{
-      border:0;cursor:pointer;
-      padding:10px 14px;border-radius:14px;
-      font-weight:1000;color:rgba(31,36,48,.92);
-      background: linear-gradient(90deg, rgba(245,182,235,.85), rgba(169,205,255,.85));
-      border:1px solid rgba(255,255,255,.75);
-      box-shadow:0 12px 30px rgba(22,25,38,.12);
-      user-select:none;
-    }
-    .btnGhost{
-      border:0;cursor:pointer;
-      padding:10px 14px;border-radius:14px;
-      font-weight:1000;color:rgba(31,36,48,.78);
-      background:rgba(255,255,255,.62);
-      border:1px solid rgba(255,255,255,.72);
-      box-shadow:0 10px 24px rgba(22,25,38,.10);
-      user-select:none;
-    }
     .btnDanger{
-      border:0;cursor:pointer;
-      padding:10px 14px;border-radius:14px;
-      font-weight:1000;color:rgba(160,30,45,.96);
-      background:rgba(255,95,122,.14);
-      border:1px solid rgba(255,95,122,.22);
-      box-shadow:0 12px 30px rgba(22,25,38,.10);
+      border:0; cursor:pointer;
+      padding:10px 12px; border-radius:14px;
+      font-weight:1100; color: rgba(160,30,45,.96);
+      background: rgba(255,95,122,.14);
+      border: 1px solid rgba(255,95,122,.22);
+      box-shadow: 0 12px 26px rgba(22,25,38,.10);
       user-select:none;
     }
-    button:active{transform:scale(.99);}
+    .btnDanger:active{ transform: scale(.99); }
 
-    .form{margin-top:12px;display:none;gap:10px;}
-    .form.show{display:grid;}
+    .form{ margin-top:12px; display:none; gap:10px; }
+    .form.show{ display:grid; }
     .field{
-      display:flex;align-items:center;gap:10px;
-      padding:12px;border-radius:16px;
-      background:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.72);
-      box-shadow:0 12px 26px rgba(22,25,38,.08);
+      display:flex; align-items:center; gap:10px;
+      padding:12px; border-radius:16px;
+      background: rgba(255,255,255,.74);
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 12px 24px rgba(22,25,38,.08);
     }
     .field .k{
       width:34px;height:34px;border-radius:14px;display:grid;place-items:center;
-      font-weight:1000;color:rgba(31,36,48,.8);
-      background:rgba(31,36,48,.06);
+      font-weight:1100;color:rgba(31,36,48,.80);
+      background: rgba(31,36,48,.06);
     }
-    .field input{border:0;outline:none;width:100%;font-size:14px;background:transparent;color:rgba(31,36,48,.92);}
-    .field input::placeholder{color:rgba(31,36,48,.38);}
-    .row{display:flex;gap:10px;flex-wrap:wrap;}
-    .grow{flex:1 1 auto;min-width:180px;}
+    .field input, .field textarea{
+      border:0; outline:none; width:100%;
+      font-size:14px; background: transparent; color: rgba(31,36,48,.92);
+      resize:none;
+    }
+    .field textarea{ min-height: 60px; line-height:1.4; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; }
+    .grow{ flex: 1 1 auto; min-width: 180px; }
 
-    .accordion{margin-top:10px;border-radius:18px;background:rgba(255,255,255,.60);border:1px solid rgba(255,255,255,.68);overflow:hidden;}
-    .accHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;cursor:pointer;user-select:none;}
-    .accHead .leftH{display:flex;align-items:center;gap:10px;font-weight:1000;}
-    .accHead .i{width:30px;height:30px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.72);font-weight:1000;}
-    .accHead .t{font-size:14px;}
-    .accHead .s{font-size:12px;color:var(--muted);font-weight:700;}
-    .chev{width:32px;height:32px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.72);color:rgba(31,36,48,.62);transition:transform .15s ease;}
-    .accBody{display:none;padding:0 12px 12px;color:rgba(31,36,48,.76);font-size:12px;line-height:1.6;}
-    .accordion.open .accBody{display:block;}
-    .accordion.open .chev{transform:rotate(180deg);}
-    .list{margin:8px 0 0;padding-left:18px;}
-    .list li{margin:6px 0;}
+    .accordion{ margin-top:10px; border-radius:18px; background: rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.70); overflow:hidden; }
+    .accHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; cursor:pointer; user-select:none; }
+    .accHead .leftH{ display:flex; align-items:center; gap:10px; font-weight:1100; }
+    .accHead .i{ width:30px;height:30px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.72);font-weight:1100; }
+    .accHead .t{ font-size:14px; }
+    .accHead .s{ font-size:12px; color: var(--muted); font-weight:800; }
+    .chev{ width:32px;height:32px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.76);color:rgba(31,36,48,.62);transition:transform .15s ease; }
+    .accBody{ display:none; padding:0 12px 12px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
+    .accordion.open .accBody{ display:block; }
+    .accordion.open .chev{ transform: rotate(180deg); }
+    .list{ margin: 8px 0 0; padding-left:18px; }
+    .list li{ margin: 6px 0; }
 
-    /* 手机底部菜单（仅手机版） */
+    /* 手机底部菜单 */
     .bottomNav{
       display:flex;
-      position:fixed;left:0;right:0;bottom:0;
-      padding:10px 14px calc(10px + var(--safeB));
+      position:fixed; left:0; right:0; bottom:0;
+      padding:10px 12px calc(10px + var(--safeB));
       justify-content:center;
       pointer-events:none;
+      z-index:80;
     }
     .navInner{
-      width:min(520px, 100%);
-      background:rgba(255,255,255,.64);
-      border:1px solid rgba(255,255,255,.62);
-      border-radius:22px;
-      box-shadow:0 18px 60px rgba(22,25,38,.16);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-      padding:8px;display:flex;gap:8px;
+      width:min(560px, 100%);
+      background: rgba(255,255,255,.66);
+      border: 1px solid rgba(255,255,255,.70);
+      border-radius: 22px;
+      box-shadow: 0 18px 60px rgba(22,25,38,.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 8px;
+      display:flex;
+      gap:8px;
       pointer-events:auto;
     }
     .navBtn{
-      flex:1;border:0;cursor:pointer;
-      padding:10px;border-radius:16px;
-      font-weight:1000;background:transparent;
-      color:rgba(31,36,48,.68);
-      display:flex;align-items:center;justify-content:center;gap:8px;
+      flex:1;
+      border:0;
+      cursor:pointer;
+      padding:10px 6px;
+      border-radius:16px;
+      font-weight:1100;
+      background:transparent;
+      color: rgba(31,36,48,.68);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       user-select:none;
+      font-size:13px;
     }
-    .navBtn.active{background:rgba(255,255,255,.78);color:rgba(31,36,48,.92);box-shadow:0 12px 26px rgba(22,25,38,.10);border:1px solid rgba(255,255,255,.75);}
-    .navI{width:26px;height:26px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1000;}
+    .navBtn.active{
+      background: rgba(255,255,255,.82);
+      color: rgba(31,36,48,.92);
+      box-shadow: 0 12px 26px rgba(22,25,38,.10);
+      border: 1px solid rgba(255,255,255,.80);
+    }
+    .navI{ width:26px;height:26px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1100; }
 
+    /* Toast */
     .toast{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:calc(96px + var(--safeB));
-      background:rgba(30,34,44,.86);
-      color:rgba(255,255,255,.96);
-      padding:10px 12px;border-radius:14px;
-      font-size:13px;box-shadow:0 16px 40px rgba(0,0,0,.22);
-      opacity:0;pointer-events:none;
-      transition:opacity .18s ease, transform .18s ease;
-      max-width:min(520px, calc(100% - 28px));
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom: calc(120px + var(--safeB));
+      background: rgba(30,34,44,.86);
+      color: rgba(255,255,255,.96);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.22);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      max-width: min(560px, calc(100% - 28px));
       line-height:1.4;
-      z-index:60;
+      z-index:90;
     }
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(-2px);}
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-2px); }
 
-    .overlay{position:fixed;inset:0;background:rgba(16,18,24,.38);display:none;align-items:center;justify-content:center;padding:16px;z-index:70;}
-    .overlay.show{display:flex;}
-    .dialog{width:min(520px, 100%);border-radius:24px;background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.78);box-shadow:0 22px 80px rgba(0,0,0,.18);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden;}
-    .dlgHead{padding:14px 14px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-    .dlgTitle{font-weight:1000;font-size:15px;margin:0;}
-    .xBtn{width:34px;height:34px;border-radius:14px;border:1px solid rgba(255,255,255,.76);background:rgba(255,255,255,.72);cursor:pointer;box-shadow:0 10px 24px rgba(22,25,38,.10);}
-    .dlgBody{padding:0 14px 14px;color:rgba(31,36,48,.78);font-size:12px;line-height:1.6;}
-    .chk{margin-top:10px;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.60);border:1px solid rgba(255,255,255,.70);}
-    .dlgFoot{padding:12px 14px 14px;display:flex;gap:10px;flex-wrap:wrap;}
+    /* 弹窗 */
+    .overlay{ position:fixed; inset:0; background: rgba(16,18,24,.38); display:none; align-items:center; justify-content:center; padding:16px; z-index:100; }
+    .overlay.show{ display:flex; }
+    .dialog{
+      width: min(560px, 100%);
+      border-radius: 24px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(255,255,255,.80);
+      box-shadow: 0 22px 80px rgba(0,0,0,.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow:hidden;
+    }
+    .dlgHead{ padding:14px 14px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .dlgTitle{ font-weight:1100; font-size:15px; margin:0; }
+    .xBtn{ width:34px;height:34px;border-radius:14px;border:1px solid rgba(255,255,255,.78);background:rgba(255,255,255,.74);cursor:pointer;box-shadow:0 10px 24px rgba(22,25,38,.10); }
+    .dlgBody{ padding:0 14px 14px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
+    .dlgFoot{ padding:12px 14px 14px; display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* 防止小屏挤压 */
+    @media (max-width: 380px){
+      .heroTitle{ font-size: 18px; }
+      .jobActions .btnPrimary, .jobActions .btnGhost{ width:100%; }
+      .navBtn{ font-size:12px; gap:6px; }
+    }
   </style>
 </head>
 <body>
   <div class="shell" id="shell">
     <div class="frame">
-      <div class="topbar">
-        <div class="brand">
-          <div class="logo">AI</div>
-          <div class="brandText">
-            <p class="title">工具入口</p>
-            <div class="subtitle">
-              <span class="pill" id="memPill">
-                <span class="dot" id="memDot"></span>
-                <span>当前：</span>
-                <span id="memText">星钻会员</span>
-              </span>
-              <span class="pill pillRule"><span class="dot"></span><span>💎/👑 标识使用</span></span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="tabs" id="tabsPc">
-        <button class="tabBtn active" id="tabHome">主页</button>
-        <button class="tabBtn" id="tabMy">我的</button>
-      </div>
+      <!-- 顶部：招募广告（用户要求：上面只放这个） -->
+      <header class="hero compact">
+        <div class="heroTop">
+          <div class="heroTag">招募中 · 团队扩编</div>
+          <div class="heroTitle">招剪辑操盘手 / 电话销售</div>
+          <div class="heroSub">想找一群能打的人一起做结果：内容、成交、复盘，长期合作。</div>
+
+        <div class="heroActions">
+          <button class="btnPrimary" id="toggleRecruit">招聘详情</button>
+          <button class="btnGhost" id="openResumeTop">投简历</button>
+        </div>
+        </div>
+
+        <div class="heroGrid">
+          <section class="job">
+            <div class="jobHead">
+              <div class="jobLeft">
+                <div class="jobIcon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85));">🎬</div>
+                <div style="min-width:0">
+                  <div class="jobName">剪辑操盘手</div>
+                  <div class="jobMeta">短视频剪辑 · 节奏把控 · 复盘迭代</div>
+                </div>
+              </div>
+              <div class="jobPill">长期招募</div>
+            </div>
+            <ul class="jobList">
+              <li>能把口播/线下课剪成“3秒抓人”的节奏。</li>
+              <li>会封面/标题/重点字幕；懂数据复盘更加分。</li>
+              <li>交付稳定，愿意迭代，能扛强度。</li>
+            </ul>
+            <div class="jobActions">
+              <button class="btnPrimary" id="copyEditor">复制应聘话术</button>
+              <button class="btnGhost" id="openApply">查看投递方式</button>
+            </div>
+          </section>
+
+          <section class="job">
+            <div class="jobHead">
+              <div class="jobLeft">
+                <div class="jobIcon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">☎️</div>
+                <div style="min-width:0">
+                  <div class="jobName">电话销售</div>
+                  <div class="jobMeta">沟通成交 · 跟进转化 · 目标导向</div>
+                </div>
+              </div>
+              <div class="jobPill">急招</div>
+            </div>
+            <ul class="jobList">
+              <li>普通话清晰，敢开口，抗拒绝。</li>
+              <li>能按话术跟进、记录、复盘，执行力强。</li>
+              <li>想赚钱、想成长、能长期稳定做。</li>
+            </ul>
+            <div class="jobActions">
+              <button class="btnPrimary" id="copySales">复制应聘话术</button>
+              <button class="btnGhost" id="openApply2">查看投递方式</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="heroNote">提示：点“复制应聘话术”→ 粘贴发送给招聘方即可。投递方式可在「我的」里自定义。</div>
+      </header>
+
+
 
       <div class="panel">
         <section class="view active" id="viewHome">
-          <div class="grid" id="toolGrid"></div>
+          <div class="grid" id="gridHome"></div>
+        </section>
+
+        <section class="view" id="viewDiamond">
+          <div class="grid" id="gridDiamond"></div>
+        </section>
+
+        <section class="view" id="viewGold">
+          <div class="grid" id="gridGold"></div>
         </section>
 
         <section class="view" id="viewMy">
           <div class="stack">
-            <div class="card">
+            <div class="card memCard">
               <div class="cardTitle">
                 <span>会员中心</span>
-                <span class="pill" id="memBadgeMini"><span class="dot"></span><span>星钻</span></span>
+                <span class="pill" id="memBadgeMini"><span class="dot" style="background:rgba(80,210,255,.9)"></span><span>星钻</span></span>
               </div>
               <div class="cardSub" id="memSub">
-                星钻会员免登录，可使用带 💎 标识的工具；开通金耀会员后，可使用带 👑 标识的工具。
+                星钻免登录可用；开通金耀后，可使用「金耀」菜单里的工具。
               </div>
 
               <div class="memRow">
                 <div class="memBig">
-                  <div class="memIcon" id="memIcon">💎</div>
+                  <div class="memIcon" id="memIcon" style="background:linear-gradient(135deg, rgba(64,210,255,.95), rgba(151,80,255,.85));">💎</div>
                   <div>
                     <div class="memName" id="memName">星钻会员</div>
-                    <div class="memDesc" id="memDesc">免登录 · 适合日常快速使用</div>
+                    <div class="memDesc" id="memDesc">免登录 · 可用星钻工具</div>
                   </div>
                 </div>
                 <div class="row">
@@ -368,6 +583,30 @@
             </div>
 
             <div class="card">
+              <div class="cardTitle"><span>投简历设置（可自己改）</span></div>
+              <div class="cardSub">把你的微信/电话/邮箱写在这里。用户点“查看投递方式”会看到你填的内容。</div>
+              <div class="form show" style="margin-top:10px;">
+                
+                <div class="field">
+                  <div class="k">邮</div>
+                  <input id="resumeEmail" autocomplete="off" inputmode="email" placeholder="收件QQ邮箱（例如：123456@qq.com）" />
+                </div>
+                <div class="field">
+                  <div class="k">联</div>
+                  <input id="contactLine" autocomplete="off" inputmode="text" placeholder="例如：微信：xxx  /  电话：xxx  /  邮箱：xxx" />
+                </div>
+                <div class="field">
+                  <div class="k">备</div>
+                  <textarea id="contactNote" placeholder="例如：发送【应聘+岗位名+姓名+作品链接】即可。"></textarea>
+                </div>
+                <div class="row">
+                  <button class="btnPrimary grow" id="saveContact">保存</button>
+                  <button class="btnGhost grow" id="resetContact">恢复默认</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
               <div class="cardTitle"><span>使用方法</span></div>
               <div class="accordion" id="accUse">
                 <div class="accHead" id="accUseHead">
@@ -382,12 +621,10 @@
                 </div>
                 <div class="accBody">
                   <ol class="list">
-                    <li>本页面用于工具导航与学习辅助展示；点击后进入对应页面（可能在新页面打开）。</li>
-                    <li>带 <b>💎</b> 标识：星钻会员可用；带 <b>👑</b> 标识：需金耀会员。</li>
-                    <li>使用过程中请遵守平台规则与相关法律法规；因不当使用产生的后果由使用者自行承担。</li>
-                    <li>如你认为页面内容存在侵权或不适，请联系我进行处理或移除。</li>
+                    <li>「主页」先保留，用于你后续引流/广告展示。</li>
+                    <li>工具分在「星钻 / 金耀」两页，体验更清晰。</li>
+                    <li>未开通金耀时，金耀工具会提示去「我的」开通。</li>
                   </ol>
-                  <div class="cardSub">隐私说明：会员状态仅用于权限区分，保存在本机浏览器/应用存储中。</div>
                 </div>
               </div>
             </div>
@@ -398,7 +635,7 @@
                 <button class="btnDanger" id="clearBtn">清除数据</button>
               </div>
               <div class="cardSub">
-                恢复到首次打开状态（清除本机保存的会员状态、偏好设置等）。清除后下次打开需要重新加载，首次进入可能会稍慢。本操作不可撤销。
+                恢复到首次打开状态（清除本机保存的会员状态、偏好设置、投递方式等）。清除后下次打开需要重新加载，本操作不可撤销。
               </div>
             </div>
 
@@ -411,14 +648,93 @@
     </div>
   </div>
 
+
   <div class="bottomNav" id="bottomNav">
     <div class="navInner" role="tablist" aria-label="菜单">
       <button class="navBtn active" id="navHome" role="tab" aria-selected="true"><span class="navI">🏠</span><span>主页</span></button>
+      <button class="navBtn" id="navDiamond" role="tab" aria-selected="false"><span class="navI">💎</span><span>星钻</span></button>
+      <button class="navBtn" id="navGold" role="tab" aria-selected="false"><span class="navI">👑</span><span>金耀</span></button>
       <button class="navBtn" id="navMy" role="tab" aria-selected="false"><span class="navI">👤</span><span>我的</span></button>
     </div>
   </div>
+    
 
   <div class="toast" id="toast"></div>
+
+  <div class="overlay" id="applyOv">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="投递方式">
+      <div class="dlgHead">
+        <p class="dlgTitle">投简历</p>
+        <button class="xBtn" id="xApply" aria-label="关闭">✕</button>
+      </div>
+      <div class="dlgBody">
+        <div style="font-weight:1100;margin-bottom:6px;">联系方式</div>
+        <div id="contactShow" style="padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.78);box-shadow:0 10px 24px rgba(22,25,38,.06);"></div>
+        <div style="margin-top:10px;font-weight:1100;margin-bottom:6px;">备注</div>
+        <div id="noteShow" style="padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.78);box-shadow:0 10px 24px rgba(22,25,38,.06);"></div>
+      </div>
+      <div class="dlgFoot">
+        <button class="btnPrimary grow" id="copyContact">复制联系方式</button>
+        <button class="btnGhost grow" id="closeApply">关闭</button>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- 投简历弹窗 -->
+  <div class="overlay" id="resumeOv">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="投简历">
+      <div class="dlgHead">
+        <p class="dlgTitle">投简历</p>
+        <button class="xBtn" id="xResume" aria-label="关闭">✕</button>
+      </div>
+      <div class="dlgBody">
+        <div style="font-size:12px;color:rgba(31,36,48,.66);line-height:1.5;">
+          填完点“发送到邮箱”会打开邮箱应用并自动带好内容；如果你不方便发邮箱，点“复制简历内容”复制后粘贴发送也行。
+        </div>
+
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btnGhost" id="pickEditor" type="button">🎬 剪辑操盘手</button>
+          <button class="btnGhost" id="pickSales" type="button">☎️ 电话销售</button>
+        </div>
+
+        <div class="form show" style="margin-top:10px;">
+          <div class="field">
+            <div class="k">岗</div>
+            <input id="rRole" autocomplete="off" inputmode="text" placeholder="岗位（已选会自动填）" />
+          </div>
+          <div class="field">
+            <div class="k">名</div>
+            <input id="rName" autocomplete="off" inputmode="text" placeholder="姓名" />
+          </div>
+          <div class="field">
+            <div class="k">联</div>
+            <input id="rContact" autocomplete="off" inputmode="text" placeholder="联系方式（微信/手机）" />
+          </div>
+          <div class="field">
+            <div class="k">补</div>
+            <textarea id="rNote" placeholder="作品链接 / 过往经验 / 可上岗时间（可一段话写清楚）"></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.72);">
+          <div style="font-weight:1100;margin-bottom:6px;">收件QQ邮箱</div>
+          <div id="resumeEmailShow" style="font-size:12px;color:rgba(31,36,48,.78);word-break:break-all;"></div>
+          <div style="margin-top:6px;font-size:12px;color:rgba(31,36,48,.58);">如果为空，请去「我的」先填写“收件QQ邮箱”。</div>
+        </div>
+      </div>
+      <div class="dlgFoot">
+        <button class="btnPrimary grow" id="sendResume">发送到邮箱</button>
+        <button class="btnGhost grow" id="copyResume">复制简历内容</button>
+      </div>
+    </div>
+  </div>
+      <div class="dlgFoot">
+        <button class="btnPrimary grow" id="sendResume">发送到邮箱</button>
+        <button class="btnGhost grow" id="copyResume">复制简历内容</button>
+      </div>
+    </div>
+  </div>
 
   <div class="overlay" id="ov">
     <div class="dialog" role="dialog" aria-modal="true" aria-label="清除数据确认">
@@ -430,10 +746,10 @@
         清除后会发生这些变化：
         <ul class="list">
           <li>会员状态会恢复为「星钻会员」。</li>
-          <li>你设置过的偏好（例如：使用方法是否展开）会被清空。</li>
+          <li>你保存的投递方式、偏好设置会被清空。</li>
           <li>下次打开需要重新加载资源，首次进入可能会稍慢。</li>
         </ul>
-        <div class="chk">
+        <div style="margin-top:10px;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.72);">
           <input id="ck" type="checkbox" />
           <label for="ck">我已了解后果，仍要继续</label>
         </div>
@@ -458,9 +774,19 @@
     { id: 8, name: "免费影视", url: "https://www.wfei.la/", tier: "gold" },
   ];
 
+  const APPLY_EDITOR = "应聘岗位：剪辑操盘手\n姓名：\n所在地：\n可接单时间：\n作品链接：\n一句话自我介绍：";
+  const APPLY_SALES  = "应聘岗位：电话销售\n姓名：\n所在地：\n可上岗时间：\n过往经验：\n一句话自我介绍：";
+
   const KEY_GOLD = "isGoldMember";
   const KEY_ACC_OPEN = "accUseOpen";
   const KEY_LAST_VIEW = "lastView";
+  const KEY_CONTACT_LINE = "contactLine";
+  const KEY_CONTACT_NOTE = "contactNote";
+  const KEY_RESUME_EMAIL = "resumeEmail";
+
+  const DEFAULT_CONTACT_LINE = "请在你看到此页面的渠道联系发布者（微信/电话/邮箱）。";
+  const DEFAULT_CONTACT_NOTE = "建议发送：应聘 + 岗位名 + 姓名 + 作品链接（剪辑岗）/ 过往经验（销售岗）。";
+
   const $ = (id)=>document.getElementById(id);
 
   let toastTimer = null;
@@ -472,18 +798,38 @@
     toastTimer = setTimeout(()=>t.classList.remove("show"), 2200);
   }
 
+  async function copyText(text){
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch(e){}
+    // fallback
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position="fixed";
+      ta.style.opacity="0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      return true;
+    }catch(e){}
+    return false;
+  }
+
   function isGold(){ return localStorage.getItem(KEY_GOLD) === "1"; }
 
   function paintMember(){
     const gold = isGold();
-    $("memText").textContent = gold ? "金耀会员" : "星钻会员";
-    $("memDot").style.background = gold ? "rgba(255, 191, 64, .8)" : "rgba(80, 210, 255, .8)";
+    $("memName").textContent = gold ? "金耀会员" : "星钻会员";
+    $("memDesc").textContent = gold ? "已开通 · 可用金耀工具" : "免登录 · 可用星钻工具";
     $("memIcon").textContent = gold ? "👑" : "💎";
     $("memIcon").style.background = gold
       ? "linear-gradient(135deg, rgba(255, 178, 56, .95), rgba(255, 92, 140, .85))"
       : "linear-gradient(135deg, rgba(64, 210, 255, .95), rgba(151, 80, 255, .85))";
-    $("memName").textContent = gold ? "金耀会员" : "星钻会员";
-    $("memDesc").textContent = gold ? "已开通 · 可使用 👑 标识工具" : "免登录 · 可使用 💎 标识工具";
     $("memBadgeMini").innerHTML = gold
       ? '<span class="dot" style="background:rgba(255, 191, 64, .9)"></span><span>金耀</span>'
       : '<span class="dot" style="background:rgba(80, 210, 255, .9)"></span><span>星钻</span>';
@@ -491,7 +837,7 @@
     $("upgradeBtn").style.display = gold ? "none" : "inline-flex";
     $("logoutBtn").style.display = gold ? "inline-flex" : "none";
 
-    renderTools();
+    renderAll();
   }
 
   function colorById(n){
@@ -531,69 +877,209 @@
     document.body.appendChild(a); a.click(); a.remove();
   }
 
-  function renderTools(){
-    const grid = $("toolGrid");
+  function renderInto(gridId, filterTier){
+    const grid = $(gridId);
+    if(!grid) return;
     grid.innerHTML = "";
     const gold = isGold();
 
-    LINKS.forEach(item=>{
-      const needGold = item.tier === "gold";
-      const disabled = needGold && !gold;
+    LINKS
+      .filter(it => !filterTier ? true : it.tier === filterTier)
+      .forEach(item=>{
+        const needGold = item.tier === "gold";
+        const disabled = needGold && !gold;
 
-      const el = document.createElement("div");
-      el.className = "tool" + (disabled ? " disabled" : "");
-      el.innerHTML = `
-        <div class="left">
-          <div class="num" style="background:${colorById(item.id)}">${item.id}</div>
-          <div class="nameWrap">
-            <p class="name">${item.name}</p>
-            <div class="hint">${disabled ? '需金耀会员 👑' : '点击打开'}</div>
+        const el = document.createElement("div");
+        el.className = "tool" + (disabled ? " disabled" : "");
+        el.innerHTML = `
+          <div class="left">
+            <div class="num" style="background:${colorById(item.id)}">${item.id}</div>
+            <div class="nameWrap">
+              <p class="name">${item.name}</p>
+              <div class="hint">${disabled ? '需金耀会员 👑' : '点击打开'}</div>
+            </div>
           </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;flex:0 0 auto;">
-          ${tierBadge(item.tier)}
-          <div class="arrow">›</div>
-        </div>
-      `;
+          <div style="display:flex;align-items:center;gap:10px;flex:0 0 auto;">
+            ${tierBadge(item.tier)}
+            <div class="arrow">›</div>
+          </div>
+        `;
 
-      el.addEventListener("click", ()=>{
-        if(disabled){
-          showToast("该工具需要金耀会员 👑，去「我的」开通即可使用。");
-          switchView("my");
-          $("upgradeForm").classList.add("show");
-          $("upgradeForm").scrollIntoView({behavior:"smooth", block:"nearest"});
-          return;
-        }
-        openUrl(item.url);
+        el.addEventListener("click", ()=>{
+          if(disabled){
+            showToast("该工具需要金耀会员 👑，去「我的」开通即可使用。");
+            switchView("my");
+            $("upgradeForm").classList.add("show");
+            $("upgradeForm").scrollIntoView({behavior:"smooth", block:"nearest"});
+            return;
+          }
+          openUrl(item.url);
+        });
+
+        grid.appendChild(el);
       });
+  }
 
-      grid.appendChild(el);
+  function renderAll(){
+    renderInto("gridHome", null);
+    renderInto("gridDiamond", "diamond");
+    renderInto("gridGold", "gold");
+  }
+
+  function setActive(btnIds, activeId){
+    btnIds.forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle("active", id === activeId);
+      if(el.getAttribute("role")==="tab") {
+        el.setAttribute("aria-selected", id === activeId ? "true" : "false");
+      }
     });
   }
 
   function switchView(which){
-    const isHome = which === "home";
-    $("viewHome").classList.toggle("active", isHome);
-    $("viewMy").classList.toggle("active", !isHome);
-    localStorage.setItem(KEY_LAST_VIEW, which);
+    const views = ["home","diamond","gold","my"];
+    views.forEach(v=>{
+      const sec = document.getElementById("view" + v.charAt(0).toUpperCase() + v.slice(1));
+      if(sec) sec.classList.toggle("active", v === which);
+    });
 
     // PC tabs
-    const tabHome = document.getElementById("tabHome");
-    const tabMy = document.getElementById("tabMy");
-    if(tabHome && tabMy){
-      tabHome.classList.toggle("active", isHome);
-      tabMy.classList.toggle("active", !isHome);
-    }
-    // Mobile bottom nav
-    const navHome = document.getElementById("navHome");
-    const navMy = document.getElementById("navMy");
-    if(navHome && navMy){
-      navHome.classList.toggle("active", isHome);
-      navMy.classList.toggle("active", !isHome);
-      navHome.setAttribute("aria-selected", isHome ? "true" : "false");
-      navMy.setAttribute("aria-selected", !isHome ? "true" : "false");
-    }
+    setActive(["tabHome","tabDiamond","tabGold","tabMy"], "tab" + which.charAt(0).toUpperCase() + which.slice(1));
+    // Mobile nav
+    setActive(["navHome","navDiamond","navGold","navMy"], "nav" + which.charAt(0).toUpperCase() + which.slice(1));
+
+    localStorage.setItem(KEY_LAST_VIEW, which);
   }
+
+  
+  // 招募折叠：默认收起，不占位置
+  (function(){
+    const hero = document.querySelector(".hero");
+    const btn = document.getElementById("toggleRecruit");
+    if(!hero || !btn) return;
+    // 初始：compact（收起）
+    btn.textContent = hero.classList.contains("compact") ? "招聘详情" : "收起详情";
+    btn.addEventListener("click", ()=>{
+      hero.classList.toggle("compact");
+      const compact = hero.classList.contains("compact");
+      btn.textContent = compact ? "招聘详情" : "收起详情";
+      if(!compact){
+        hero.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  })();
+
+  // 招募：复制话术 + 查看投递方式
+  $("copyEditor").addEventListener("click", async ()=>{
+    const ok = await copyText(APPLY_EDITOR);
+    showToast(ok ? "已复制：剪辑操盘手应聘话术" : "复制失败：请手动复制");
+  });
+  $("copySales").addEventListener("click", async ()=>{
+    const ok = await copyText(APPLY_SALES);
+    showToast(ok ? "已复制：电话销售应聘话术" : "复制失败：请手动复制");
+  });
+
+  function loadContact(){
+    const line = localStorage.getItem(KEY_CONTACT_LINE) || DEFAULT_CONTACT_LINE;
+    const note = localStorage.getItem(KEY_CONTACT_NOTE) || DEFAULT_CONTACT_NOTE;
+    return { line, note };
+  }
+  function openApply(){
+    const { line, note } = loadContact();
+    $("contactShow").textContent = line;
+    $("noteShow").textContent = note;
+    $("applyOv").classList.add("show");
+  }
+  function closeApply(){
+    $("applyOv").classList.remove("show");
+  }
+  
+
+  // 投简历弹窗
+  function getResumeEmail(){
+    const direct = (localStorage.getItem(KEY_RESUME_EMAIL) || "").trim();
+    if(direct) return direct;
+    const line = (localStorage.getItem(KEY_CONTACT_LINE) || "").trim();
+    const m = line.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+    return m ? m[0] : "";
+  }
+
+  function buildResumeText(){
+    const role = ($("rRole").value || "").trim() || "剪辑操盘手";
+    const name = ($("rName").value || "").trim();
+    const contact = ($("rContact").value || "").trim();
+    const note = ($("rNote").value || "").trim();
+
+    const lines = [
+      "【应聘信息】",
+      "岗位：" + role,
+      "姓名：" + (name || "（未填）"),
+      "联系方式：" + (contact || "（未填）"),
+    ];
+    if(note) lines.push("补充：" + note);
+    return lines.join("\n");
+  }
+
+  function openResume(prefRole){
+    if(prefRole){
+      $("rRole").value = prefRole;
+    }else if(!$("rRole").value){
+      $("rRole").value = "剪辑操盘手";
+    }
+    const email = getResumeEmail();
+    $("resumeEmailShow").textContent = email ? email : "（未设置）";
+    $("resumeOv").classList.add("show");
+    setTimeout(()=>{ $("rName").focus({preventScroll:true}); }, 60);
+  }
+  function closeResume(){ $("resumeOv").classList.remove("show"); }
+
+  
+  // 快捷选择岗位
+  $("pickEditor").addEventListener("click", ()=>{
+    $("rRole").value = "剪辑操盘手";
+    showToast("已选择：剪辑操盘手");
+  });
+  $("pickSales").addEventListener("click", ()=>{
+    $("rRole").value = "电话销售";
+    showToast("已选择：电话销售");
+  });
+
+  $("openResumeTop").addEventListener("click", ()=>openResume());
+  $("xResume").addEventListener("click", closeResume);
+  $("resumeOv").addEventListener("click", (e)=>{ if(e.target === $("resumeOv")) closeResume(); });
+
+  $("sendResume").addEventListener("click", ()=>{
+    const email = getResumeEmail();
+    if(!email){
+      showToast("请先到「我的」设置收件QQ邮箱");
+      switchView("my");
+      closeResume();
+      return;
+    }
+    const role = ($("rRole").value || "应聘").trim() || "应聘";
+    const name = ($("rName").value || "").trim();
+    const subject = encodeURIComponent("应聘：" + role + (name ? (" - " + name) : ""));
+    const body = encodeURIComponent(buildResumeText());
+    window.location.href = "mailto:" + encodeURIComponent(email) + "?subject=" + subject + "&body=" + body;
+  });
+
+  $("copyResume").addEventListener("click", async ()=>{
+    const ok = await copyText(buildResumeText());
+    showToast(ok ? "已复制简历内容" : "复制失败：请手动复制");
+  });
+$("openApply").addEventListener("click", openApply);
+  $("openApply2").addEventListener("click", openApply);
+  
+  
+$("xApply").addEventListener("click", closeApply);
+  $("closeApply").addEventListener("click", closeApply);
+  $("applyOv").addEventListener("click", (e)=>{ if(e.target === $("applyOv")) closeApply(); });
+  $("copyContact").addEventListener("click", async ()=>{
+    const { line, note } = loadContact();
+    const ok = await copyText(line + "\n" + note);
+    showToast(ok ? "已复制：投递方式" : "复制失败：请手动复制");
+  });
 
   // 会员开通/退出
   $("upgradeBtn").addEventListener("click", ()=>{
@@ -622,14 +1108,35 @@
     localStorage.removeItem(KEY_GOLD);
     showToast("已退出金耀，恢复星钻会员 💎");
     paintMember();
+    const last = localStorage.getItem(KEY_LAST_VIEW);
+    if(last === "gold") switchView("diamond");
+  });
+
+  // 投递方式保存
+  function hydrateContactInputs(){
+    const line = localStorage.getItem(KEY_CONTACT_LINE) || DEFAULT_CONTACT_LINE;
+    const note = localStorage.getItem(KEY_CONTACT_NOTE) || DEFAULT_CONTACT_NOTE;
+    $("contactLine").value = line;
+    $("contactNote").value = note;
+    $("resumeEmail").value = localStorage.getItem(KEY_RESUME_EMAIL) || "";
+  }
+  $("saveContact").addEventListener("click", ()=>{
+    localStorage.setItem(KEY_CONTACT_LINE, ($("contactLine").value || "").trim() || DEFAULT_CONTACT_LINE);
+    localStorage.setItem(KEY_CONTACT_NOTE, ($("contactNote").value || "").trim() || DEFAULT_CONTACT_NOTE);
+    localStorage.setItem(KEY_RESUME_EMAIL, ($("resumeEmail").value || "").trim());
+    showToast("已保存投简历设置");
+  });
+  $("resetContact").addEventListener("click", ()=>{
+    localStorage.removeItem(KEY_CONTACT_LINE);
+    localStorage.removeItem(KEY_CONTACT_NOTE);
+      localStorage.removeItem(KEY_RESUME_EMAIL);
+    hydrateContactInputs();
+    showToast("已恢复默认投递方式");
   });
 
   // 使用方法折叠（默认收起）
   const accUse = $("accUse");
-  function paintAcc(){
-    const open = localStorage.getItem(KEY_ACC_OPEN) === "1";
-    accUse.classList.toggle("open", open);
-  }
+  function paintAcc(){ accUse.classList.toggle("open", localStorage.getItem(KEY_ACC_OPEN) === "1"); }
   $("accUseHead").addEventListener("click", ()=>{
     const nowOpen = !accUse.classList.contains("open");
     accUse.classList.toggle("open", nowOpen);
@@ -654,35 +1161,33 @@
       localStorage.removeItem(KEY_GOLD);
       localStorage.removeItem(KEY_ACC_OPEN);
       localStorage.removeItem(KEY_LAST_VIEW);
+      localStorage.removeItem(KEY_CONTACT_LINE);
+      localStorage.removeItem(KEY_CONTACT_NOTE);
     }catch(err){}
     closeOv();
     showToast("数据已清除，正在恢复初始状态…");
     setTimeout(()=>window.location.replace(window.location.href.split("#")[0]), 600);
   });
 
-  // 菜单事件（只绑定存在的那一套）
-  const tabHome = document.getElementById("tabHome");
-  const tabMy = document.getElementById("tabMy");
-  if(tabHome && tabMy){
-    tabHome.addEventListener("click", ()=>switchView("home"));
-    tabMy.addEventListener("click", ()=>switchView("my"));
-  }
-  const navHome = document.getElementById("navHome");
-  const navMy = document.getElementById("navMy");
-  if(navHome && navMy){
-    navHome.addEventListener("click", ()=>switchView("home"));
-    navMy.addEventListener("click", ()=>switchView("my"));
-  }
+  // 菜单绑定
+  const bind = (id, view)=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("click", ()=>switchView(view));
+  };
+  bind("tabHome","home"); bind("tabDiamond","diamond"); bind("tabGold","gold"); bind("tabMy","my");
+  bind("navHome","home"); bind("navDiamond","diamond"); bind("navGold","gold"); bind("navMy","my");
 
   // 初始化
   $("buildDate").textContent = new Date().toISOString().slice(0,10);
   paintAcc();
+  hydrateContactInputs();
   paintMember();
 
-  const last = localStorage.getItem(KEY_LAST_VIEW);
-  if(last === "my") switchView("my"); else switchView("home");
+  let last = localStorage.getItem(KEY_LAST_VIEW) || "home";
+  if(last === "gold" && !isGold()) last = "diamond";
+  switchView(last);
 
-  // 键盘适配：只留底部空白，不触发上跳（仅手机版需要）
   if(window.visualViewport){const vv=window.visualViewport;const base=0;function onVV(){const diff=Math.max(0,(window.innerHeight-vv.height-vv.offsetTop));document.documentElement.style.setProperty('--safeB',(base+Math.min(diff,220))+'px');}vv.addEventListener('resize',onVV);vv.addEventListener('scroll',onVV);}
 })();
 </script>
