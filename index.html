@@ -3,30 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#e9e8ff" />
+  <meta name="theme-color" content="#ecebff" />
   <title>工具入口 · 手机版</title>
   <style>
     :root{
-      --bg1:#f8dcf2;--bg2:#d6e8ff;
-      --card:rgba(255,255,255,.62);--card2:rgba(255,255,255,.72);
-      --stroke:rgba(255,255,255,.55);
+      --bgA:#f3e9ff;
+      --bgB:#e9f3ff;
+      --stroke:rgba(255,255,255,.60);
       --shadow:0 18px 60px rgba(22,25,38,.12);
       --shadow2:0 10px 30px rgba(22,25,38,.10);
-      --text:#1f2430;--muted:rgba(31,36,48,.62);
-      --radius:26px;--gap:14px;
+      --text:#1f2430;
+      --muted:rgba(31,36,48,.62);
+      --radius:26px;
+      --gap:14px;
       --safeB:env(safe-area-inset-bottom);
       --safeT:env(safe-area-inset-top);
     }
     *{box-sizing:border-box;}
-    html,body{height:100%;}
+    html,body{height:100%; background: linear-gradient(135deg, var(--bgA), var(--bgB));}
     body{
       margin:0;
       font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC", Arial, sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 18% 18%, rgba(255,255,255,.55), rgba(255,255,255,0) 55%),
-        radial-gradient(900px 700px at 80% 25%, rgba(255,255,255,.45), rgba(255,255,255,0) 60%),
-        linear-gradient(120deg, var(--bg1), var(--bg2));
+      background: linear-gradient(135deg, var(--bgA), var(--bgB));
+      background-attachment: fixed;
       overflow-x:hidden;
     }
 
@@ -36,13 +36,17 @@
       display:flex;
       justify-content:center;
     }
-    .frame{width:min(1040px, 100%);}
+    .frame{
+      width:min(560px, 100%);
+      display: flex;
+      flex-direction: column;
+    }
 
-    /* 顶部招募广告（替代原来的标题条） */
+    /* 顶部招募广告 */
     .hero{
       padding: 16px 16px 14px;
       border-radius: var(--radius);
-      background: rgba(255,255,255,.58);
+      background: rgba(255,255,255,.62);
       border: 1px solid var(--stroke);
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
@@ -56,8 +60,8 @@
       inset:-40px -60px auto -60px;
       height:160px;
       background:
-        radial-gradient(220px 120px at 22% 40%, rgba(255, 112, 198, .22), rgba(255,255,255,0) 65%),
-        radial-gradient(240px 140px at 78% 30%, rgba(74, 218, 255, .24), rgba(255,255,255,0) 70%);
+        radial-gradient(220px 120px at 22% 40%, rgba(255, 112, 198, .18), rgba(255,255,255,0) 65%),
+        radial-gradient(240px 140px at 78% 30%, rgba(74, 218, 255, .18), rgba(255,255,255,0) 70%);
       pointer-events:none;
     }
     .heroTop{ position:relative; display:flex; flex-direction:column; gap:8px; }
@@ -68,8 +72,8 @@
       font-size: 12px;
       font-weight: 1000;
       color: rgba(31,36,48,.86);
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(255,255,255,.72);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.78);
       box-shadow: 0 10px 24px rgba(22,25,38,.08);
     }
     .heroTitle{
@@ -78,12 +82,6 @@
       letter-spacing: .5px;
       line-height: 1.15;
     }
-    .heroSub{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
     .heroActions{
       position:relative;
       margin-top:12px;
@@ -102,43 +100,26 @@
       grid-template-columns: 1fr;
       gap: 12px;
     }
-
     .job{
       border-radius: 22px;
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(255,255,255,.74);
+      background: rgba(255,255,255,.74);
+      border: 1px solid rgba(255,255,255,.80);
       box-shadow: 0 12px 30px rgba(22,25,38,.10);
       padding: 14px;
       overflow:hidden;
       position:relative;
     }
-    .jobHead{
-      display:flex; align-items:center; gap:10px; justify-content:space-between;
-    }
-    .jobLeft{
-      display:flex; align-items:center; gap:10px; min-width:0;
-    }
+    .jobHead{display:flex; align-items:center; gap:10px; justify-content:space-between;}
+    .jobLeft{display:flex; align-items:center; gap:10px; min-width:0;}
     .jobIcon{
       width:44px;height:44px;border-radius:16px;
       display:grid;place-items:center;
-      font-size:18px;
-      font-weight:1000;
-      color:#fff;
+      font-size:18px;font-weight:1000;color:#fff;
       box-shadow: 0 10px 24px rgba(22,25,38,.12);
       flex:0 0 auto;
     }
-    .jobName{
-      font-weight:1100;
-      font-size:16px;
-      line-height:1.1;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .jobMeta{
-      margin-top:4px;
-      font-size:12px;
-      color: var(--muted);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .jobName{font-weight:1100;font-size:16px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .jobMeta{margin-top:4px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .jobPill{
       flex:0 0 auto;
       padding: 6px 10px;
@@ -150,20 +131,10 @@
       border: 1px solid rgba(31,36,48,.06);
       user-select:none;
     }
-    .jobList{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: rgba(31,36,48,.82);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-    .jobList li{ margin: 6px 0; }
-    .jobActions{
-      margin-top: 12px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-    }
+    .jobList{margin:10px 0 0;padding-left:18px;color:rgba(31,36,48,.82);font-size:12px;line-height:1.6;}
+    .jobList li{margin:6px 0;}
+    .jobActions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;}
+
     .btnPrimary{
       border:0; cursor:pointer;
       padding: 10px 12px;
@@ -171,9 +142,13 @@
       font-weight: 1100;
       color: rgba(31,36,48,.92);
       background: linear-gradient(90deg, rgba(245,182,235,.85), rgba(169,205,255,.85));
-      border: 1px solid rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.82);
       box-shadow: 0 12px 26px rgba(22,25,38,.10);
       user-select:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
     }
     .btnGhost{
       border:0; cursor:pointer;
@@ -181,51 +156,27 @@
       border-radius: 14px;
       font-weight: 1100;
       color: rgba(31,36,48,.78);
-      background: rgba(255,255,255,.68);
-      border: 1px solid rgba(255,255,255,.78);
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.82);
       box-shadow: 0 10px 24px rgba(22,25,38,.08);
       user-select:none;
-    }
-    .btnPrimary:active,.btnGhost:active{ transform: scale(.99); }
-
-    .heroNote{
-      position:relative;
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(31,36,48,.68);
-      line-height: 1.45;
-    }
-
-    /* PC 顶部菜单 */
-    .tabs{
-      margin-top: 12px;
-      display:none;
-      gap:10px;
+      display:inline-flex;
       align-items:center;
-      justify-content:flex-start;
-      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
     }
-    .tabBtn{
-      border:0;cursor:pointer;
-      padding:10px 14px;border-radius:14px;
-      font-weight:1100;
-      color:rgba(31,36,48,.75);
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.55);
-      box-shadow:0 10px 24px rgba(22,25,38,.08);
-      user-select:none;
-    }
-    .tabBtn.active{ background: rgba(255,255,255,.82); color: rgba(31,36,48,.92); }
-    .tabBtn:active{ transform: scale(.98); }
 
     .panel{
-      margin-top:14px;padding:14px;border-radius:var(--radius);
-      background:rgba(255,255,255,.58);
+      margin-top:14px;
+      padding:14px;
+      border-radius:var(--radius);
+      background: rgba(255,255,255,.62);
       border:1px solid var(--stroke);
       box-shadow: var(--shadow2);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       overflow:hidden;
+      flex: 1; 
     }
 
     .view{ display:none; }
@@ -234,18 +185,17 @@
     .grid{ display:grid; grid-template-columns:1fr; gap: var(--gap); }
     @media (max-width: 820px){ .grid{ grid-template-columns:1fr; } }
 
+    /* 工具条 */
     .tool{
       display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding:14px;border-radius:22px;
-      background:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.78);
+      background:rgba(255,255,255,.76);
+      border:1px solid rgba(255,255,255,.84);
       box-shadow:0 12px 30px rgba(22,25,38,.10);
       cursor:pointer;user-select:none;
-      transition:transform .12s ease, opacity .12s ease;
+      transition: opacity .12s ease;
     }
-    .tool:active{ transform: scale(.995); }
     .tool.disabled{ cursor:not-allowed; opacity:.72; }
-
     .left{ display:flex; align-items:center; gap:12px; min-width:0; }
     .num{
       width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
@@ -254,37 +204,198 @@
     }
     .nameWrap{ min-width:0; }
     .name{ font-weight:1100; font-size:16px; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .hint{ margin-top:4px; font-size:12px; color: var(--muted); }
-
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:6px 10px;border-radius:999px;
-      font-weight:1100;font-size:12px;white-space:nowrap;
-      border:1px solid rgba(255,255,255,.65);
-      box-shadow:0 10px 24px rgba(22,25,38,.08);
-      user-select:none;
-    }
-    .bDiamond{ background: rgba(65,210,255,.22); color: rgba(6,98,140,.95); }
-    .bGold{ background: rgba(255,203,88,.26); color: rgba(128,74,0,.96); }
     .arrow{
       width:34px;height:34px;border-radius:14px;display:grid;place-items:center;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.65);
+      background:rgba(255,255,255,.62);
+      border:1px solid rgba(255,255,255,.78);
       color:rgba(31,36,48,.70);
       flex:0 0 auto;
+    }
+
+    /* 首页课程区 */
+    .homeHold{ display:grid; gap: var(--gap); }
+    .homeCard{
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,.76);
+      border:1px solid rgba(255,255,255,.84);
+      box-shadow:0 12px 30px rgba(22,25,38,.10);
+      overflow:hidden;
+      position:relative;
+    }
+    .homeCard::before{
+      content:"";
+      position:absolute;
+      inset:-60px -80px auto -80px;
+      height:180px;
+      background:
+        radial-gradient(260px 160px at 18% 40%, rgba(157,86,255,.12), rgba(255,255,255,0) 70%),
+        radial-gradient(260px 160px at 78% 35%, rgba(74,218,255,.12), rgba(255,255,255,0) 70%);
+      pointer-events:none;
+    }
+    .homeTitle{position:relative; margin:0; font-size:16px; font-weight:1100;}
+    .homeSub{position:relative; margin-top:8px; font-size:12px; color:rgba(31,36,48,.62); line-height:1.6;}
+
+    .wxBox{
+      position:relative;
+      margin-top:12px;
+      padding:12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.70);
+      border:1px solid rgba(255,255,255,.82);
+      box-shadow:0 10px 24px rgba(22,25,38,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .wxLeft{min-width:0;}
+    .wxLabel{font-size:12px;color:rgba(31,36,48,.62);font-weight:900;}
+    .wxId{margin-top:4px;font-size:15px;font-weight:1100;letter-spacing:.3px;word-break:break-all;}
+
+    .courseGrid{
+      display:grid;
+      gap: var(--gap);
+    }
+    .courseCard{
+      border-radius:22px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(255,255,255,.86);
+      box-shadow:0 12px 30px rgba(22,25,38,.10);
+      overflow:hidden;
+      position:relative;
+    }
+    .courseTop{
+      padding:14px 14px 12px;
+      position:relative;
+    }
+    .courseTop::before{
+      content:"";
+      position:absolute;
+      inset:-70px -90px auto -90px;
+      height:190px;
+      background:
+        radial-gradient(260px 160px at 18% 45%, rgba(255,112,198,.14), rgba(255,255,255,0) 70%),
+        radial-gradient(260px 160px at 78% 35%, rgba(74,218,255,.14), rgba(255,255,255,0) 70%);
+      pointer-events:none;
+    }
+    .courseHead{
+      position:relative;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .courseName{
+      margin:0;
+      font-size:17px;
+      font-weight:1100;
+      line-height:1.2;
+    }
+    .pill{
+      position:relative;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:1100;
+      background:rgba(31,36,48,.06);
+      color:rgba(31,36,48,.78);
+      border:1px solid rgba(31,36,48,.06);
+      user-select:none;
+    }
+    .courseMeta{
+      position:relative;
+      margin-top:10px;
+      display:grid;
+      gap:8px;
+      font-size:12px;
+      color:rgba(31,36,48,.72);
+    }
+    .metaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .metaK{
+      padding:4px 8px;
+      border-radius:12px;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.86);
+      font-weight:1100;
+      color:rgba(31,36,48,.72);
+    }
+    .metaV{font-weight:900;color:rgba(31,36,48,.82);}
+
+    .courseBody{
+      padding: 0 14px 14px;
+      position:relative;
+    }
+    .courseBodyTitle{
+      margin:10px 0 10px;
+      font-size:12px;
+      font-weight:1100;
+      color:rgba(31,36,48,.78);
+    }
+
+    /* --- 优化后的课程学习内容排版：现代标签云样式 --- */
+    .courseList{
+      margin: 4px 0 14px;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .courseList li{
+      font-size: 12px;
+      font-weight: 1100;
+      color: rgba(31,36,48,.86);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: 0 4px 12px rgba(22,25,38,.04);
+      padding: 6px 12px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .courseList li::before{
+      content: "";
+      display: block;
+      width: 4px;
+      height: 12px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, #9d56ff, #4adaff);
+      flex: 0 0 auto;
+    }
+    .courseNote{
+      font-size:11px;
+      color:rgba(31,36,48,.52);
+      line-height:1.5;
+    }
+
+    .courseFoot{
+      padding: 12px 14px 14px;
+      border-top: 1px solid rgba(31,36,48,.06);
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
     /* 我的 */
     .stack{ display:grid; gap: var(--gap); }
     .card{
       padding:16px;border-radius:22px;
-      background:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.78);
+      background:rgba(255,255,255,.76);
+      border:1px solid rgba(255,255,255,.84);
       box-shadow:0 12px 30px rgba(22,25,38,.10);
       overflow:hidden;
     }
 
-    /* 会员中心：更精致 */
+    /* 会员中心 */
     .memCard{position:relative; overflow:hidden;}
     .memCard::before{
       content:"";
@@ -292,23 +403,18 @@
       inset:-60px -80px auto -80px;
       height:180px;
       background:
-        radial-gradient(260px 140px at 18% 50%, rgba(74,218,255,.20), rgba(255,255,255,0) 66%),
-        radial-gradient(260px 160px at 78% 40%, rgba(255,112,198,.18), rgba(255,255,255,0) 70%);
+        radial-gradient(260px 140px at 18% 50%, rgba(74,218,255,.16), rgba(255,255,255,0) 66%),
+        radial-gradient(260px 160px at 78% 40%, rgba(255,112,198,.14), rgba(255,255,255,0) 70%);
       pointer-events:none;
     }
     .memCard .cardTitle, .memCard .cardSub, .memCard .memRow{position:relative;}
     .memCard .cardSub{font-size:12px; color:rgba(31,36,48,.60);}
     .memCard .memRow{margin-top:12px; padding:12px; border-radius:18px;
-      background:rgba(255,255,255,.60); border:1px solid rgba(255,255,255,.70);
+      background:rgba(255,255,255,.64); border:1px solid rgba(255,255,255,.78);
       box-shadow:0 12px 26px rgba(22,25,38,.08);
     }
-    .memCard .memIcon{width:54px;height:54px;border-radius:20px; font-size:20px;}
-    .memCard .memName{font-size:17px;}
-    .memCard .memDesc{font-size:12px;}
-    .memCard .pill{background:rgba(255,255,255,.70); border:1px solid rgba(255,255,255,.78);}
     .cardTitle{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0; font-weight:1100; font-size:15px; }
-    .cardSub{ margin-top:6px; font-size:12px; color: var(--muted); line-height:1.5; }
-
+    .cardSub{ margin-top:6px; font-size:12px; color: rgba(31,36,48,.62); line-height:1.5; }
     .memRow{ margin-top:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
     .memBig{ display:flex; align-items:center; gap:10px; }
     .memIcon{
@@ -328,15 +434,15 @@
       box-shadow: 0 12px 26px rgba(22,25,38,.10);
       user-select:none;
     }
-    .btnDanger:active{ transform: scale(.99); }
 
     .form{ margin-top:12px; display:none; gap:10px; }
     .form.show{ display:grid; }
+
     .field{
       display:flex; align-items:center; gap:10px;
       padding:12px; border-radius:16px;
-      background: rgba(255,255,255,.74);
-      border: 1px solid rgba(255,255,255,.78);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.84);
       box-shadow: 0 12px 24px rgba(22,25,38,.08);
     }
     .field .k{
@@ -344,22 +450,20 @@
       font-weight:1100;color:rgba(31,36,48,.80);
       background: rgba(31,36,48,.06);
     }
-    .field input, .field textarea{
+    .field input{
       border:0; outline:none; width:100%;
       font-size:14px; background: transparent; color: rgba(31,36,48,.92);
-      resize:none;
     }
-    .field textarea{ min-height: 60px; line-height:1.4; }
     .row{ display:flex; gap:10px; flex-wrap:wrap; }
     .grow{ flex: 1 1 auto; min-width: 180px; }
 
-    .accordion{ margin-top:10px; border-radius:18px; background: rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.70); overflow:hidden; }
+    .accordion{ margin-top:10px; border-radius:18px; background: rgba(255,255,255,.66); border:1px solid rgba(255,255,255,.78); overflow:hidden; }
     .accHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; cursor:pointer; user-select:none; }
     .accHead .leftH{ display:flex; align-items:center; gap:10px; font-weight:1100; }
     .accHead .i{ width:30px;height:30px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.72);font-weight:1100; }
     .accHead .t{ font-size:14px; }
     .accHead .s{ font-size:12px; color: var(--muted); font-weight:800; }
-    .chev{ width:32px;height:32px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.76);color:rgba(31,36,48,.62);transition:transform .15s ease; }
+    .chev{ width:32px;height:32px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.84);color:rgba(31,36,48,.62);transition:transform .15s ease; }
     .accBody{ display:none; padding:0 12px 12px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
     .accordion.open .accBody{ display:block; }
     .accordion.open .chev{ transform: rotate(180deg); }
@@ -377,8 +481,8 @@
     }
     .navInner{
       width:min(560px, 100%);
-      background: rgba(255,255,255,.66);
-      border: 1px solid rgba(255,255,255,.70);
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.78);
       border-radius: 22px;
       box-shadow: 0 18px 60px rgba(22,25,38,.16);
       backdrop-filter: blur(14px);
@@ -405,10 +509,10 @@
       font-size:13px;
     }
     .navBtn.active{
-      background: rgba(255,255,255,.82);
+      background: rgba(255,255,255,.86);
       color: rgba(31,36,48,.92);
       box-shadow: 0 12px 26px rgba(22,25,38,.10);
-      border: 1px solid rgba(255,255,255,.80);
+      border: 1px solid rgba(255,255,255,.86);
     }
     .navI{ width:26px;height:26px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1100; }
 
@@ -437,8 +541,8 @@
     .dialog{
       width: min(560px, 100%);
       border-radius: 24px;
-      background: rgba(255,255,255,.86);
-      border: 1px solid rgba(255,255,255,.80);
+      background: rgba(255,255,255,.90);
+      border: 1px solid rgba(255,255,255,.86);
       box-shadow: 0 22px 80px rgba(0,0,0,.18);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -446,15 +550,84 @@
     }
     .dlgHead{ padding:14px 14px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
     .dlgTitle{ font-weight:1100; font-size:15px; margin:0; }
-    .xBtn{ width:34px;height:34px;border-radius:14px;border:1px solid rgba(255,255,255,.78);background:rgba(255,255,255,.74);cursor:pointer;box-shadow:0 10px 24px rgba(22,25,38,.10); }
+    .xBtn{ width:34px;height:34px;border-radius:14px;border:1px solid rgba(255,255,255,.84);background:rgba(255,255,255,.78);cursor:pointer;box-shadow:0 10px 24px rgba(22,25,38,.10); }
     .dlgBody{ padding:0 14px 14px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
     .dlgFoot{ padding:12px 14px 14px; display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* 防止小屏挤压 */
+    /* --- 新版投简历弹窗专属样式 --- */
+    .resume-subtitle {
+      font-size: 13px;
+      color: rgba(31,36,48,.66);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .role-picker {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .role-btn {
+      flex: 1;
+      padding: 12px 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(31,36,48,.08);
+      background: rgba(255,255,255,.6);
+      font-weight: 1100;
+      font-size: 13px;
+      color: rgba(31,36,48,.7);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .role-btn.active {
+      background: #fff;
+      border-color: rgba(157,86,255,.4);
+      box-shadow: 0 8px 20px rgba(157,86,255,.12);
+      color: var(--text);
+    }
+    .clean-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(31,36,48,.08);
+      background: rgba(255,255,255,.7);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      margin-bottom: 12px;
+    }
+    .clean-input::placeholder {
+      color: rgba(31,36,48,.4);
+    }
+    .clean-input:focus {
+      background: #fff;
+      border-color: rgba(74,218,255,.5);
+      box-shadow: 0 6px 16px rgba(74,218,255,.12);
+    }
+    .email-hint-box {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(31,36,48,.04);
+      border: 1px solid rgba(31,36,48,.04);
+      margin-top: 4px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     @media (max-width: 380px){
       .heroTitle{ font-size: 18px; }
       .jobActions .btnPrimary, .jobActions .btnGhost{ width:100%; }
       .navBtn{ font-size:12px; gap:6px; }
+      .wxBox{align-items:flex-start;}
+      .btnPrimary, .btnGhost{width:100%;}
     }
   </style>
 </head>
@@ -462,17 +635,15 @@
   <div class="shell" id="shell">
     <div class="frame">
 
-      <!-- 顶部：招募广告（用户要求：上面只放这个） -->
       <header class="hero compact">
         <div class="heroTop">
           <div class="heroTag">招募中 · 团队扩编</div>
           <div class="heroTitle">招剪辑操盘手 / 电话销售</div>
-          <div class="heroSub">想找一群能打的人一起做结果：内容、成交、复盘，长期合作。</div>
-
-        <div class="heroActions">
-          <button class="btnPrimary" id="toggleRecruit">招聘详情</button>
-          <button class="btnGhost" id="openResumeTop">投简历</button>
-        </div>
+          
+          <div class="heroActions">
+            <button class="btnPrimary" id="toggleRecruit">招聘详情</button>
+            <button class="btnGhost" id="openResumeTop">投简历</button>
+          </div>
         </div>
 
         <div class="heroGrid">
@@ -493,8 +664,7 @@
               <li>交付稳定，愿意迭代，能扛强度。</li>
             </ul>
             <div class="jobActions">
-              <button class="btnPrimary" id="copyEditor">复制应聘话术</button>
-              <button class="btnGhost" id="openApply">查看投递方式</button>
+              <button class="btnPrimary" id="btnResumeEditor" style="width:100%; justify-content:center;">投递简历</button>
             </div>
           </section>
 
@@ -515,20 +685,104 @@
               <li>想赚钱、想成长、能长期稳定做。</li>
             </ul>
             <div class="jobActions">
-              <button class="btnPrimary" id="copySales">复制应聘话术</button>
-              <button class="btnGhost" id="openApply2">查看投递方式</button>
+              <button class="btnPrimary" id="btnResumeSales" style="width:100%; justify-content:center;">投递简历</button>
             </div>
           </section>
         </div>
-
-        <div class="heroNote">提示：点“复制应聘话术”→ 粘贴发送给招聘方即可。投递方式可在「我的」里自定义。</div>
       </header>
-
-
 
       <div class="panel">
         <section class="view active" id="viewHome">
-          <div class="grid" id="gridHome"></div>
+          <div class="homeHold">
+
+            <div class="courseGrid">
+              <div class="courseCard" id="course1">
+                <div class="courseTop">
+                  <div class="courseHead">
+                    <p class="courseName">课程名称：AI之道</p>
+                    <span class="pill">四天四晚</span>
+                  </div>
+
+                  <div class="courseMeta">
+                    <div class="metaRow">
+                      <span class="metaK">时间</span>
+                      <span class="metaV">2026年5月27日 - 5月30日</span>
+                    </div>
+                    <div class="metaRow">
+                      <span class="metaK">地点</span>
+                      <span class="metaV">广东</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="courseBody">
+                  <div class="courseBodyTitle">学习内容</div>
+                  
+                  <ul class="courseList">
+                    <li>AI趋势认知</li>
+                    <li>六大变现赛道</li>
+                    <li>个人能力升级</li>
+                    <li>AI成交方法</li>
+                    <li>影响力打造</li>
+                    <li>长期价值构建</li>
+                  </ul>
+                  <div class="courseNote">* 课程内容持续升级，以上仅为部分学习方向</div>
+                </div>
+
+                <div class="courseFoot">
+                  <button class="btnPrimary" type="button" data-enroll-btn="1">点击报名</button>
+                </div>
+              </div>
+
+              <div class="courseCard" id="course2">
+                <div class="courseTop">
+                  <div class="courseHead">
+                    <p class="courseName">课程名称：AI实操班</p>
+                    <span class="pill">四天三晚</span>
+                  </div>
+
+                  <div class="courseMeta">
+                    <div class="metaRow">
+                      <span class="metaK">时间</span>
+                      <span class="metaV">2026年7月25日 - 7月28日</span>
+                    </div>
+                    <div class="metaRow">
+                      <span class="metaK">地点</span>
+                      <span class="metaV">广东</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="courseBody">
+                  <div class="courseBodyTitle">学习内容</div>
+                  
+                  <ul class="courseList">
+                    <li>AI实操教学</li>
+                    <li>制作智能体</li>
+                    <li>内容变现</li>
+                  </ul>
+                  <div class="courseNote">* 课程内容持续升级，以上仅为部分学习方向</div>
+                </div>
+
+                <div class="courseFoot">
+                  <button class="btnPrimary" type="button" data-enroll-btn="1">点击报名</button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="homeCard">
+              <p class="homeTitle">温馨提示</p>
+              <div class="homeSub">
+                课程内容会持续升级更新，以现场讲解为准。<br/>
+                想报名：请点击下方按钮获取联系方式，添加时备注“报名 + 课程名”。
+              </div>
+              <div style="margin-top:14px;">
+                <button class="btnPrimary" type="button" data-enroll-btn="1" style="width:100%; justify-content:center;">获取报名方式</button>
+              </div>
+            </div>
+
+          </div>
         </section>
 
         <section class="view" id="viewDiamond">
@@ -544,7 +798,7 @@
             <div class="card memCard">
               <div class="cardTitle">
                 <span>会员中心</span>
-                <span class="pill" id="memBadgeMini"><span class="dot" style="background:rgba(80,210,255,.9)"></span><span>星钻</span></span>
+                <span class="pill" id="memBadgeMini"><span>星钻</span></span>
               </div>
               <div class="cardSub" id="memSub">
                 星钻免登录可用；开通金耀后，可使用「金耀」菜单里的工具。
@@ -565,44 +819,20 @@
               </div>
 
               <div class="form" id="upgradeForm">
-                <div class="field">
-                  <div class="k">账</div>
-                  <input id="acc" autocomplete="off" inputmode="text" placeholder="输入金耀账号（演示用，可随便填）" />
+                <div class="field" style="padding:4px 12px; background:rgba(255,255,255,.7);">
+                  <div class="k" style="background:transparent; width:auto; padding-right:8px;">账号</div>
+                  <input id="acc" autocomplete="off" inputmode="text" placeholder="演示用，可随便填" />
                 </div>
-                <div class="field">
-                  <div class="k">密</div>
-                  <input id="pwd" type="password" autocomplete="off" inputmode="text" placeholder="输入金耀密码（演示用，可随便填）" />
-                  <button class="btnGhost" id="togglePwd" type="button">显示</button>
+                <div class="field" style="padding:4px 12px; background:rgba(255,255,255,.7);">
+                  <div class="k" style="background:transparent; width:auto; padding-right:8px;">密码</div>
+                  <input id="pwd" type="password" autocomplete="off" inputmode="text" placeholder="演示用，可随便填" />
+                  <button class="btnGhost" id="togglePwd" type="button" style="padding:6px 10px; font-size:12px;">显示</button>
                 </div>
                 <div class="row">
                   <button class="btnPrimary grow" id="doUpgrade">确认开通</button>
                   <button class="btnGhost grow" id="cancelUpgrade">取消</button>
                 </div>
                 <div class="cardSub">提示：本页仅做权限区分演示；状态保存在本机，不会上报账号密码。</div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardTitle"><span>投简历设置（可自己改）</span></div>
-              <div class="cardSub">把你的微信/电话/邮箱写在这里。用户点“查看投递方式”会看到你填的内容。</div>
-              <div class="form show" style="margin-top:10px;">
-                
-                <div class="field">
-                  <div class="k">邮</div>
-                  <input id="resumeEmail" autocomplete="off" inputmode="email" placeholder="收件QQ邮箱（例如：123456@qq.com）" />
-                </div>
-                <div class="field">
-                  <div class="k">联</div>
-                  <input id="contactLine" autocomplete="off" inputmode="text" placeholder="例如：微信：xxx  /  电话：xxx  /  邮箱：xxx" />
-                </div>
-                <div class="field">
-                  <div class="k">备</div>
-                  <textarea id="contactNote" placeholder="例如：发送【应聘+岗位名+姓名+作品链接】即可。"></textarea>
-                </div>
-                <div class="row">
-                  <button class="btnPrimary grow" id="saveContact">保存</button>
-                  <button class="btnGhost grow" id="resetContact">恢复默认</button>
-                </div>
               </div>
             </div>
 
@@ -621,9 +851,8 @@
                 </div>
                 <div class="accBody">
                   <ol class="list">
-                    <li>「主页」先保留，用于你后续引流/广告展示。</li>
                     <li>工具分在「星钻 / 金耀」两页，体验更清晰。</li>
-                    <li>未开通金耀时，金耀工具会提示去「我的」开通。</li>
+                    <li>未开通金耀时，点金耀工具会提示去「我的」开通。</li>
                   </ol>
                 </div>
               </div>
@@ -635,7 +864,7 @@
                 <button class="btnDanger" id="clearBtn">清除数据</button>
               </div>
               <div class="cardSub">
-                恢复到首次打开状态（清除本机保存的会员状态、偏好设置、投递方式等）。清除后下次打开需要重新加载，本操作不可撤销。
+                恢复到首次打开状态（清除本机保存的会员状态、偏好设置等）。清除后下次打开需要重新加载资源，本操作不可撤销。
               </div>
             </div>
 
@@ -648,90 +877,48 @@
     </div>
   </div>
 
-
   <div class="bottomNav" id="bottomNav">
     <div class="navInner" role="tablist" aria-label="菜单">
-      <button class="navBtn active" id="navHome" role="tab" aria-selected="true"><span class="navI">🏠</span><span>主页</span></button>
+      <button class="navBtn active" id="navHome" role="tab" aria-selected="true"><span class="navI">🏠</span><span>首页</span></button>
       <button class="navBtn" id="navDiamond" role="tab" aria-selected="false"><span class="navI">💎</span><span>星钻</span></button>
       <button class="navBtn" id="navGold" role="tab" aria-selected="false"><span class="navI">👑</span><span>金耀</span></button>
       <button class="navBtn" id="navMy" role="tab" aria-selected="false"><span class="navI">👤</span><span>我的</span></button>
     </div>
   </div>
-    
 
   <div class="toast" id="toast"></div>
 
-  <div class="overlay" id="applyOv">
-    <div class="dialog" role="dialog" aria-modal="true" aria-label="投递方式">
-      <div class="dlgHead">
-        <p class="dlgTitle">投简历</p>
-        <button class="xBtn" id="xApply" aria-label="关闭">✕</button>
-      </div>
-      <div class="dlgBody">
-        <div style="font-weight:1100;margin-bottom:6px;">联系方式</div>
-        <div id="contactShow" style="padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.78);box-shadow:0 10px 24px rgba(22,25,38,.06);"></div>
-        <div style="margin-top:10px;font-weight:1100;margin-bottom:6px;">备注</div>
-        <div id="noteShow" style="padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.70);border:1px solid rgba(255,255,255,.78);box-shadow:0 10px 24px rgba(22,25,38,.06);"></div>
-      </div>
-      <div class="dlgFoot">
-        <button class="btnPrimary grow" id="copyContact">复制联系方式</button>
-        <button class="btnGhost grow" id="closeApply">关闭</button>
-      </div>
-    </div>
-  </div>
-
-
-    <!-- 投简历弹窗 -->
   <div class="overlay" id="resumeOv">
-    <div class="dialog" role="dialog" aria-modal="true" aria-label="投简历">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="一键生成简历">
       <div class="dlgHead">
-        <p class="dlgTitle">投简历</p>
+        <p class="dlgTitle">一键生成简历</p>
         <button class="xBtn" id="xResume" aria-label="关闭">✕</button>
       </div>
       <div class="dlgBody">
-        <div style="font-size:12px;color:rgba(31,36,48,.66);line-height:1.5;">
-          填完点“发送到邮箱”会打开邮箱应用并自动带好内容；如果你不方便发邮箱，点“复制简历内容”复制后粘贴发送也行。
+        <div class="resume-subtitle">
+          选择岗位并填入基本信息，点击一键复制即可生成标准排版的应聘话术。
         </div>
 
-        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
-          <button class="btnGhost" id="pickEditor" type="button">🎬 剪辑操盘手</button>
-          <button class="btnGhost" id="pickSales" type="button">☎️ 电话销售</button>
+        <div class="role-picker">
+          <button class="role-btn active" id="pickEditor" type="button">🎬 剪辑操盘手</button>
+          <button class="role-btn" id="pickSales" type="button">☎️ 电话销售</button>
         </div>
 
-        <div class="form show" style="margin-top:10px;">
-          <div class="field">
-            <div class="k">岗</div>
-            <input id="rRole" autocomplete="off" inputmode="text" placeholder="岗位（已选会自动填）" />
-          </div>
-          <div class="field">
-            <div class="k">名</div>
-            <input id="rName" autocomplete="off" inputmode="text" placeholder="姓名" />
-          </div>
-          <div class="field">
-            <div class="k">联</div>
-            <input id="rContact" autocomplete="off" inputmode="text" placeholder="联系方式（微信/手机）" />
-          </div>
-          <div class="field">
-            <div class="k">补</div>
-            <textarea id="rNote" placeholder="作品链接 / 过往经验 / 可上岗时间（可一段话写清楚）"></textarea>
-          </div>
+        <div style="display:block;">
+          <input id="rRole" type="hidden" value="剪辑操盘手" />
+          <input id="rName" class="clean-input" type="text" autocomplete="off" placeholder="您的称呼（必填，例：张先生 / 李女士）" />
+          <input id="rPhone" class="clean-input" type="tel" autocomplete="off" placeholder="方便联系的手机号（必填）" />
         </div>
 
-        <div style="margin-top:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.72);">
-          <div style="font-weight:1100;margin-bottom:6px;">收件QQ邮箱</div>
-          <div id="resumeEmailShow" style="font-size:12px;color:rgba(31,36,48,.78);word-break:break-all;"></div>
-          <div style="margin-top:6px;font-size:12px;color:rgba(31,36,48,.58);">如果为空，请去「我的」先填写“收件QQ邮箱”。</div>
+        <div class="email-hint-box" id="emailHintBox">
+          <div style="font-weight:1100; color:rgba(31,36,48,.8);">收件邮箱</div>
+          <div id="resumeEmailShow" style="color:rgba(31,36,48,.6);word-break:break-all;"></div>
+          <div id="resumeEmailTip" style="color:rgba(31,36,48,.5);"></div>
         </div>
       </div>
-      <div class="dlgFoot">
-        <button class="btnPrimary grow" id="sendResume">发送到邮箱</button>
-        <button class="btnGhost grow" id="copyResume">复制简历内容</button>
-      </div>
-    </div>
-  </div>
-      <div class="dlgFoot">
-        <button class="btnPrimary grow" id="sendResume">发送到邮箱</button>
-        <button class="btnGhost grow" id="copyResume">复制简历内容</button>
+      <div class="dlgFoot" style="padding-top:0;">
+        <button class="btnPrimary grow" id="copyResume" style="padding:12px; font-size:14px;">一键复制简历内容</button>
+        <button class="btnGhost grow" id="sendResume" style="padding:12px; font-size:14px;">发送到邮箱</button>
       </div>
     </div>
   </div>
@@ -746,10 +933,10 @@
         清除后会发生这些变化：
         <ul class="list">
           <li>会员状态会恢复为「星钻会员」。</li>
-          <li>你保存的投递方式、偏好设置会被清空。</li>
-          <li>下次打开需要重新加载资源，首次进入可能会稍慢。</li>
+          <li>偏好设置会被清空。</li>
+          <li>下次打开需要重新加载资源。</li>
         </ul>
-        <div style="margin-top:10px;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.72);">
+        <div style="margin-top:10px;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.80);">
           <input id="ck" type="checkbox" />
           <label for="ck">我已了解后果，仍要继续</label>
         </div>
@@ -757,6 +944,35 @@
       <div class="dlgFoot">
         <button class="btnGhost grow" id="cancelClear">取消</button>
         <button class="btnDanger grow" id="confirmClear" disabled>确认清除</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="enrollOv">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="添加企业微信报名">
+      <div class="dlgHead">
+        <p class="dlgTitle">添加企业微信报名</p>
+        <button class="xBtn" id="xEnroll" aria-label="关闭">✕</button>
+      </div>
+      <div class="dlgBody" style="text-align:center;">
+        <div style="font-size:12px;color:rgba(31,36,48,.66);line-height:1.5;margin-bottom:15px;text-align:left;">
+          长按识别下方企业微信二维码，或复制微信号添加。添加时请备注“报名 + 课程名”。
+        </div>
+        
+        <div style="background:#fff; padding:10px; border-radius:16px; display:inline-block; border:1px solid rgba(31,36,48,.08); box-shadow:0 10px 24px rgba(22,25,38,.06); margin-bottom:15px;">
+           <svg width="160" height="160" viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
+              <rect width="33" height="33" fill="#ffffff"/>
+              <path d="M4,4 h7 v7 h-7 z M5,5 h5 v5 h-5 z M22,4 h7 v7 h-7 z M23,5 h5 v5 h-5 z M4,22 h7 v7 h-7 z M5,23 h5 v5 h-5 z M13,4 h2 v1 h-2 z M16,4 h1 v2 h-1 z M18,4 h1 v1 h-1 z M13,6 h1 v2 h-1 z M15,6 h2 v1 h-2 z M18,6 h2 v2 h-2 z M20,4 h1 v3 h-1 z M13,9 h2 v1 h-2 z M16,9 h1 v1 h-1 z M18,9 h2 v1 h-2 z M21,9 h1 v1 h-1 z M4,13 h1 v2 h-1 z M6,13 h2 v1 h-2 z M9,13 h1 v2 h-1 z M11,13 h2 v2 h-2 z M14,13 h1 v1 h-1 z M16,13 h3 v1 h-3 z M20,13 h2 v2 h-2 z M23,13 h1 v1 h-1 z M25,13 h1 v2 h-1 z M27,13 h2 v1 h-2 z M4,16 h2 v1 h-2 z M7,16 h1 v2 h-1 z M9,16 h2 v1 h-2 z M12,16 h1 v2 h-1 z M14,16 h2 v2 h-2 z M17,16 h1 v1 h-1 z M19,16 h2 v2 h-2 z M22,16 h1 v1 h-1 z M24,16 h2 v1 h-2 z M27,16 h1 v2 h-1 z M4,19 h1 v1 h-1 z M6,19 h2 v2 h-2 z M9,19 h1 v1 h-1 z M11,19 h2 v1 h-2 z M14,19 h1 v2 h-1 z M16,19 h3 v1 h-3 z M20,19 h2 v2 h-2 z M23,19 h1 v2 h-1 z M25,19 h1 v1 h-1 z M27,19 h2 v2 h-2 z M13,22 h2 v1 h-2 z M16,22 h1 v2 h-1 z M18,22 h1 v1 h-1 z M20,22 h2 v1 h-2 z M23,22 h1 v1 h-1 z M25,22 h2 v2 h-2 z M13,24 h1 v2 h-1 z M15,24 h2 v1 h-2 z M18,24 h2 v2 h-2 z M21,24 h1 v1 h-1 z M23,24 h2 v1 h-2 z M26,24 h1 v1 h-1 z M13,27 h2 v1 h-2 z M16,27 h1 v1 h-1 z M18,27 h2 v1 h-2 z M21,27 h1 v2 h-1 z M23,27 h2 v1 h-2 z M26,27 h1 v2 h-1 z M28,27 h1 v1 h-1 z" fill="#1f2430"/>
+           </svg>
+        </div>
+
+        <div class="wxBox" style="margin-top:0; text-align:left;">
+          <div class="wxLeft">
+            <div class="wxLabel">微信号</div>
+            <div class="wxId" id="wxIdPopup"></div>
+          </div>
+          <button class="btnPrimary" type="button" id="copyWxPopup">复制微信号</button>
+        </div>
       </div>
     </div>
   </div>
@@ -774,18 +990,12 @@
     { id: 8, name: "免费影视", url: "https://www.wfei.la/", tier: "gold" },
   ];
 
-  const APPLY_EDITOR = "应聘岗位：剪辑操盘手\n姓名：\n所在地：\n可接单时间：\n作品链接：\n一句话自我介绍：";
-  const APPLY_SALES  = "应聘岗位：电话销售\n姓名：\n所在地：\n可上岗时间：\n过往经验：\n一句话自我介绍：";
+  const WECHAT_ID = "guanjin1561413159";
+  const FIXED_RESUME_EMAIL = ""; // 例如：123456@qq.com（不填则隐藏“发送到邮箱”）
 
   const KEY_GOLD = "isGoldMember";
   const KEY_ACC_OPEN = "accUseOpen";
   const KEY_LAST_VIEW = "lastView";
-  const KEY_CONTACT_LINE = "contactLine";
-  const KEY_CONTACT_NOTE = "contactNote";
-  const KEY_RESUME_EMAIL = "resumeEmail";
-
-  const DEFAULT_CONTACT_LINE = "请在你看到此页面的渠道联系发布者（微信/电话/邮箱）。";
-  const DEFAULT_CONTACT_NOTE = "建议发送：应聘 + 岗位名 + 姓名 + 作品链接（剪辑岗）/ 过往经验（销售岗）。";
 
   const $ = (id)=>document.getElementById(id);
 
@@ -805,7 +1015,6 @@
         return true;
       }
     }catch(e){}
-    // fallback
     try{
       const ta = document.createElement("textarea");
       ta.value = text;
@@ -830,9 +1039,7 @@
     $("memIcon").style.background = gold
       ? "linear-gradient(135deg, rgba(255, 178, 56, .95), rgba(255, 92, 140, .85))"
       : "linear-gradient(135deg, rgba(64, 210, 255, .95), rgba(151, 80, 255, .85))";
-    $("memBadgeMini").innerHTML = gold
-      ? '<span class="dot" style="background:rgba(255, 191, 64, .9)"></span><span>金耀</span>'
-      : '<span class="dot" style="background:rgba(80, 210, 255, .9)"></span><span>星钻</span>';
+    $("memBadgeMini").innerHTML = gold ? "<span>金耀</span>" : "<span>星钻</span>";
 
     $("upgradeBtn").style.display = gold ? "none" : "inline-flex";
     $("logoutBtn").style.display = gold ? "inline-flex" : "none";
@@ -853,13 +1060,7 @@
     ];
     return colors[(n-1)%colors.length];
   }
-  function tierBadge(tier){
-    return tier === "gold"
-      ? '<span class="badge bGold">👑 金耀</span>'
-      : '<span class="badge bDiamond">💎 星钻</span>';
-  }
 
-  // 防止双开
   let lastOpenTs = 0;
   function openUrl(url){
     const now = Date.now();
@@ -884,7 +1085,7 @@
     const gold = isGold();
 
     LINKS
-      .filter(it => !filterTier ? true : it.tier === filterTier)
+      .filter(it => it.tier === filterTier)
       .forEach(item=>{
         const needGold = item.tier === "gold";
         const disabled = needGold && !gold;
@@ -896,18 +1097,14 @@
             <div class="num" style="background:${colorById(item.id)}">${item.id}</div>
             <div class="nameWrap">
               <p class="name">${item.name}</p>
-              <div class="hint">${disabled ? '需金耀会员 👑' : '点击打开'}</div>
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:10px;flex:0 0 auto;">
-            ${tierBadge(item.tier)}
-            <div class="arrow">›</div>
-          </div>
+          <div class="arrow">›</div>
         `;
 
         el.addEventListener("click", ()=>{
           if(disabled){
-            showToast("该工具需要金耀会员 👑，去「我的」开通即可使用。");
+            showToast("该工具需要金耀会员，去「我的」开通即可使用。");
             switchView("my");
             $("upgradeForm").classList.add("show");
             $("upgradeForm").scrollIntoView({behavior:"smooth", block:"nearest"});
@@ -921,7 +1118,6 @@
   }
 
   function renderAll(){
-    renderInto("gridHome", null);
     renderInto("gridDiamond", "diamond");
     renderInto("gridGold", "gold");
   }
@@ -943,22 +1139,15 @@
       const sec = document.getElementById("view" + v.charAt(0).toUpperCase() + v.slice(1));
       if(sec) sec.classList.toggle("active", v === which);
     });
-
-    // PC tabs
-    setActive(["tabHome","tabDiamond","tabGold","tabMy"], "tab" + which.charAt(0).toUpperCase() + which.slice(1));
-    // Mobile nav
     setActive(["navHome","navDiamond","navGold","navMy"], "nav" + which.charAt(0).toUpperCase() + which.slice(1));
-
     localStorage.setItem(KEY_LAST_VIEW, which);
   }
 
-  
-  // 招募折叠：默认收起，不占位置
+  // 顶部招募展开/收起
   (function(){
     const hero = document.querySelector(".hero");
     const btn = document.getElementById("toggleRecruit");
     if(!hero || !btn) return;
-    // 初始：compact（收起）
     btn.textContent = hero.classList.contains("compact") ? "招聘详情" : "收起详情";
     btn.addEventListener("click", ()=>{
       hero.classList.toggle("compact");
@@ -970,118 +1159,123 @@
     });
   })();
 
-  // 招募：复制话术 + 查看投递方式
-  $("copyEditor").addEventListener("click", async ()=>{
-    const ok = await copyText(APPLY_EDITOR);
-    showToast(ok ? "已复制：剪辑操盘手应聘话术" : "复制失败：请手动复制");
-  });
-  $("copySales").addEventListener("click", async ()=>{
-    const ok = await copyText(APPLY_SALES);
-    showToast(ok ? "已复制：电话销售应聘话术" : "复制失败：请手动复制");
-  });
+  // 报名弹窗展示与复制逻辑
+  (function(){
+    const enrollOv = $("enrollOv");
+    
+    function openEnroll() {
+      $("wxIdPopup").textContent = WECHAT_ID;
+      enrollOv.classList.add("show");
+    }
+    function closeEnroll() {
+      enrollOv.classList.remove("show");
+    }
 
-  function loadContact(){
-    const line = localStorage.getItem(KEY_CONTACT_LINE) || DEFAULT_CONTACT_LINE;
-    const note = localStorage.getItem(KEY_CONTACT_NOTE) || DEFAULT_CONTACT_NOTE;
-    return { line, note };
-  }
-  function openApply(){
-    const { line, note } = loadContact();
-    $("contactShow").textContent = line;
-    $("noteShow").textContent = note;
-    $("applyOv").classList.add("show");
-  }
-  function closeApply(){
-    $("applyOv").classList.remove("show");
-  }
-  
+    document.querySelectorAll("[data-enroll-btn]").forEach(btn => {
+      btn.addEventListener("click", openEnroll);
+    });
 
-  // 投简历弹窗
-  function getResumeEmail(){
-    const direct = (localStorage.getItem(KEY_RESUME_EMAIL) || "").trim();
-    if(direct) return direct;
-    const line = (localStorage.getItem(KEY_CONTACT_LINE) || "").trim();
-    const m = line.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
-    return m ? m[0] : "";
-  }
+    $("xEnroll").addEventListener("click", closeEnroll);
+    enrollOv.addEventListener("click", (e) => { if (e.target === enrollOv) closeEnroll(); });
+
+    $("copyWxPopup").addEventListener("click", async () => {
+      const ok = await copyText(WECHAT_ID);
+      showToast(ok ? ("已复制微信号：" + WECHAT_ID) : "复制失败：请手动复制");
+    });
+  })();
+
+
+  // --- 投简历相关功能 ---
+  function getResumeEmail(){ return (FIXED_RESUME_EMAIL || "").trim(); }
 
   function buildResumeText(){
-    const role = ($("rRole").value || "").trim() || "剪辑操盘手";
-    const name = ($("rName").value || "").trim();
-    const contact = ($("rContact").value || "").trim();
-    const note = ($("rNote").value || "").trim();
-
-    const lines = [
-      "【应聘信息】",
-      "岗位：" + role,
-      "姓名：" + (name || "（未填）"),
-      "联系方式：" + (contact || "（未填）"),
-    ];
-    if(note) lines.push("补充：" + note);
-    return lines.join("\n");
+    const role = ($("rRole").value || "").trim() || "未填写岗位";
+    const name = ($("rName").value || "").trim() || "未填写称呼";
+    const phone = ($("rPhone").value || "").trim() || "未填写手机号";
+    return ["【应聘信息】","应聘岗位：" + role,"应聘人称呼：" + name,"联系手机号：" + phone].join("\n");
   }
 
   function openResume(prefRole){
-    if(prefRole){
+    if(prefRole){ 
       $("rRole").value = prefRole;
-    }else if(!$("rRole").value){
-      $("rRole").value = "剪辑操盘手";
+      if (prefRole === "电话销售") {
+        $("pickSales").classList.add("active");
+        $("pickEditor").classList.remove("active");
+      } else {
+        $("pickEditor").classList.add("active");
+        $("pickSales").classList.remove("active");
+      }
     }
+
     const email = getResumeEmail();
     $("resumeEmailShow").textContent = email ? email : "（未设置）";
+    if(email){
+      $("sendResume").style.display = "inline-flex";
+      $("resumeEmailTip").textContent = "设置了邮箱，您可以直接发送。";
+      $("emailHintBox").style.display = "flex";
+    }else{
+      $("sendResume").style.display = "none";
+      $("emailHintBox").style.display = "none"; 
+    }
+
     $("resumeOv").classList.add("show");
     setTimeout(()=>{ $("rName").focus({preventScroll:true}); }, 60);
   }
+  
   function closeResume(){ $("resumeOv").classList.remove("show"); }
 
-  
-  // 快捷选择岗位
-  $("pickEditor").addEventListener("click", ()=>{
-    $("rRole").value = "剪辑操盘手";
-    showToast("已选择：剪辑操盘手");
+  // 绑定岗位卡片上的投递按钮
+  $("btnResumeEditor").addEventListener("click", ()=>openResume("剪辑操盘手"));
+  $("btnResumeSales").addEventListener("click", ()=>openResume("电话销售"));
+  $("openResumeTop").addEventListener("click", ()=>openResume());
+
+  $("pickEditor").addEventListener("click", ()=>{ 
+    $("rRole").value = "剪辑操盘手"; 
+    $("pickEditor").classList.add("active");
+    $("pickSales").classList.remove("active");
+    showToast("已切换为：剪辑操盘手"); 
   });
-  $("pickSales").addEventListener("click", ()=>{
-    $("rRole").value = "电话销售";
-    showToast("已选择：电话销售");
+  
+  $("pickSales").addEventListener("click",  ()=>{ 
+    $("rRole").value = "电话销售"; 
+    $("pickSales").classList.add("active");
+    $("pickEditor").classList.remove("active");
+    showToast("已切换为：电话销售"); 
   });
 
-  $("openResumeTop").addEventListener("click", ()=>openResume());
   $("xResume").addEventListener("click", closeResume);
   $("resumeOv").addEventListener("click", (e)=>{ if(e.target === $("resumeOv")) closeResume(); });
 
   $("sendResume").addEventListener("click", ()=>{
-    const email = getResumeEmail();
-    if(!email){
-      showToast("请先到「我的」设置收件QQ邮箱");
-      switchView("my");
-      closeResume();
+    const name = ($("rName").value || "").trim();
+    const phone = ($("rPhone").value || "").trim();
+    if(!name || !phone){
+      showToast("请先填写完整的必填信息（称呼和手机号）");
       return;
     }
+
+    const email = getResumeEmail();
+    if(!email){ showToast("未设置邮箱，请用“一键复制简历内容”方式投递"); return; }
     const role = ($("rRole").value || "应聘").trim() || "应聘";
-    const name = ($("rName").value || "").trim();
     const subject = encodeURIComponent("应聘：" + role + (name ? (" - " + name) : ""));
     const body = encodeURIComponent(buildResumeText());
     window.location.href = "mailto:" + encodeURIComponent(email) + "?subject=" + subject + "&body=" + body;
   });
 
   $("copyResume").addEventListener("click", async ()=>{
+    const name = ($("rName").value || "").trim();
+    const phone = ($("rPhone").value || "").trim();
+    if(!name || !phone){
+      showToast("请先填写完整的必填信息（称呼和手机号）");
+      return;
+    }
+
     const ok = await copyText(buildResumeText());
-    showToast(ok ? "已复制简历内容" : "复制失败：请手动复制");
-  });
-$("openApply").addEventListener("click", openApply);
-  $("openApply2").addEventListener("click", openApply);
-  
-  
-$("xApply").addEventListener("click", closeApply);
-  $("closeApply").addEventListener("click", closeApply);
-  $("applyOv").addEventListener("click", (e)=>{ if(e.target === $("applyOv")) closeApply(); });
-  $("copyContact").addEventListener("click", async ()=>{
-    const { line, note } = loadContact();
-    const ok = await copyText(line + "\n" + note);
-    showToast(ok ? "已复制：投递方式" : "复制失败：请手动复制");
+    showToast(ok ? "已成功复制简历，可去微信粘贴发送" : "复制失败：请手动复制");
   });
 
-  // 会员开通/退出
+
+  // --- 杂项交互 ---
   $("upgradeBtn").addEventListener("click", ()=>{
     $("upgradeForm").classList.toggle("show");
     if($("upgradeForm").classList.contains("show")) $("acc").focus({preventScroll:true});
@@ -1092,49 +1286,28 @@ $("xApply").addEventListener("click", closeApply);
     p.type = (p.type === "password") ? "text" : "password";
     $("togglePwd").textContent = (p.type === "password") ? "显示" : "隐藏";
   });
+  
   function doUpgrade(){
     const acc = ($("acc").value||"").trim();
     const pwd = ($("pwd").value||"").trim();
-    if(!acc || !pwd){ showToast("请输入账号和密码（演示用，随便填也可以）。"); return; }
+    if(!acc || !pwd){ showToast("请输入账号和密码（演示用，可随便填）。"); return; }
     localStorage.setItem(KEY_GOLD, "1");
     $("upgradeForm").classList.remove("show");
-    showToast("已开通金耀会员 👑");
+    showToast("已开通金耀会员");
     paintMember();
   }
   $("doUpgrade").addEventListener("click", doUpgrade);
   $("pwd").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doUpgrade(); });
   $("acc").addEventListener("keydown", (e)=>{ if(e.key==="Enter") $("pwd").focus({preventScroll:true}); });
+
   $("logoutBtn").addEventListener("click", ()=>{
     localStorage.removeItem(KEY_GOLD);
-    showToast("已退出金耀，恢复星钻会员 💎");
+    showToast("已退出金耀，恢复星钻会员");
     paintMember();
     const last = localStorage.getItem(KEY_LAST_VIEW);
     if(last === "gold") switchView("diamond");
   });
 
-  // 投递方式保存
-  function hydrateContactInputs(){
-    const line = localStorage.getItem(KEY_CONTACT_LINE) || DEFAULT_CONTACT_LINE;
-    const note = localStorage.getItem(KEY_CONTACT_NOTE) || DEFAULT_CONTACT_NOTE;
-    $("contactLine").value = line;
-    $("contactNote").value = note;
-    $("resumeEmail").value = localStorage.getItem(KEY_RESUME_EMAIL) || "";
-  }
-  $("saveContact").addEventListener("click", ()=>{
-    localStorage.setItem(KEY_CONTACT_LINE, ($("contactLine").value || "").trim() || DEFAULT_CONTACT_LINE);
-    localStorage.setItem(KEY_CONTACT_NOTE, ($("contactNote").value || "").trim() || DEFAULT_CONTACT_NOTE);
-    localStorage.setItem(KEY_RESUME_EMAIL, ($("resumeEmail").value || "").trim());
-    showToast("已保存投简历设置");
-  });
-  $("resetContact").addEventListener("click", ()=>{
-    localStorage.removeItem(KEY_CONTACT_LINE);
-    localStorage.removeItem(KEY_CONTACT_NOTE);
-      localStorage.removeItem(KEY_RESUME_EMAIL);
-    hydrateContactInputs();
-    showToast("已恢复默认投递方式");
-  });
-
-  // 使用方法折叠（默认收起）
   const accUse = $("accUse");
   function paintAcc(){ accUse.classList.toggle("open", localStorage.getItem(KEY_ACC_OPEN) === "1"); }
   $("accUseHead").addEventListener("click", ()=>{
@@ -1143,7 +1316,6 @@ $("xApply").addEventListener("click", closeApply);
     localStorage.setItem(KEY_ACC_OPEN, nowOpen ? "1" : "0");
   });
 
-  // 清除数据
   const ov = $("ov");
   function openOv(){
     $("ck").checked = false;
@@ -1161,34 +1333,41 @@ $("xApply").addEventListener("click", closeApply);
       localStorage.removeItem(KEY_GOLD);
       localStorage.removeItem(KEY_ACC_OPEN);
       localStorage.removeItem(KEY_LAST_VIEW);
-      localStorage.removeItem(KEY_CONTACT_LINE);
-      localStorage.removeItem(KEY_CONTACT_NOTE);
     }catch(err){}
     closeOv();
     showToast("数据已清除，正在恢复初始状态…");
     setTimeout(()=>window.location.replace(window.location.href.split("#")[0]), 600);
   });
 
-  // 菜单绑定
   const bind = (id, view)=>{
     const el = document.getElementById(id);
     if(!el) return;
     el.addEventListener("click", ()=>switchView(view));
   };
-  bind("tabHome","home"); bind("tabDiamond","diamond"); bind("tabGold","gold"); bind("tabMy","my");
-  bind("navHome","home"); bind("navDiamond","diamond"); bind("navGold","gold"); bind("navMy","my");
+  bind("navHome","home");
+  bind("navDiamond","diamond");
+  bind("navGold","gold");
+  bind("navMy","my");
 
-  // 初始化
   $("buildDate").textContent = new Date().toISOString().slice(0,10);
+
   paintAcc();
-  hydrateContactInputs();
   paintMember();
 
   let last = localStorage.getItem(KEY_LAST_VIEW) || "home";
   if(last === "gold" && !isGold()) last = "diamond";
   switchView(last);
 
-  if(window.visualViewport){const vv=window.visualViewport;const base=0;function onVV(){const diff=Math.max(0,(window.innerHeight-vv.height-vv.offsetTop));document.documentElement.style.setProperty('--safeB',(base+Math.min(diff,220))+'px');}vv.addEventListener('resize',onVV);vv.addEventListener('scroll',onVV);}
+  if(window.visualViewport){
+    const vv=window.visualViewport;
+    const base=0;
+    function onVV(){
+      const diff=Math.max(0,(window.innerHeight-vv.height-vv.offsetTop));
+      document.documentElement.style.setProperty('--safeB',(base+Math.min(diff,220))+'px');
+    }
+    vv.addEventListener('resize',onVV);
+    vv.addEventListener('scroll',onVV);
+  }
 })();
 </script>
 </body>
