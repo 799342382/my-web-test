@@ -20,6 +20,18 @@
       --safeT:env(safe-area-inset-top);
     }
     *{box-sizing:border-box;}
+
+    /* 隐藏全局滚动条，但保留滚动功能 */
+    html {
+      scrollbar-width: none; 
+      -ms-overflow-style: none; 
+    }
+    ::-webkit-scrollbar {
+      display: none; 
+      width: 0;
+      height: 0;
+    }
+
     html,body{height:100%; background: linear-gradient(135deg, var(--bgA), var(--bgB));}
     body{
       margin:0;
@@ -28,6 +40,22 @@
       background: linear-gradient(135deg, var(--bgA), var(--bgB));
       background-attachment: fixed;
       overflow-x:hidden;
+      
+      /* --- 防盗层 1：全局禁止文本选中和长按保存 --- */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    
+    /* 恢复输入框的选中和操作权限，避免影响正常使用 */
+    input, textarea {
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      -ms-user-select: auto !important;
+      user-select: auto !important;
+      -webkit-touch-callout: default !important;
     }
 
     .shell{
@@ -106,7 +134,6 @@
       border: 1px solid rgba(255,255,255,.80);
       box-shadow: 0 12px 30px rgba(22,25,38,.10);
       padding: 14px;
-      overflow:hidden;
       position:relative;
     }
     .jobHead{display:flex; align-items:center; gap:10px; justify-content:space-between;}
@@ -334,47 +361,65 @@
       position:relative;
     }
     .courseBodyTitle{
-      margin:10px 0 10px;
-      font-size:12px;
+      margin:12px 0 12px;
+      font-size:13px;
       font-weight:1100;
-      color:rgba(31,36,48,.78);
+      color:rgba(31,36,48,.92);
+      display:flex;
+      align-items:center;
+      gap:6px;
     }
-
-    /* --- 优化后的课程学习内容排版：现代标签云样式 --- */
+    .courseBodyTitle::before{
+      content:"";
+      display:block;
+      width:4px;
+      height:14px;
+      border-radius:2px;
+      background:linear-gradient(180deg, #9d56ff, #4adaff);
+    }
     .courseList{
-      margin: 4px 0 14px;
+      margin: 0 0 14px;
       padding: 0;
       list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
     .courseList li{
-      font-size: 12px;
-      font-weight: 1100;
+      font-size: 13px;
+      font-weight: 900;
       color: rgba(31,36,48,.86);
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(255,255,255,.9);
-      box-shadow: 0 4px 12px rgba(22,25,38,.04);
-      padding: 6px 12px;
-      border-radius: 10px;
       display: flex;
-      align-items: center;
-      gap: 6px;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
     }
     .courseList li::before{
       content: "";
       display: block;
-      width: 4px;
-      height: 12px;
-      border-radius: 2px;
-      background: linear-gradient(180deg, #9d56ff, #4adaff);
+      width: 18px;
+      height: 18px;
       flex: 0 0 auto;
+      background: rgba(157,86,255, 0.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239d56ff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center center;
+      background-size: 10px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(157,86,255, 0.15);
+      margin-top: 0px;
     }
     .courseNote{
-      font-size:11px;
-      color:rgba(31,36,48,.52);
-      line-height:1.5;
+      font-size: 12px;
+      color: rgba(31,36,48,.6);
+      background: rgba(31,36,48,.03);
+      padding: 10px 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .courseNote svg {
+      flex: 0 0 auto;
+      margin-top: 2px;
     }
 
     .courseFoot{
@@ -425,6 +470,148 @@
     .memName{ font-weight:1100; font-size:16px; line-height:1.1; }
     .memDesc{ font-size:12px; color: var(--muted); margin-top:4px; }
 
+    .form {
+      margin-top: 16px;
+      display: none;
+    }
+    .form.show {
+      display: block;
+    }
+    .input-group {
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(31,36,48,.06);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(22,25,38,.04);
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      gap: 12px;
+    }
+    .input-label {
+      font-weight: 1100;
+      font-size: 14px;
+      color: rgba(31,36,48,.85);
+      width: 32px; 
+      flex: 0 0 auto;
+    }
+    .input-row input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      color: var(--text);
+      min-width: 0;
+    }
+    .input-row input::placeholder {
+      color: rgba(31,36,48,.35);
+    }
+    .input-group .divider {
+      height: 1px;
+      background: rgba(31,36,48,.06);
+      margin-left: 16px; 
+    }
+    .toggle-btn {
+      background: transparent;
+      border: none;
+      font-size: 13px;
+      font-weight: 1100;
+      color: #9d56ff;
+      cursor: pointer;
+      padding: 0;
+      flex: 0 0 auto;
+    }
+    .form-hint {
+      margin-top: 12px;
+      font-size: 11px;
+      color: rgba(31,36,48,.5);
+      text-align: center;
+    }
+
+    /* 系统说明卡片 */
+    .feature-list {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.6);
+      border: 1px solid rgba(255,255,255,.8);
+      box-shadow: 0 8px 24px rgba(22,25,38,.04);
+    }
+    .feature-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+    .feature-text {
+      min-width: 0;
+    }
+    .feature-title {
+      font-size: 14px;
+      font-weight: 1100;
+      color: rgba(31,36,48,.9);
+      line-height: 1.2;
+    }
+    .feature-desc {
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(31,36,48,.66);
+      line-height: 1.5;
+    }
+
+    /* 使用指南与注意事项卡片 */
+    .guide-box {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .guide-section {
+      background: rgba(255,255,255,.5);
+      border: 1px solid rgba(255,255,255,.7);
+      padding: 14px;
+      border-radius: 16px;
+    }
+    .guide-title {
+      font-weight: 1100;
+      font-size: 13px;
+      color: rgba(31,36,48,.9);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .guide-list {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 12px;
+      color: rgba(31,36,48,.75);
+      line-height: 1.6;
+    }
+    .guide-list li {
+      margin-bottom: 6px;
+    }
+    .guide-list li:last-child {
+      margin-bottom: 0;
+    }
+    .guide-highlight {
+      color: #ff5c8c;
+      font-weight: 900;
+    }
+
     .btnDanger{
       border:0; cursor:pointer;
       padding:10px 12px; border-radius:14px;
@@ -434,41 +621,8 @@
       box-shadow: 0 12px 26px rgba(22,25,38,.10);
       user-select:none;
     }
-
-    .form{ margin-top:12px; display:none; gap:10px; }
-    .form.show{ display:grid; }
-
-    .field{
-      display:flex; align-items:center; gap:10px;
-      padding:12px; border-radius:16px;
-      background: rgba(255,255,255,.78);
-      border: 1px solid rgba(255,255,255,.84);
-      box-shadow: 0 12px 24px rgba(22,25,38,.08);
-    }
-    .field .k{
-      width:34px;height:34px;border-radius:14px;display:grid;place-items:center;
-      font-weight:1100;color:rgba(31,36,48,.80);
-      background: rgba(31,36,48,.06);
-    }
-    .field input{
-      border:0; outline:none; width:100%;
-      font-size:14px; background: transparent; color: rgba(31,36,48,.92);
-    }
     .row{ display:flex; gap:10px; flex-wrap:wrap; }
     .grow{ flex: 1 1 auto; min-width: 180px; }
-
-    .accordion{ margin-top:10px; border-radius:18px; background: rgba(255,255,255,.66); border:1px solid rgba(255,255,255,.78); overflow:hidden; }
-    .accHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; cursor:pointer; user-select:none; }
-    .accHead .leftH{ display:flex; align-items:center; gap:10px; font-weight:1100; }
-    .accHead .i{ width:30px;height:30px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.72);font-weight:1100; }
-    .accHead .t{ font-size:14px; }
-    .accHead .s{ font-size:12px; color: var(--muted); font-weight:800; }
-    .chev{ width:32px;height:32px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.84);color:rgba(31,36,48,.62);transition:transform .15s ease; }
-    .accBody{ display:none; padding:0 12px 12px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
-    .accordion.open .accBody{ display:block; }
-    .accordion.open .chev{ transform: rotate(180deg); }
-    .list{ margin: 8px 0 0; padding-left:18px; }
-    .list li{ margin: 6px 0; }
 
     /* 手机底部菜单 */
     .bottomNav{
@@ -516,24 +670,27 @@
     }
     .navI{ width:26px;height:26px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1100; }
 
-    /* Toast */
+    /* --- 新版：顶部悬浮 Toast 提示框 --- */
     .toast{
       position:fixed; left:50%; transform:translateX(-50%);
-      bottom: calc(120px + var(--safeB));
+      top: calc(20px + var(--safeT)); /* 改到屏幕顶部 */
       background: rgba(30,34,44,.86);
       color: rgba(255,255,255,.96);
-      padding: 10px 12px;
-      border-radius: 14px;
+      padding: 12px 20px; /* 增加内边距 */
+      border-radius: 999px; /* 全圆角 */
       font-size: 13px;
+      font-weight: bold; /* 文字加粗 */
       box-shadow: 0 16px 40px rgba(0,0,0,.22);
       opacity:0;
       pointer-events:none;
       transition: opacity .18s ease, transform .18s ease;
       max-width: min(560px, calc(100% - 28px));
       line-height:1.4;
-      z-index:90;
+      z-index: 110; /* 层级高于所有弹窗 */
+      text-align: center;
     }
-    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-2px); }
+    /* 向下浮现的动画 */
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(10px); }
 
     /* 弹窗 */
     .overlay{ position:fixed; inset:0; background: rgba(16,18,24,.38); display:none; align-items:center; justify-content:center; padding:16px; z-index:100; }
@@ -554,7 +711,7 @@
     .dlgBody{ padding:0 14px 14px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
     .dlgFoot{ padding:12px 14px 14px; display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* --- 新版投简历弹窗专属样式 --- */
+    /* 投简历弹窗专属样式 */
     .resume-subtitle {
       font-size: 13px;
       color: rgba(31,36,48,.66);
@@ -719,14 +876,17 @@
                   <div class="courseBodyTitle">学习内容</div>
                   
                   <ul class="courseList">
-                    <li>AI趋势认知</li>
+                    <li>AI 趋势认知</li>
                     <li>六大变现赛道</li>
                     <li>个人能力升级</li>
-                    <li>AI成交方法</li>
+                    <li>AI 成交方法</li>
                     <li>影响力打造</li>
                     <li>长期价值构建</li>
                   </ul>
-                  <div class="courseNote">* 课程内容持续升级，以上仅为部分学习方向</div>
+                  <div class="courseNote">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <div>课程内容持续升级，以上仅为部分学习方向。</div>
+                  </div>
                 </div>
 
                 <div class="courseFoot">
@@ -757,11 +917,14 @@
                   <div class="courseBodyTitle">学习内容</div>
                   
                   <ul class="courseList">
-                    <li>AI实操教学</li>
+                    <li>AI 实操教学</li>
                     <li>制作智能体</li>
                     <li>内容变现</li>
                   </ul>
-                  <div class="courseNote">* 课程内容持续升级，以上仅为部分学习方向</div>
+                  <div class="courseNote">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <div>课程内容持续升级，以上仅为部分学习方向。</div>
+                  </div>
                 </div>
 
                 <div class="courseFoot">
@@ -819,41 +982,70 @@
               </div>
 
               <div class="form" id="upgradeForm">
-                <div class="field" style="padding:4px 12px; background:rgba(255,255,255,.7);">
-                  <div class="k" style="background:transparent; width:auto; padding-right:8px;">账号</div>
-                  <input id="acc" autocomplete="off" inputmode="text" placeholder="演示用，可随便填" />
+                <div class="input-group">
+                  <div class="input-row">
+                    <span class="input-label">账号</span>
+                    <input id="acc" autocomplete="off" inputmode="text" placeholder="请输入演示账号" />
+                  </div>
+                  <div class="divider"></div>
+                  <div class="input-row">
+                    <span class="input-label">密码</span>
+                    <input id="pwd" type="password" autocomplete="off" inputmode="text" placeholder="请输入演示密码" />
+                    <button class="toggle-btn" id="togglePwd" type="button">显示</button>
+                  </div>
                 </div>
-                <div class="field" style="padding:4px 12px; background:rgba(255,255,255,.7);">
-                  <div class="k" style="background:transparent; width:auto; padding-right:8px;">密码</div>
-                  <input id="pwd" type="password" autocomplete="off" inputmode="text" placeholder="演示用，可随便填" />
-                  <button class="btnGhost" id="togglePwd" type="button" style="padding:6px 10px; font-size:12px;">显示</button>
-                </div>
-                <div class="row">
+                
+                <div class="row" style="margin-top: 16px;">
                   <button class="btnPrimary grow" id="doUpgrade">确认开通</button>
                   <button class="btnGhost grow" id="cancelUpgrade">取消</button>
                 </div>
-                <div class="cardSub">提示：本页仅做权限区分演示；状态保存在本机，不会上报账号密码。</div>
+                <div class="form-hint">提示：本页仅做演示，状态保存在本机，不会上报信息。</div>
               </div>
             </div>
 
             <div class="card">
-              <div class="cardTitle"><span>使用方法</span></div>
-              <div class="accordion" id="accUse">
-                <div class="accHead" id="accUseHead">
-                  <div class="leftH">
-                    <div class="i">i</div>
-                    <div>
-                      <div class="t">点一下展开查看</div>
-                      <div class="s">简单说明 · 不影响体验</div>
-                    </div>
+              <div class="cardTitle"><span>系统说明</span></div>
+              <div class="feature-list">
+                <div class="feature-item">
+                  <div class="feature-icon" style="background: linear-gradient(135deg, rgba(64,210,255,.15), rgba(151,80,255,.15)); color: #7a5cf5;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                   </div>
-                  <div class="chev">⌄</div>
+                  <div class="feature-text">
+                    <div class="feature-title">双层级工具架构</div>
+                    <div class="feature-desc">全站功能精准划分为「星钻」与「金耀」专属模块，分屏呈现，互不干扰。</div>
+                  </div>
                 </div>
-                <div class="accBody">
-                  <ol class="list">
-                    <li>工具分在「星钻 / 金耀」两页，体验更清晰。</li>
-                    <li>未开通金耀时，点金耀工具会提示去「我的」开通。</li>
-                  </ol>
+                <div class="feature-item">
+                  <div class="feature-icon" style="background: linear-gradient(135deg, rgba(255,178,56,.15), rgba(255,92,140,.15)); color: #ff5c8c;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  </div>
+                  <div class="feature-text">
+                    <div class="feature-title">无感式权限校验</div>
+                    <div class="feature-desc">未升级用户点击高级工具时，系统将无缝引导至本中心完成权限认证。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardTitle"><span>使用指南与注意事项</span></div>
+              <div class="guide-box">
+                <div class="guide-section">
+                  <div class="guide-title">📖 新手使用指南</div>
+                  <ul class="guide-list">
+                    <li><b>浏览与导航：</b>通过底部菜单栏可自由切换「首页」、「星钻」、「金耀」和「我的」版块。</li>
+                    <li><b>使用工具：</b>在星钻/金耀页，直接点击对应的工具卡片，即可跳转至相应的外部网页使用。</li>
+                    <li><b>权限解锁：</b>星钻工具默认免费开放；若需使用金耀工具，请在本页顶部完成「金耀会员」开通。</li>
+                    <li><b>课程与求职：</b>「首页」提供最新的线下课程报名入口及招聘信息，支持一键复制微信号或生成简历。</li>
+                  </ul>
+                </div>
+                <div class="guide-section" style="background: rgba(255,92,140,.04); border-color: rgba(255,92,140,.1);">
+                  <div class="guide-title" style="color: #ff5c8c;">⚠️ 重要注意事项</div>
+                  <ul class="guide-list" style="color: rgba(31,36,48,.8);">
+                    <li><b>数据保存：</b>您的会员状态保存在当前手机的浏览器缓存中。请<span class="guide-highlight">不要轻易清理微信/浏览器的缓存</span>，否则需要重新开通。</li>
+                    <li><b>外部链接：</b>本站提供的是工具导航入口，点击后会跳转至第三方网站。请在使用第三方工具时注意辨别信息，保护个人隐私。</li>
+                    <li><b>功能升级：</b>页面工具和课程会不定时更新，请以实际展示为准。如果遇到工具无法打开，可能是第三方网站正在维护。</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -978,7 +1170,36 @@
   </div>
 
 <script>
+/* --- 防盗层 2&3：事件拦截与无限 Debug (保护代码) --- */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' || 
+     (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'C' || e.key === 'c')) || 
+     (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 's'))) {
+    e.preventDefault();
+  }
+});
+document.addEventListener('copy', function(e) {
+  if (!['INPUT', 'TEXTAREA'].includes(e.target.tagName) && !window.getSelection().toString()) {
+     e.preventDefault();
+  }
+});
+(function() {
+    function block() {
+        setInterval(function() {
+            try {
+                (function() { return false; }['constructor']('debugger')['call']());
+            } catch (err) {}
+        }, 50);
+    }
+    try { block(); } catch (err) {}
+})();
+/* ---------------------------------------------------- */
+
 (function(){
+  const scrollMap = {};
+  let currentTab = null;
+
   const LINKS = [
     { id: 1, name: "无水印下载", url: "https://snapany.com/zh", tier: "diamond" },
     { id: 2, name: "动画片", url: "https://www.touhaos.cc/video/?88273-2-138.html", tier: "diamond" },
@@ -994,7 +1215,6 @@
   const FIXED_RESUME_EMAIL = ""; // 例如：123456@qq.com（不填则隐藏“发送到邮箱”）
 
   const KEY_GOLD = "isGoldMember";
-  const KEY_ACC_OPEN = "accUseOpen";
   const KEY_LAST_VIEW = "lastView";
 
   const $ = (id)=>document.getElementById(id);
@@ -1133,7 +1353,13 @@
     });
   }
 
+  // 独立滚动位置记忆的切换逻辑
   function switchView(which){
+    if (currentTab) {
+      scrollMap[currentTab] = window.scrollY || document.documentElement.scrollTop;
+    }
+    currentTab = which;
+
     const views = ["home","diamond","gold","my"];
     views.forEach(v=>{
       const sec = document.getElementById("view" + v.charAt(0).toUpperCase() + v.slice(1));
@@ -1141,6 +1367,8 @@
     });
     setActive(["navHome","navDiamond","navGold","navMy"], "nav" + which.charAt(0).toUpperCase() + which.slice(1));
     localStorage.setItem(KEY_LAST_VIEW, which);
+
+    window.scrollTo(0, scrollMap[which] || 0);
   }
 
   // 顶部招募展开/收起
@@ -1153,9 +1381,6 @@
       hero.classList.toggle("compact");
       const compact = hero.classList.contains("compact");
       btn.textContent = compact ? "招聘详情" : "收起详情";
-      if(!compact){
-        hero.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
     });
   })();
 
@@ -1308,14 +1533,6 @@
     if(last === "gold") switchView("diamond");
   });
 
-  const accUse = $("accUse");
-  function paintAcc(){ accUse.classList.toggle("open", localStorage.getItem(KEY_ACC_OPEN) === "1"); }
-  $("accUseHead").addEventListener("click", ()=>{
-    const nowOpen = !accUse.classList.contains("open");
-    accUse.classList.toggle("open", nowOpen);
-    localStorage.setItem(KEY_ACC_OPEN, nowOpen ? "1" : "0");
-  });
-
   const ov = $("ov");
   function openOv(){
     $("ck").checked = false;
@@ -1331,7 +1548,6 @@
   $("confirmClear").addEventListener("click", ()=>{
     try{
       localStorage.removeItem(KEY_GOLD);
-      localStorage.removeItem(KEY_ACC_OPEN);
       localStorage.removeItem(KEY_LAST_VIEW);
     }catch(err){}
     closeOv();
@@ -1351,11 +1567,12 @@
 
   $("buildDate").textContent = new Date().toISOString().slice(0,10);
 
-  paintAcc();
   paintMember();
 
   let last = localStorage.getItem(KEY_LAST_VIEW) || "home";
   if(last === "gold" && !isGold()) last = "diamond";
+  
+  // 初始加载时调用一次 switchView
   switchView(last);
 
   if(window.visualViewport){
