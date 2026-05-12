@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0d14" />
+  <meta name="theme-color" content="#f3e9ff" />
   <title>工具入口 · 手机版</title>
   <style>
     :root{
@@ -118,12 +118,9 @@
       flex-wrap:wrap;
       align-items:center;
     }
-    .hero.compact .heroGrid,
-    .hero.compact .heroNote{ display:none; }
 
     .heroGrid{
       position:relative;
-      margin-top: 12px;
       display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
@@ -702,16 +699,17 @@
     }
 
     /* ========================================= */
-    /* 顶级重构：张易发团队专属黑金招募令启动屏  */
+    /* 全新升级：杂志级排版的唯美浅色启动屏      */
     /* ========================================= */
     .splash-ad {
       position: fixed;
       inset: 0;
       z-index: 99999;
-      background: #090a0f; /* 极深邃的商务黑 */
+      background: linear-gradient(135deg, #f5efff, #eef5ff);
       display: flex;
       flex-direction: column;
-      color: #ffffff;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
       transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -721,23 +719,19 @@
       pointer-events: none;
     }
     
-    /* 鎏金岁月光晕背景 */
+    /* 高级艺术光晕背景 */
     .splash-ad::before {
-      content: ""; position: absolute;
-      top: -20%; left: -20%; width: 80vw; height: 80vw;
-      background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, rgba(0,0,0,0) 70%);
-      filter: blur(60px); z-index: 0;
-      animation: floatA 8s infinite alternate ease-in-out;
+      content: ""; position: absolute; top: -10%; left: -20%; width: 80vw; height: 80vw;
+      background: radial-gradient(circle, rgba(157,86,255,0.18) 0%, rgba(255,255,255,0) 70%);
+      filter: blur(60px); z-index: 0; animation: floatA 12s infinite alternate ease-in-out;
     }
     .splash-ad::after {
-      content: ""; position: absolute;
-      bottom: -10%; right: -20%; width: 90vw; height: 90vw;
-      background: radial-gradient(circle, rgba(157,86,255,0.1) 0%, rgba(0,0,0,0) 70%);
-      filter: blur(60px); z-index: 0;
-      animation: floatB 10s infinite alternate-reverse ease-in-out;
+      content: ""; position: absolute; bottom: -10%; right: -20%; width: 90vw; height: 90vw;
+      background: radial-gradient(circle, rgba(74,218,255,0.18) 0%, rgba(255,255,255,0) 70%);
+      filter: blur(60px); z-index: 0; animation: floatB 15s infinite alternate-reverse ease-in-out;
     }
-    @keyframes floatA { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 20px) scale(1.1); } }
-    @keyframes floatB { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-30px, -40px) scale(1.2); } }
+    @keyframes floatA { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 30px) scale(1.1); } }
+    @keyframes floatB { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, -30px) scale(1.15); } }
 
     .splash-header {
       position: absolute;
@@ -746,147 +740,95 @@
       z-index: 10;
     }
     .skip-btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.7);
+      color: rgba(31, 36, 48, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      padding: 6px 16px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
+      font-size: 13px;
+      font-weight: 1100;
       cursor: pointer;
+      box-shadow: 0 4px 16px rgba(22, 25, 38, 0.05);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
     }
+    .skip-btn:active { transform: scale(0.95); }
     
-    /* 核心卡片容器 */
     .splash-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      z-index: 2;
-    }
-    
-    /* 高级黑金磨砂玻璃卡片 */
-    .premium-card {
-      width: 100%;
-      max-width: 400px;
-      background: linear-gradient(145deg, rgba(30,32,40,0.8) 0%, rgba(15,16,20,0.9) 100%);
-      border: 1px solid rgba(212,175,55,0.3); /* 金色描边 */
-      box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 36px 24px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      
-      transform: translateY(20px);
-      opacity: 0;
-      animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
-    }
-    @keyframes slideUpFade { to { transform: translateY(0); opacity: 1; } }
-
-    /* 卡片顶部金色流光线 */
-    .premium-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.8), transparent);
+      z-index: 2; width: 100%; max-width: 440px; padding: 0 24px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
 
-    .r-badge {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 1100;
-      letter-spacing: 2px;
-      color: #FFD700;
-      background: rgba(255,215,0,0.1);
-      border: 1px solid rgba(255,215,0,0.2);
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 24px;
+    /* 艺术感顶部文案 */
+    .s-english-accent {
+      font-size: 12px; font-weight: 1100; letter-spacing: 4px; color: #9d56ff;
+      margin-bottom: 12px; text-transform: uppercase;
+      transform: translateY(20px); opacity: 0; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s;
     }
-    .r-title {
-      font-size: 28px;
-      font-weight: 1100;
-      letter-spacing: 2px;
-      margin: 0 0 24px 0;
-      /* 金色渐变文字 */
-      background: linear-gradient(135deg, #FFF3B0 0%, #D4AF37 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 10px rgba(212,175,55,0.2);
+    .s-giant-title {
+      font-size: 64px; font-weight: 1100; letter-spacing: 8px; margin: 0 0 16px 0;
+      background: linear-gradient(135deg, #7a5cf5 0%, #4adaff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 30px rgba(157, 86, 255, 0.15);
+      transform: translateY(20px); opacity: 0; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
     }
-    
-    .r-jobs {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-    .r-job {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #E2E8F0;
-      font-size: 14px;
-      font-weight: 900;
-      padding: 10px 16px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .r-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      margin: 0 auto 24px;
-      width: 80%;
-    }
-
-    .r-philosophy {
-      text-align: left;
-      font-size: 13px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.7);
-      background: rgba(0,0,0,0.3);
-      padding: 16px;
-      border-radius: 16px;
-      margin-bottom: 32px;
-    }
-    .r-philosophy p { margin: 0 0 10px 0; display: flex; align-items: flex-start; gap: 8px;}
-    .r-philosophy p:last-child { margin: 0; }
-    .r-philosophy strong { color: #fff; font-weight: 1100;}
-    .r-warning { color: #FF6B6B !important; }
-    .r-warning strong { color: #FF6B6B !important; }
-
-    .s-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #D4AF37 0%, #AA8222 100%);
-      color: #000000;
-      font-size: 16px;
-      font-weight: 1100;
-      padding: 16px;
-      border-radius: 16px;
-      border: none;
-      box-shadow: 0 8px 24px rgba(212,175,55,0.3);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+    .s-sub-title {
+      font-size: 16px; font-weight: 900; color: rgba(31,36,48, 0.75); margin-bottom: 40px;
       letter-spacing: 1px;
+      transform: translateY(20px); opacity: 0; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
     }
-    .s-btn::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -100%; width: 50%; height: 100%;
+
+    /* 精致的毛玻璃职位卡片 */
+    .s-jobs-container {
+      display: flex; gap: 16px; margin-bottom: 40px; justify-content: center; width: 100%;
+      transform: translateY(20px); opacity: 0; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
+    }
+    .s-job-card {
+      flex: 1; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9);
+      padding: 24px 16px; border-radius: 24px; box-shadow: 0 16px 40px rgba(22, 25, 38, 0.05);
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+    .s-job-icon {
+      width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; font-size: 24px;
+      box-shadow: 0 12px 24px rgba(22,25,38,0.08);
+    }
+    .s-job-name { font-size: 15px; font-weight: 1100; color: var(--text); }
+
+    /* 高级要求区 */
+    .s-intro-panel {
+      width: 100%; background: transparent; text-align: left; margin-bottom: 40px;
+      transform: translateY(20px); opacity: 0; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+    }
+    .s-intro-item { 
+      display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; 
+      font-size: 14px; color: rgba(31,36,48,0.7); line-height: 1.5; 
+    }
+    .s-intro-item:last-child { margin-bottom: 0; }
+    .s-intro-item strong { color: var(--text); font-weight: 1100; }
+    .s-intro-icon { 
+      flex: 0 0 auto; margin-top: 2px; width: 20px; height: 20px; 
+      border-radius: 50%; display: grid; place-items: center; font-size: 12px;
+      background: rgba(255,255,255,0.7); box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    /* 艺术呼吸按钮 */
+    .s-action-btn {
+      width: 100%; background: linear-gradient(135deg, #9d56ff 0%, #4adaff 100%);
+      color: #fff; font-size: 16px; font-weight: 1100; padding: 18px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 16px 36px rgba(157, 86, 255, 0.25); 
+      cursor: pointer; position: relative; overflow: hidden; letter-spacing: 1px;
+      transform: translateY(20px); opacity: 0; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.6s;
+    }
+    .s-action-btn::after {
+      content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-      transform: skewX(-20deg);
-      animation: sweep 3s infinite ease-in-out;
+      transform: skewX(-20deg); animation: sweep 3s infinite ease-in-out;
     }
+
+    @keyframes slideUpFade { to { transform: translateY(0); opacity: 1; } }
+    @keyframes sweep { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
     /* 弹窗 */
     .overlay{ position:fixed; inset:0; background: rgba(16,18,24,.38); display:none; align-items:center; justify-content:center; padding:16px; z-index:100; }
@@ -977,88 +919,58 @@
 
   <div id="splashAd" class="splash-ad">
     <div class="splash-header">
-      <button id="skipAdBtn" class="skip-btn">跳过 3s</button>
+      <button id="skipAdBtn" class="skip-btn">跳过 5s</button>
     </div>
     
     <div class="splash-body">
-      <div class="premium-card">
-        <div class="r-badge">🔥 2026 张易发团队招募令</div>
-        <div class="r-title">寻找同路人</div>
-        
-        <div class="r-jobs">
-          <span class="r-job">🎬 剪辑操盘手</span>
-          <span class="r-job">☎️ 电话销售</span>
+      
+      <div class="s-english-accent">We Are Hiring</div>
+      <div class="s-giant-title">招聘</div>
+      <div class="s-sub-title">张易发 · 寻找核心战友</div>
+      
+      <div class="s-jobs-container">
+        <div class="s-job-card">
+          <div class="s-job-icon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85)); color:#fff;">🎬</div>
+          <div class="s-job-name">剪辑操盘手</div>
         </div>
-        
-        <div class="r-divider"></div>
-        
-        <div class="r-philosophy">
-          <p><span style="color:#D4AF37;">✔</span> <span><strong>接受小白：</strong>可以培养培训，手把手带教</span></p>
-          <p><span style="color:#D4AF37;">✔</span> <span><strong>经验优先：</strong>有实操经验者直接进入核心业务</span></p>
-          <p class="r-warning"><span>✖</span> <span><strong>底线要求：</strong>坚决拒绝没有爱心、没有同理心的人</span></p>
+        <div class="s-job-card">
+          <div class="s-job-icon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85)); color:#fff;">☎️</div>
+          <div class="s-job-name">电话销售</div>
         </div>
-        
-        <button class="s-btn" id="splashActionBtn">马上投递简历 🚀</button>
       </div>
+      
+      <div class="s-intro-panel">
+        <div class="s-intro-item">
+          <div class="s-intro-icon">💡</div>
+          <div><strong>无惧经验：</strong>接受潜力新人，提供顶级实战培养体系。</div>
+        </div>
+        <div class="s-intro-item">
+          <div class="s-intro-icon">🔥</div>
+          <div><strong>实力进阶：</strong>经验丰富者直接参与核心业务线转化。</div>
+        </div>
+        <div class="s-intro-item">
+          <div class="s-intro-icon" style="color: #ff5c8c;">⛔</div>
+          <div><strong style="color: #ff5c8c;">底层红线：</strong>坚决拒绝没有爱心、缺乏同理心的人。</div>
+        </div>
+      </div>
+      
+      <button class="s-action-btn" id="splashActionBtn">立即报名 / 投递简历</button>
+      
     </div>
   </div>
 
   <div class="shell" id="shell">
     <div class="frame">
 
-      <header class="hero compact">
+      <header class="hero">
         <div class="heroTop">
           <div class="heroTag">招募中 · 团队扩编</div>
           <div class="heroTitle">招剪辑操盘手 / 电话销售</div>
           
           <div class="heroActions">
-            <button class="btnPrimary" id="toggleRecruit">招聘详情</button>
+            <button class="btnPrimary" id="openDetailsBtn">招聘详情</button>
             <button class="btnGhost" id="openResumeTop">投简历 / 留言</button>
           </div>
-        </div>
-
-        <div class="heroGrid">
-          <section class="job">
-            <div class="jobHead">
-              <div class="jobLeft">
-                <div class="jobIcon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85));">🎬</div>
-                <div style="min-width:0">
-                  <div class="jobName">剪辑操盘手</div>
-                  <div class="jobMeta">短视频剪辑 · 节奏把控 · 复盘迭代</div>
-                </div>
-              </div>
-              <div class="jobPill">长期招募</div>
-            </div>
-            <ul class="jobList">
-              <li>能把口播/线下课剪成“3秒抓人”的节奏。</li>
-              <li>会封面/标题/重点字幕；懂数据复盘更加分。</li>
-              <li>交付稳定，愿意迭代，能扛强度。</li>
-            </ul>
-            <div class="jobActions">
-              <button class="btnPrimary" id="btnResumeEditor" style="width:100%; justify-content:center;">投递简历</button>
-            </div>
-          </section>
-
-          <section class="job">
-            <div class="jobHead">
-              <div class="jobLeft">
-                <div class="jobIcon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">☎️</div>
-                <div style="min-width:0">
-                  <div class="jobName">电话销售</div>
-                  <div class="jobMeta">沟通成交 · 跟进转化 · 目标导向</div>
-                </div>
-              </div>
-              <div class="jobPill">急招</div>
-            </div>
-            <ul class="jobList">
-              <li>普通话清晰，敢开口，抗拒绝。</li>
-              <li>能按话术跟进、记录、复盘，执行力强。</li>
-              <li>想赚钱、想成长、能长期稳定做。</li>
-            </ul>
-            <div class="jobActions">
-              <button class="btnPrimary" id="btnResumeSales" style="width:100%; justify-content:center;">投递简历</button>
-            </div>
-          </section>
         </div>
       </header>
 
@@ -1294,6 +1206,60 @@
 
   <div class="toast" id="toast"></div>
 
+  <div class="overlay" id="detailsOv">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="招聘详情">
+      <div class="dlgHead">
+        <p class="dlgTitle">招聘详情</p>
+        <button class="xBtn" id="xDetails" aria-label="关闭">✕</button>
+      </div>
+      <div class="dlgBody" style="max-height: 65vh; overflow-y: auto; padding-top: 10px; margin-bottom: -14px; padding-bottom: 14px;">
+        <div class="heroGrid" style="margin-top:0;">
+          <section class="job">
+            <div class="jobHead">
+              <div class="jobLeft">
+                <div class="jobIcon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85));">🎬</div>
+                <div style="min-width:0">
+                  <div class="jobName">剪辑操盘手</div>
+                  <div class="jobMeta">短视频剪辑 · 节奏把控 · 复盘迭代</div>
+                </div>
+              </div>
+              <div class="jobPill">长期招募</div>
+            </div>
+            <ul class="jobList">
+              <li>能把口播/线下课剪成“3秒抓人”的节奏。</li>
+              <li>会封面/标题/重点字幕；懂数据复盘更加分。</li>
+              <li>交付稳定，愿意迭代，能扛强度。</li>
+            </ul>
+            <div class="jobActions">
+              <button class="btnPrimary" id="btnResumeEditorDetail" style="width:100%; justify-content:center;">投递简历</button>
+            </div>
+          </section>
+
+          <section class="job">
+            <div class="jobHead">
+              <div class="jobLeft">
+                <div class="jobIcon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">☎️</div>
+                <div style="min-width:0">
+                  <div class="jobName">电话销售</div>
+                  <div class="jobMeta">沟通成交 · 跟进转化 · 目标导向</div>
+                </div>
+              </div>
+              <div class="jobPill">急招</div>
+            </div>
+            <ul class="jobList">
+              <li>普通话清晰，敢开口，抗拒绝。</li>
+              <li>能按话术跟进、记录、复盘，执行力强。</li>
+              <li>想赚钱、想成长、能长期稳定做。</li>
+            </ul>
+            <div class="jobActions">
+              <button class="btnPrimary" id="btnResumeSalesDetail" style="width:100%; justify-content:center;">投递简历</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="resumeOv">
     <div class="dialog" role="dialog" aria-modal="true" aria-label="一键生成简历">
       <div class="dlgHead">
@@ -1427,7 +1393,7 @@ document.addEventListener('copy', function(e) {
     const splashActionBtn = $("splashActionBtn");
     if(!splash || !skipBtn) return;
 
-    let timeLeft = 3;
+    let timeLeft = 5;
     let timer = null;
 
     function closeSplash() {
@@ -1642,16 +1608,30 @@ document.addEventListener('copy', function(e) {
     window.scrollTo(0, scrollMap[which] || 0);
   }
 
-  // 顶部招募展开/收起
+  // --- 招聘详情弹窗逻辑 ---
   (function(){
-    const hero = document.querySelector(".hero");
-    const btn = document.getElementById("toggleRecruit");
-    if(!hero || !btn) return;
-    btn.textContent = hero.classList.contains("compact") ? "招聘详情" : "收起详情";
-    btn.addEventListener("click", ()=>{
-      hero.classList.toggle("compact");
-      const compact = hero.classList.contains("compact");
-      btn.textContent = compact ? "招聘详情" : "收起详情";
+    const detailsOv = $("detailsOv");
+    
+    $("openDetailsBtn").addEventListener("click", () => {
+      detailsOv.classList.add("show");
+    });
+    
+    $("xDetails").addEventListener("click", () => {
+      detailsOv.classList.remove("show");
+    });
+    
+    detailsOv.addEventListener("click", (e) => {
+      if (e.target === detailsOv) detailsOv.classList.remove("show");
+    });
+
+    // 详情弹窗内的投递按钮，点击后关闭自己，打开主投递框
+    $("btnResumeEditorDetail").addEventListener("click", () => {
+      detailsOv.classList.remove("show");
+      setTimeout(() => openResume("剪辑操盘手"), 200);
+    });
+    $("btnResumeSalesDetail").addEventListener("click", () => {
+      detailsOv.classList.remove("show");
+      setTimeout(() => openResume("电话销售"), 200);
     });
   })();
 
@@ -1731,7 +1711,6 @@ document.addEventListener('copy', function(e) {
     });
   })();
 
-
   // --- 投简历与留言相关功能 ---
   function buildResumeText(){
     const role = ($("rRole").value || "").trim() || "未填写岗位";
@@ -1769,9 +1748,6 @@ document.addEventListener('copy', function(e) {
   
   function closeResume(){ $("resumeOv").classList.remove("show"); }
 
-  // 绑定岗位卡片上的投递按钮
-  $("btnResumeEditor").addEventListener("click", ()=>openResume("剪辑操盘手"));
-  $("btnResumeSales").addEventListener("click", ()=>openResume("电话销售"));
   $("openResumeTop").addEventListener("click", ()=>openResume());
 
   $("pickEditor").addEventListener("click", ()=>{ 
