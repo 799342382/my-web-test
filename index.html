@@ -263,24 +263,6 @@
     .homeTitle{position:relative; margin:0; font-size:16px; font-weight:1100;}
     .homeSub{position:relative; margin-top:8px; font-size:12px; color:rgba(31,36,48,.62); line-height:1.6;}
 
-    .wxBox{
-      position:relative;
-      margin-top:12px;
-      padding:12px;
-      border-radius:18px;
-      background:rgba(255,255,255,.70);
-      border:1px solid rgba(255,255,255,.82);
-      box-shadow:0 10px 24px rgba(22,25,38,.06);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .wxLeft{min-width:0;}
-    .wxLabel{font-size:12px;color:rgba(31,36,48,.62);font-weight:900;}
-    .wxId{margin-top:4px;font-size:15px;font-weight:1100;letter-spacing:.3px;word-break:break-all;}
-
     .courseGrid{
       display:grid;
       gap: var(--gap);
@@ -470,9 +452,11 @@
     .memName{ font-weight:1100; font-size:16px; line-height:1.1; }
     .memDesc{ font-size:12px; color: var(--muted); margin-top:4px; }
 
+    /* 表单与呼吸高光特效 */
     .form {
       margin-top: 16px;
       display: none;
+      transition: all 0.3s ease;
     }
     .form.show {
       display: block;
@@ -483,7 +467,19 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 8px 24px rgba(22,25,38,.04);
+      transition: all 0.3s ease;
     }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 8px 24px rgba(22,25,38,.04); border-color: rgba(31,36,48,.06); transform: scale(1); }
+      30% { box-shadow: 0 0 0 6px rgba(255,170,0,.25); border-color: #FFAA00; transform: scale(1.02); }
+      70% { box-shadow: 0 0 0 6px rgba(255,170,0,.25); border-color: #FFAA00; transform: scale(1.02); }
+      100% { box-shadow: 0 8px 24px rgba(22,25,38,.04); border-color: rgba(31,36,48,.06); transform: scale(1); }
+    }
+    .pulse-highlight .input-group {
+      animation: pulseGlow 1.2s ease-in-out;
+    }
+
     .input-row {
       display: flex;
       align-items: center;
@@ -670,27 +666,151 @@
     }
     .navI{ width:26px;height:26px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1100; }
 
-    /* --- 新版：顶部悬浮 Toast 提示框 --- */
-    .toast{
-      position:fixed; left:50%; transform:translateX(-50%);
-      top: calc(20px + var(--safeT)); /* 改到屏幕顶部 */
-      background: rgba(30,34,44,.86);
-      color: rgba(255,255,255,.96);
-      padding: 12px 20px; /* 增加内边距 */
-      border-radius: 999px; /* 全圆角 */
-      font-size: 13px;
-      font-weight: bold; /* 文字加粗 */
-      box-shadow: 0 16px 40px rgba(0,0,0,.22);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
-      max-width: min(560px, calc(100% - 28px));
-      line-height:1.4;
-      z-index: 110; /* 层级高于所有弹窗 */
-      text-align: center;
+    /* 高颜值毛玻璃悬浮 Toast 提示框 */
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px) scale(0.95);
+      top: calc(30px + var(--safeT));
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      color: rgba(31, 36, 48, 0.95);
+      padding: 10px 18px; 
+      border-radius: 999px;
+      font-size: 13px; 
+      font-weight: 1100;
+      box-shadow: 0 16px 40px rgba(22, 25, 38, 0.12), 0 6px 16px rgba(157, 86, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      white-space: nowrap; 
+      width: max-content;
+      max-width: 92vw;
+      line-height: 1.4;
+      z-index: 110;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
-    /* 向下浮现的动画 */
-    .toast.show{ opacity:1; transform:translateX(-50%) translateY(10px); }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    /* 启动屏广告专属样式 */
+    .splash-ad {
+      position: fixed;
+      inset: 0;
+      z-index: 99999; /* 覆盖全屏的最顶层 */
+      background: linear-gradient(135deg, var(--bgA), var(--bgB));
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .splash-ad.hide {
+      opacity: 0;
+      transform: scale(1.03);
+      pointer-events: none;
+    }
+    .splash-header {
+      position: absolute;
+      top: calc(20px + var(--safeT));
+      right: 20px;
+      z-index: 2;
+    }
+    .skip-btn {
+      background: rgba(255,255,255,0.6);
+      color: rgba(31,36,48,0.8);
+      border: 1px solid rgba(255,255,255,0.8);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 1100;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(22,25,38,0.05);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .splash-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .splash-content::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(157,86,255,0.15) 0%, rgba(255,255,255,0) 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .splash-icons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      z-index: 1;
+    }
+    .splash-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(22,25,38,.12);
+    }
+    .splash-badge {
+      font-size: 13px;
+      font-weight: 1100;
+      color: #9d56ff;
+      background: rgba(157,86,255,0.1);
+      padding: 8px 16px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+    .splash-title {
+      font-size: 28px;
+      font-weight: 1100;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      z-index: 1;
+    }
+    .splash-desc {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-weight: 900;
+      z-index: 1;
+    }
+    .splash-action {
+      background: linear-gradient(90deg, rgba(245,182,235,.9), rgba(169,205,255,.9));
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 16px 36px rgba(22,25,38,0.12);
+      color: rgba(31,36,48,.92);
+      font-weight: 1100;
+      font-size: 16px;
+      padding: 16px 40px;
+      border-radius: 999px;
+      cursor: pointer;
+      z-index: 1;
+    }
 
     /* 弹窗 */
     .overlay{ position:fixed; inset:0; background: rgba(16,18,24,.38); display:none; align-items:center; justify-content:center; padding:16px; z-index:100; }
@@ -711,7 +831,7 @@
     .dlgBody{ padding:0 14px 14px; color: rgba(31,36,48,.78); font-size:12px; line-height:1.6; }
     .dlgFoot{ padding:12px 14px 14px; display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* 投简历弹窗专属样式 */
+    /* 弹窗专属样式 */
     .resume-subtitle {
       font-size: 13px;
       color: rgba(31,36,48,.66);
@@ -767,17 +887,6 @@
       border-color: rgba(74,218,255,.5);
       box-shadow: 0 6px 16px rgba(74,218,255,.12);
     }
-    .email-hint-box {
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(31,36,48,.04);
-      border: 1px solid rgba(31,36,48,.04);
-      margin-top: 4px;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
 
     @media (max-width: 380px){
       .heroTitle{ font-size: 18px; }
@@ -789,6 +898,23 @@
   </style>
 </head>
 <body>
+
+  <div id="splashAd" class="splash-ad">
+    <div class="splash-header">
+      <button id="skipAdBtn" class="skip-btn">跳过 3s</button>
+    </div>
+    <div class="splash-content">
+      <div class="splash-icons">
+        <div class="splash-icon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85));">🎬</div>
+        <div class="splash-icon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">☎️</div>
+      </div>
+      <div class="splash-badge">团队扩编 · 长期招募</div>
+      <div class="splash-title">招剪辑操盘手<br>& 电话销售</div>
+      <div class="splash-desc">高额提成 · 扁平管理 · 核心项目</div>
+      <button class="splash-action" id="splashActionBtn">立即投递简历</button>
+    </div>
+  </div>
+
   <div class="shell" id="shell">
     <div class="frame">
 
@@ -799,7 +925,7 @@
           
           <div class="heroActions">
             <button class="btnPrimary" id="toggleRecruit">招聘详情</button>
-            <button class="btnGhost" id="openResumeTop">投简历</button>
+            <button class="btnGhost" id="openResumeTop">投简历 / 留言</button>
           </div>
         </div>
 
@@ -890,7 +1016,7 @@
                 </div>
 
                 <div class="courseFoot">
-                  <button class="btnPrimary" type="button" data-enroll-btn="1">点击报名</button>
+                  <button class="btnPrimary" type="button" data-enroll-course="AI之道">点击报名</button>
                 </div>
               </div>
 
@@ -928,7 +1054,7 @@
                 </div>
 
                 <div class="courseFoot">
-                  <button class="btnPrimary" type="button" data-enroll-btn="1">点击报名</button>
+                  <button class="btnPrimary" type="button" data-enroll-course="AI实操班">点击报名</button>
                 </div>
               </div>
 
@@ -937,11 +1063,11 @@
             <div class="homeCard">
               <p class="homeTitle">温馨提示</p>
               <div class="homeSub">
-                课程内容会持续升级更新，以现场讲解为准。<br/>
-                想报名：请点击下方按钮获取联系方式，添加时备注“报名 + 课程名”。
+                想了解更多课程细节或变现模式，请留下您的联系方式。<br/>
+                我们的专属助教会尽快与您沟通，为您答疑解惑。
               </div>
               <div style="margin-top:14px;">
-                <button class="btnPrimary" type="button" data-enroll-btn="1" style="width:100%; justify-content:center;">获取报名方式</button>
+                <button class="btnPrimary" type="button" data-enroll-course="综合咨询" style="width:100%; justify-content:center;">一键快速咨询</button>
               </div>
             </div>
 
@@ -969,7 +1095,7 @@
 
               <div class="memRow">
                 <div class="memBig">
-                  <div class="memIcon" id="memIcon" style="background:linear-gradient(135deg, rgba(64,210,255,.95), rgba(151,80,255,.85));">💎</div>
+                  <div class="memIcon" id="memIcon">💎</div>
                   <div>
                     <div class="memName" id="memName">星钻会员</div>
                     <div class="memDesc" id="memDesc">免登录 · 可用星钻工具</div>
@@ -985,12 +1111,12 @@
                 <div class="input-group">
                   <div class="input-row">
                     <span class="input-label">账号</span>
-                    <input id="acc" autocomplete="off" inputmode="text" placeholder="请输入演示账号" />
+                    <input id="acc" autocomplete="off" inputmode="text" placeholder="请输入账号" />
                   </div>
                   <div class="divider"></div>
                   <div class="input-row">
                     <span class="input-label">密码</span>
-                    <input id="pwd" type="password" autocomplete="off" inputmode="text" placeholder="请输入演示密码" />
+                    <input id="pwd" type="password" autocomplete="off" inputmode="text" placeholder="请输入密码" />
                     <button class="toggle-btn" id="togglePwd" type="button">显示</button>
                   </div>
                 </div>
@@ -999,7 +1125,7 @@
                   <button class="btnPrimary grow" id="doUpgrade">确认开通</button>
                   <button class="btnGhost grow" id="cancelUpgrade">取消</button>
                 </div>
-                <div class="form-hint">提示：本页仅做演示，状态保存在本机，不会上报信息。</div>
+                <div class="form-hint">提示：状态保存在本机，不会上报信息。</div>
               </div>
             </div>
 
@@ -1036,7 +1162,7 @@
                     <li><b>浏览与导航：</b>通过底部菜单栏可自由切换「首页」、「星钻」、「金耀」和「我的」版块。</li>
                     <li><b>使用工具：</b>在星钻/金耀页，直接点击对应的工具卡片，即可跳转至相应的外部网页使用。</li>
                     <li><b>权限解锁：</b>星钻工具默认免费开放；若需使用金耀工具，请在本页顶部完成「金耀会员」开通。</li>
-                    <li><b>课程与求职：</b>「首页」提供最新的线下课程报名入口及招聘信息，支持一键复制微信号或生成简历。</li>
+                    <li><b>课程与求职：</b>「首页」提供最新的线下课程报名入口及招聘信息，支持在线一键投递。</li>
                   </ul>
                 </div>
                 <div class="guide-section" style="background: rgba(255,92,140,.04); border-color: rgba(255,92,140,.1);">
@@ -1083,12 +1209,12 @@
   <div class="overlay" id="resumeOv">
     <div class="dialog" role="dialog" aria-modal="true" aria-label="一键生成简历">
       <div class="dlgHead">
-        <p class="dlgTitle">一键生成简历</p>
+        <p class="dlgTitle">投递简历 / 留言</p>
         <button class="xBtn" id="xResume" aria-label="关闭">✕</button>
       </div>
       <div class="dlgBody">
         <div class="resume-subtitle">
-          选择岗位并填入基本信息，点击一键复制即可生成标准排版的应聘话术。
+          选择岗位并填入基本信息，可一键复制，也可直接在线发送给我们。
         </div>
 
         <div class="role-picker">
@@ -1100,17 +1226,12 @@
           <input id="rRole" type="hidden" value="剪辑操盘手" />
           <input id="rName" class="clean-input" type="text" autocomplete="off" placeholder="您的称呼（必填，例：张先生 / 李女士）" />
           <input id="rPhone" class="clean-input" type="tel" autocomplete="off" placeholder="方便联系的手机号（必填）" />
-        </div>
-
-        <div class="email-hint-box" id="emailHintBox">
-          <div style="font-weight:1100; color:rgba(31,36,48,.8);">收件邮箱</div>
-          <div id="resumeEmailShow" style="color:rgba(31,36,48,.6);word-break:break-all;"></div>
-          <div id="resumeEmailTip" style="color:rgba(31,36,48,.5);"></div>
+          <textarea id="rMessage" class="clean-input" placeholder="你想说的话 / 优势亮点（可选）" style="resize:none; height:80px;"></textarea>
         </div>
       </div>
       <div class="dlgFoot" style="padding-top:0;">
-        <button class="btnPrimary grow" id="copyResume" style="padding:12px; font-size:14px;">一键复制简历内容</button>
-        <button class="btnGhost grow" id="sendResume" style="padding:12px; font-size:14px;">发送到邮箱</button>
+        <button class="btnGhost grow" id="copyResume" style="padding:12px; font-size:14px;">一键复制信息</button>
+        <button class="btnPrimary grow" id="sendResume" style="padding:12px; font-size:14px;">在线直接投递</button>
       </div>
     </div>
   </div>
@@ -1141,30 +1262,25 @@
   </div>
 
   <div class="overlay" id="enrollOv">
-    <div class="dialog" role="dialog" aria-modal="true" aria-label="添加企业微信报名">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="课程报名咨询">
       <div class="dlgHead">
-        <p class="dlgTitle">添加企业微信报名</p>
+        <p class="dlgTitle">课程报名咨询</p>
         <button class="xBtn" id="xEnroll" aria-label="关闭">✕</button>
       </div>
-      <div class="dlgBody" style="text-align:center;">
-        <div style="font-size:12px;color:rgba(31,36,48,.66);line-height:1.5;margin-bottom:15px;text-align:left;">
-          长按识别下方企业微信二维码，或复制微信号添加。添加时请备注“报名 + 课程名”。
+      <div class="dlgBody">
+        <div class="resume-subtitle">
+          请留下您的联系方式，我们的专属助教会尽快与您联系并提供详细课程资料。
         </div>
         
-        <div style="background:#fff; padding:10px; border-radius:16px; display:inline-block; border:1px solid rgba(31,36,48,.08); box-shadow:0 10px 24px rgba(22,25,38,.06); margin-bottom:15px;">
-           <svg width="160" height="160" viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
-              <rect width="33" height="33" fill="#ffffff"/>
-              <path d="M4,4 h7 v7 h-7 z M5,5 h5 v5 h-5 z M22,4 h7 v7 h-7 z M23,5 h5 v5 h-5 z M4,22 h7 v7 h-7 z M5,23 h5 v5 h-5 z M13,4 h2 v1 h-2 z M16,4 h1 v2 h-1 z M18,4 h1 v1 h-1 z M13,6 h1 v2 h-1 z M15,6 h2 v1 h-2 z M18,6 h2 v2 h-2 z M20,4 h1 v3 h-1 z M13,9 h2 v1 h-2 z M16,9 h1 v1 h-1 z M18,9 h2 v1 h-2 z M21,9 h1 v1 h-1 z M4,13 h1 v2 h-1 z M6,13 h2 v1 h-2 z M9,13 h1 v2 h-1 z M11,13 h2 v2 h-2 z M14,13 h1 v1 h-1 z M16,13 h3 v1 h-3 z M20,13 h2 v2 h-2 z M23,13 h1 v1 h-1 z M25,13 h1 v2 h-1 z M27,13 h2 v1 h-2 z M4,16 h2 v1 h-2 z M7,16 h1 v2 h-1 z M9,16 h2 v1 h-2 z M12,16 h1 v2 h-1 z M14,16 h2 v2 h-2 z M17,16 h1 v1 h-1 z M19,16 h2 v2 h-2 z M22,16 h1 v1 h-1 z M24,16 h2 v1 h-2 z M27,16 h1 v2 h-1 z M4,19 h1 v1 h-1 z M6,19 h2 v2 h-2 z M9,19 h1 v1 h-1 z M11,19 h2 v1 h-2 z M14,19 h1 v2 h-1 z M16,19 h3 v1 h-3 z M20,19 h2 v2 h-2 z M23,19 h1 v2 h-1 z M25,19 h1 v1 h-1 z M27,19 h2 v2 h-2 z M13,22 h2 v1 h-2 z M16,22 h1 v2 h-1 z M18,22 h1 v1 h-1 z M20,22 h2 v1 h-2 z M23,22 h1 v1 h-1 z M25,22 h2 v2 h-2 z M13,24 h1 v2 h-1 z M15,24 h2 v1 h-2 z M18,24 h2 v2 h-2 z M21,24 h1 v1 h-1 z M23,24 h2 v1 h-2 z M26,24 h1 v1 h-1 z M13,27 h2 v1 h-2 z M16,27 h1 v1 h-1 z M18,27 h2 v1 h-2 z M21,27 h1 v2 h-1 z M23,27 h2 v1 h-2 z M26,27 h1 v2 h-1 z M28,27 h1 v1 h-1 z" fill="#1f2430"/>
-           </svg>
+        <div style="display:block;">
+          <input id="eCourse" class="clean-input" type="text" readonly style="color: #9d56ff; font-weight: 1100; background: rgba(157,86,255,0.05); border-color: rgba(157,86,255,0.2);" />
+          <input id="eName" class="clean-input" type="text" autocomplete="off" placeholder="您的称呼（必填，例：张先生 / 李女士）" />
+          <input id="ePhone" class="clean-input" type="tel" autocomplete="off" placeholder="方便联系的手机号（必填）" />
+          <textarea id="eMessage" class="clean-input" placeholder="其他疑问或需求（可选）" style="resize:none; height:80px;"></textarea>
         </div>
-
-        <div class="wxBox" style="margin-top:0; text-align:left;">
-          <div class="wxLeft">
-            <div class="wxLabel">微信号</div>
-            <div class="wxId" id="wxIdPopup"></div>
-          </div>
-          <button class="btnPrimary" type="button" id="copyWxPopup">复制微信号</button>
-        </div>
+      </div>
+      <div class="dlgFoot" style="padding-top:0;">
+        <button class="btnPrimary grow" id="sendEnroll" style="padding:12px; font-size:14px; width: 100%; justify-content: center;">一键提交报名</button>
       </div>
     </div>
   </div>
@@ -1211,21 +1327,56 @@ document.addEventListener('copy', function(e) {
     { id: 8, name: "免费影视", url: "https://www.wfei.la/", tier: "gold" },
   ];
 
-  const WECHAT_ID = "guanjin1561413159";
-  const FIXED_RESUME_EMAIL = ""; // 例如：123456@qq.com（不填则隐藏“发送到邮箱”）
-
   const KEY_GOLD = "isGoldMember";
   const KEY_LAST_VIEW = "lastView";
 
   const $ = (id)=>document.getElementById(id);
 
+  // --- 启动页广告逻辑 ---
+  (function(){
+    const splash = $("splashAd");
+    const skipBtn = $("skipAdBtn");
+    const splashActionBtn = $("splashActionBtn");
+    if(!splash || !skipBtn) return;
+
+    let timeLeft = 3;
+    let timer = null;
+
+    function closeSplash() {
+      clearInterval(timer);
+      splash.classList.add("hide");
+      setTimeout(() => {
+        splash.style.display = "none";
+      }, 400); 
+    }
+
+    timer = setInterval(() => {
+      timeLeft--;
+      if(timeLeft > 0) {
+        skipBtn.textContent = `跳过 ${timeLeft}s`;
+      } else {
+        closeSplash();
+      }
+    }, 1000);
+
+    skipBtn.addEventListener("click", closeSplash);
+
+    if(splashActionBtn) {
+      splashActionBtn.addEventListener("click", () => {
+        closeSplash();
+        openResume();
+      });
+    }
+  })();
+  // -------------------
+
   let toastTimer = null;
-  function showToast(msg){
+  function showToast(msg) {
     const t = $("toast");
-    t.textContent = msg;
+    t.innerHTML = `<span style="font-size: 15px; display: flex; align-items: center; flex-shrink: 0;">✨</span><span style="white-space: nowrap;">${msg}</span>`;
     t.classList.add("show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>t.classList.remove("show"), 2200);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2500); 
   }
 
   async function copyText(text){
@@ -1251,15 +1402,40 @@ document.addEventListener('copy', function(e) {
 
   function isGold(){ return localStorage.getItem(KEY_GOLD) === "1"; }
 
+  // 渲染会员界面的样式更新函数
   function paintMember(){
     const gold = isGold();
     $("memName").textContent = gold ? "金耀会员" : "星钻会员";
     $("memDesc").textContent = gold ? "已开通 · 可用金耀工具" : "免登录 · 可用星钻工具";
-    $("memIcon").textContent = gold ? "👑" : "💎";
-    $("memIcon").style.background = gold
-      ? "linear-gradient(135deg, rgba(255, 178, 56, .95), rgba(255, 92, 140, .85))"
-      : "linear-gradient(135deg, rgba(64, 210, 255, .95), rgba(151, 80, 255, .85))";
-    $("memBadgeMini").innerHTML = gold ? "<span>金耀</span>" : "<span>星钻</span>";
+    
+    const icon = $("memIcon");
+    const badge = $("memBadgeMini");
+
+    if (gold) {
+      icon.textContent = "👑";
+      icon.style.background = "linear-gradient(135deg, #FFE873 0%, #FFAA00 100%)";
+      icon.style.boxShadow = "0 10px 24px rgba(255, 170, 0, 0.35)";
+      icon.style.border = "1px solid rgba(255, 255, 255, 0.9)";
+      icon.style.textShadow = "0 2px 4px rgba(22, 25, 38, 0.15)";
+      
+      badge.innerHTML = "<span>金耀</span>";
+      badge.style.background = "linear-gradient(90deg, #FFF0B3, #FFD54F)";
+      badge.style.color = "#7A4D00";
+      badge.style.border = "1px solid rgba(255, 213, 79, 0.5)";
+      badge.style.boxShadow = "0 4px 10px rgba(255, 170, 0, 0.15)";
+    } else {
+      icon.textContent = "💎";
+      icon.style.background = "linear-gradient(135deg, rgba(64, 210, 255, .95), rgba(151, 80, 255, .85))";
+      icon.style.boxShadow = "0 10px 24px rgba(22, 25, 38, .12)";
+      icon.style.border = "none";
+      icon.style.textShadow = "none";
+      
+      badge.innerHTML = "<span>星钻</span>";
+      badge.style.background = "rgba(31,36,48,.06)";
+      badge.style.color = "rgba(31,36,48,.78)";
+      badge.style.border = "1px solid rgba(31,36,48,.06)";
+      badge.style.boxShadow = "none";
+    }
 
     $("upgradeBtn").style.display = gold ? "none" : "inline-flex";
     $("logoutBtn").style.display = gold ? "inline-flex" : "none";
@@ -1324,10 +1500,17 @@ document.addEventListener('copy', function(e) {
 
         el.addEventListener("click", ()=>{
           if(disabled){
-            showToast("该工具需要金耀会员，去「我的」开通即可使用。");
+            showToast("请先开通金耀会员，解锁全部工具✨");
             switchView("my");
-            $("upgradeForm").classList.add("show");
-            $("upgradeForm").scrollIntoView({behavior:"smooth", block:"nearest"});
+            
+            const form = $("upgradeForm");
+            form.classList.add("show");
+            
+            form.classList.remove("pulse-highlight");
+            void form.offsetWidth; 
+            form.classList.add("pulse-highlight");
+            form.scrollIntoView({behavior:"smooth", block:"center"});
+            
             return;
           }
           openUrl(item.url);
@@ -1384,40 +1567,99 @@ document.addEventListener('copy', function(e) {
     });
   })();
 
-  // 报名弹窗展示与复制逻辑
+  // --- 课程报名无感提交功能 ---
   (function(){
     const enrollOv = $("enrollOv");
     
-    function openEnroll() {
-      $("wxIdPopup").textContent = WECHAT_ID;
-      enrollOv.classList.add("show");
-    }
     function closeEnroll() {
       enrollOv.classList.remove("show");
     }
 
-    document.querySelectorAll("[data-enroll-btn]").forEach(btn => {
-      btn.addEventListener("click", openEnroll);
+    // 绑定所有的报名按钮
+    document.querySelectorAll("[data-enroll-course]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        // 读取按钮上绑定的课程名字
+        const courseName = e.target.getAttribute("data-enroll-course") || "课程咨询";
+        $("eCourse").value = "意向课程：" + courseName;
+        enrollOv.classList.add("show");
+        setTimeout(()=>{ $("eName").focus({preventScroll:true}); }, 60);
+      });
     });
 
     $("xEnroll").addEventListener("click", closeEnroll);
     enrollOv.addEventListener("click", (e) => { if (e.target === enrollOv) closeEnroll(); });
 
-    $("copyWxPopup").addEventListener("click", async () => {
-      const ok = await copyText(WECHAT_ID);
-      showToast(ok ? ("已复制微信号：" + WECHAT_ID) : "复制失败：请手动复制");
+    // 提交报名表单到 QQ 邮箱
+    $("sendEnroll").addEventListener("click", async ()=>{
+      const name = ($("eName").value || "").trim();
+      const phone = ($("ePhone").value || "").trim();
+      const course = ($("eCourse").value || "").replace("意向课程：", "").trim();
+      const msg = ($("eMessage").value || "").trim();
+
+      if(!name || !phone){
+        showToast("请先填写完整的必填信息（称呼和手机号）");
+        return;
+      }
+
+      const btn = $("sendEnroll");
+      btn.textContent = "正在提交...";
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
+
+      try {
+        const res = await fetch("https://formsubmit.co/ajax/799342382@qq.com", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            "_subject": `【课程报名】${course} - ${name} (${phone})`,
+            "_template": "table",
+            "意向课程": course,
+            "学员称呼": name,
+            "联系手机号": phone,
+            "补充疑问": msg || "无",
+            "_captcha": "false"
+          })
+        });
+
+        if (res.ok) {
+          showToast("报名提交成功！助教会尽快联系您。");
+          closeEnroll();
+          $("eName").value = "";
+          $("ePhone").value = "";
+          $("eMessage").value = "";
+        } else {
+          showToast("提交失败，请检查网络或稍后重试。");
+        }
+      } catch (err) {
+        showToast("网络请求失败，请检查网络。");
+      } finally {
+        btn.textContent = "一键提交报名";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
     });
   })();
 
-
-  // --- 投简历相关功能 ---
-  function getResumeEmail(){ return (FIXED_RESUME_EMAIL || "").trim(); }
-
+  // --- 投简历与留言相关功能 ---
   function buildResumeText(){
     const role = ($("rRole").value || "").trim() || "未填写岗位";
     const name = ($("rName").value || "").trim() || "未填写称呼";
     const phone = ($("rPhone").value || "").trim() || "未填写手机号";
-    return ["【应聘信息】","应聘岗位：" + role,"应聘人称呼：" + name,"联系手机号：" + phone].join("\n");
+    const msg = ($("rMessage").value || "").trim();
+    
+    let lines = [
+      "【应聘/留言信息】",
+      "意向岗位：" + role,
+      "联系人：" + name,
+      "联系方式：" + phone
+    ];
+    if (msg) {
+      lines.push("补充留言：" + msg);
+    }
+    return lines.join("\n");
   }
 
   function openResume(prefRole){
@@ -1430,17 +1672,6 @@ document.addEventListener('copy', function(e) {
         $("pickEditor").classList.add("active");
         $("pickSales").classList.remove("active");
       }
-    }
-
-    const email = getResumeEmail();
-    $("resumeEmailShow").textContent = email ? email : "（未设置）";
-    if(email){
-      $("sendResume").style.display = "inline-flex";
-      $("resumeEmailTip").textContent = "设置了邮箱，您可以直接发送。";
-      $("emailHintBox").style.display = "flex";
-    }else{
-      $("sendResume").style.display = "none";
-      $("emailHintBox").style.display = "none"; 
     }
 
     $("resumeOv").classList.add("show");
@@ -1471,22 +1702,7 @@ document.addEventListener('copy', function(e) {
   $("xResume").addEventListener("click", closeResume);
   $("resumeOv").addEventListener("click", (e)=>{ if(e.target === $("resumeOv")) closeResume(); });
 
-  $("sendResume").addEventListener("click", ()=>{
-    const name = ($("rName").value || "").trim();
-    const phone = ($("rPhone").value || "").trim();
-    if(!name || !phone){
-      showToast("请先填写完整的必填信息（称呼和手机号）");
-      return;
-    }
-
-    const email = getResumeEmail();
-    if(!email){ showToast("未设置邮箱，请用“一键复制简历内容”方式投递"); return; }
-    const role = ($("rRole").value || "应聘").trim() || "应聘";
-    const subject = encodeURIComponent("应聘：" + role + (name ? (" - " + name) : ""));
-    const body = encodeURIComponent(buildResumeText());
-    window.location.href = "mailto:" + encodeURIComponent(email) + "?subject=" + subject + "&body=" + body;
-  });
-
+  // 复制功能
   $("copyResume").addEventListener("click", async ()=>{
     const name = ($("rName").value || "").trim();
     const phone = ($("rPhone").value || "").trim();
@@ -1496,11 +1712,63 @@ document.addEventListener('copy', function(e) {
     }
 
     const ok = await copyText(buildResumeText());
-    showToast(ok ? "已成功复制简历，可去微信粘贴发送" : "复制失败：请手动复制");
+    showToast(ok ? "已成功复制内容，可去微信粘贴发送" : "复制失败：请手动复制");
   });
 
+  // 在线直接投递功能
+  $("sendResume").addEventListener("click", async ()=>{
+    const name = ($("rName").value || "").trim();
+    const phone = ($("rPhone").value || "").trim();
+    const role = ($("rRole").value || "应聘").trim();
+    const msg = ($("rMessage").value || "").trim();
 
-  // --- 杂项交互 ---
+    if(!name || !phone){
+      showToast("请先填写完整的必填信息（称呼和手机号）");
+      return;
+    }
+
+    const btn = $("sendResume");
+    btn.textContent = "正在投递...";
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/799342382@qq.com", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "_subject": `【新简历】${role} - ${name} (${phone})`,
+          "_template": "table", 
+          "应聘岗位": role,
+          "候选人称呼": name,
+          "联系手机号": phone,
+          "留言与优势": msg || "（未填写）",
+          "_captcha": "false"
+        })
+      });
+
+      if (res.ok) {
+        showToast("投递成功！我们会尽快联系您。");
+        closeResume();
+        $("rName").value = "";
+        $("rPhone").value = "";
+        $("rMessage").value = "";
+      } else {
+        showToast("投递失败，请重试或复制微信号添加。");
+      }
+    } catch (err) {
+      showToast("网络请求失败，请检查网络。");
+    } finally {
+      btn.textContent = "在线直接投递";
+      btn.disabled = false;
+      btn.style.opacity = "1";
+    }
+  });
+
+  // --- 会员系统防盗版校验交互 ---
   $("upgradeBtn").addEventListener("click", ()=>{
     $("upgradeForm").classList.toggle("show");
     if($("upgradeForm").classList.contains("show")) $("acc").focus({preventScroll:true});
@@ -1515,12 +1783,26 @@ document.addEventListener('copy', function(e) {
   function doUpgrade(){
     const acc = ($("acc").value||"").trim();
     const pwd = ($("pwd").value||"").trim();
-    if(!acc || !pwd){ showToast("请输入账号和密码（演示用，可随便填）。"); return; }
+
+    if(!acc || !pwd){ 
+      showToast("请输入账号和密码！"); 
+      return; 
+    }
+
+    // Base64 加密校验防盗：
+    // "MTMxNDE5" 对应 "131419"
+    // "MTYxMzE0MTk=" 对应 "16131419" 
+    if(btoa(acc) !== "MTMxNDE5" || btoa(pwd) !== "MTYxMzE0MTk="){
+      showToast("账号或密码错误！");
+      return;
+    }
+
     localStorage.setItem(KEY_GOLD, "1");
     $("upgradeForm").classList.remove("show");
-    showToast("已开通金耀会员");
+    showToast("已成功开通金耀会员！");
     paintMember();
   }
+  
   $("doUpgrade").addEventListener("click", doUpgrade);
   $("pwd").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doUpgrade(); });
   $("acc").addEventListener("keydown", (e)=>{ if(e.key==="Enter") $("pwd").focus({preventScroll:true}); });
