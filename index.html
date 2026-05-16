@@ -969,7 +969,8 @@
           
           <div class="heroActions">
             <button class="btnPrimary" id="openDetailsBtn">招聘详情</button>
-            <button class="btnGhost" id="openResumeTop">投简历 / 留言</button>
+            <button class="btnGhost" id="openResumeTop">投简历</button>
+            <button class="btnGhost" id="openMsgTop">留言</button>
           </div>
         </div>
       </header>
@@ -1255,7 +1256,8 @@
               <li>交付稳定，愿意迭代，能扛强度。</li>
             </ul>
             <div class="jobActions">
-              <button class="btnPrimary" id="btnResumeEditorDetail" style="width:100%; justify-content:center;">投递简历</button>
+              <button class="btnPrimary grow" id="btnResumeEditorDetail">投递简历</button>
+              <button class="btnGhost grow" id="btnMsgEditorDetail">留言</button>
             </div>
           </section>
 
@@ -1276,7 +1278,8 @@
               <li>想赚钱、想成长、能长期稳定做。</li>
             </ul>
             <div class="jobActions">
-              <button class="btnPrimary" id="btnResumeSalesDetail" style="width:100%; justify-content:center;">投递简历</button>
+              <button class="btnPrimary grow" id="btnResumeSalesDetail">投递简历</button>
+              <button class="btnGhost grow" id="btnMsgSalesDetail">留言</button>
             </div>
           </section>
         </div>
@@ -1287,7 +1290,7 @@
   <div class="overlay" id="resumeOv">
     <div class="dialog" role="dialog" aria-modal="true" aria-label="一键生成简历">
       <div class="dlgHead">
-        <p class="dlgTitle">投递简历 / 留言</p>
+        <p class="dlgTitle">投递简历</p>
         <button class="xBtn" id="xResume" aria-label="关闭">✕</button>
       </div>
       <div class="dlgBody">
@@ -1310,6 +1313,33 @@
       <div class="dlgFoot" style="padding-top:0;">
         <button class="btnGhost grow" id="copyResume" style="padding:12px; font-size:14px;">一键复制信息</button>
         <button class="btnPrimary grow" id="sendResume" style="padding:12px; font-size:14px;">在线直接投递</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="msgOv">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="留言">
+      <div class="dlgHead">
+        <p class="dlgTitle">留言</p>
+        <button class="xBtn" id="xMsg" aria-label="关闭">✕</button>
+      </div>
+      <div class="dlgBody">
+        <div class="resume-subtitle">
+          想了解课程、招聘、工具反馈或合作，都可以在这里留言，我们会尽快回复您。
+        </div>
+
+        <div style="display:block;">
+          <input id="mTopic" class="clean-input" type="text" readonly
+                 style="color:#9d56ff; font-weight:1100; background: rgba(157,86,255,0.05); border-color: rgba(157,86,255,0.2);"
+                 value="留言主题：综合留言" />
+          <input id="mName" class="clean-input" type="text" autocomplete="off" placeholder="您的称呼（必填，例：张先生 / 李女士）" />
+          <input id="mPhone" class="clean-input" type="tel" autocomplete="off" placeholder="方便联系的手机号（必填）" />
+          <textarea id="mMessage" class="clean-input" placeholder="请写下您想说的话（必填）" style="resize:none; height:100px;"></textarea>
+        </div>
+      </div>
+      <div class="dlgFoot" style="padding-top:0;">
+        <button class="btnGhost grow" id="copyMsg" style="padding:12px; font-size:14px;">一键复制留言</button>
+        <button class="btnPrimary grow" id="sendMsg" style="padding:12px; font-size:14px;">在线提交留言</button>
       </div>
     </div>
   </div>
@@ -1743,7 +1773,7 @@ document.addEventListener('copy', function(e) {
     const msg = ($("rMessage").value || "").trim();
     
     let lines = [
-      "【应聘/留言信息】",
+      "【应聘信息】",
       "意向岗位：" + role,
       "联系人：" + name,
       "联系方式：" + phone
@@ -1856,6 +1886,129 @@ document.addEventListener('copy', function(e) {
       btn.style.opacity = "1";
     }
   });
+
+
+  // --- 留言功能 ---
+  function buildMsgText(){
+    const topicRaw = ($("mTopic").value || "").trim();
+    const topic = (topicRaw.replace("留言主题：","").trim()) || "综合留言";
+    const name = ($("mName").value || "").trim() || "未填写称呼";
+    const phone = ($("mPhone").value || "").trim() || "未填写手机号";
+    const msg = ($("mMessage").value || "").trim();
+
+    let lines = [
+      "【留言信息】",
+      "主题：" + topic,
+      "联系人：" + name,
+      "联系方式：" + phone
+    ];
+    if (msg) lines.push("留言内容：" + msg);
+    return lines.join("\n");
+  }
+
+  function openMsg(prefTopic){
+    const t = (prefTopic || "综合留言").trim();
+    $("mTopic").value = "留言主题：" + t;
+    $("msgOv").classList.add("show");
+    setTimeout(()=>{ $("mName").focus({preventScroll:true}); }, 60);
+  }
+
+  function closeMsg(){
+    $("msgOv").classList.remove("show");
+  }
+
+  // 顶部留言入口
+  const _openMsgTop = $("openMsgTop");
+  if (_openMsgTop) _openMsgTop.addEventListener("click", ()=>openMsg("综合留言"));
+
+  // 招聘详情里的留言按钮
+  (function(){
+    const detailsOv = $("detailsOv");
+    const a = $("btnMsgEditorDetail");
+    const b = $("btnMsgSalesDetail");
+    if(a) a.addEventListener("click", ()=>{
+      if(detailsOv) detailsOv.classList.remove("show");
+      setTimeout(()=>openMsg("招聘-剪辑操盘手"), 200);
+    });
+    if(b) b.addEventListener("click", ()=>{
+      if(detailsOv) detailsOv.classList.remove("show");
+      setTimeout(()=>openMsg("招聘-电话销售"), 200);
+    });
+  })();
+
+  // 关闭弹窗
+  $("xMsg").addEventListener("click", closeMsg);
+  $("msgOv").addEventListener("click", (e)=>{ if(e.target === $("msgOv")) closeMsg(); });
+
+  // 一键复制留言
+  $("copyMsg").addEventListener("click", async ()=>{
+    const name = ($("mName").value || "").trim();
+    const phone = ($("mPhone").value || "").trim();
+    const msg = ($("mMessage").value || "").trim();
+
+    if(!name || !phone || !msg){
+      showToast("请先填写完整的必填信息（称呼、手机号、留言内容）");
+      return;
+    }
+
+    const ok = await copyText(buildMsgText());
+    showToast(ok ? "已成功复制留言，可去微信粘贴发送" : "复制失败：请手动复制");
+  });
+
+  // 在线提交留言
+  $("sendMsg").addEventListener("click", async ()=>{
+    const topic = ($("mTopic").value || "").replace("留言主题：","").trim() || "综合留言";
+    const name = ($("mName").value || "").trim();
+    const phone = ($("mPhone").value || "").trim();
+    const msg = ($("mMessage").value || "").trim();
+
+    if(!name || !phone || !msg){
+      showToast("请先填写完整的必填信息（称呼、手机号、留言内容）");
+      return;
+    }
+
+    const btn = $("sendMsg");
+    btn.textContent = "正在提交...";
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/799342382@qq.com", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "_subject": `【留言】${topic} - ${name} (${phone})`,
+          "_template": "table",
+          "留言主题": topic,
+          "留言人称呼": name,
+          "联系手机号": phone,
+          "留言内容": msg,
+          "_captcha": "false"
+        })
+      });
+
+      if (res.ok) {
+        showToast("留言提交成功！我们会尽快回复您。");
+        closeMsg();
+        $("mName").value = "";
+        $("mPhone").value = "";
+        $("mMessage").value = "";
+        $("mTopic").value = "留言主题：综合留言";
+      } else {
+        showToast("提交失败，请检查网络或稍后重试。");
+      }
+    } catch (err) {
+      showToast("网络请求失败，请检查网络。");
+    } finally {
+      btn.textContent = "在线提交留言";
+      btn.disabled = false;
+      btn.style.opacity = "1";
+    }
+  });
+
 
 
   // --- 会员系统防盗版校验交互 ---
