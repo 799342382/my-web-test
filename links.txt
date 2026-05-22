@@ -1,0 +1,9 @@
+# links.txt（工具内容文件）
+# 一行一个工具，格式：等级|名称|链接
+# 等级写：钻石 或 白银
+# 例：钻石|无水印下载|https://snapany.com/zh
+
+钻石|无水印下载|https://snapany.com/zh
+钻石|2FA验证码|https://2fa.fan/
+白银|音乐大全|https://www.fangpi.net/
+白银|影视大全|https://www.xiaobaoyingshi.com/
