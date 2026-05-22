@@ -560,8 +560,14 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .shareUrl{
+    .shareLabel{
       margin-top: 12px;
+      font-size: 12px;
+      color: rgba(31,36,48,.62);
+      font-weight: 1000;
+    }
+    .shareUrl{
+      margin-top: 8px;
       padding: 10px 12px;
       border-radius: 16px;
       background: rgba(31,36,48,.03);
@@ -570,6 +576,11 @@
       font-size: 12px;
       line-height: 1.4;
       word-break: break-all;
+
+      /* 只放开链接区域的选中/长按复制 */
+      -webkit-user-select: text;
+      user-select: text;
+      -webkit-touch-callout: default;
     }
 
 
@@ -1127,35 +1138,66 @@
                         </div>
 
             
-            <div class="card" id="apkCard">
+            <div class="card" id="contentGuideCard">
+  <div class="cardTitle">
+    <span>内容更新（最简单）</span>
+    <span class="pill">只改一个文件</span>
+  </div>
+  <div class="cardSub">
+    你以后新增/修改工具，不用改网页代码。<br/>
+    只要去仓库里编辑 <b>links.txt</b>，一行就是一个工具：<br/>
+    <b>等级|名称|链接</b>（等级写“钻石”或“白银”）<br/>
+    保存后刷新网页，钻石/白银列表会自动更新并自动排序编号。
+  </div>
+</div>
+
+<div class="card" id="apkCard">
               <div class="cardTitle">
-                <span>分享与下载</span>
-                <span class="pill">发给朋友</span>
+                <span>网页入口与APP安装</span>
               </div>
               <div class="cardSub">
-                把链接一键发给朋友：网页直接打开就能用；需要安装APP时让对方点「下载APP」。<br/>
-                （如微信里无法下载APK，请点右上角「…」用浏览器打开再下载。）
+                网页：复制下面「网页链接」粘贴到浏览器打开即可使用。<br/>
+                APP：如需安装，直接点「下载APP」。<br/>
+                （如微信里无法下载，请点右上角「…」用浏览器打开再下载。）
               </div>
 
               <div class="shareGrid" style="margin-top:12px;">
+
                 <div class="shareItem">
                   <div class="shareHead">
                     <div class="shareLeft">
                       <div class="shareIcon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85));">🌐</div>
                       <div class="shareText">
-                        <div class="shareName">网页版入口</div>
+                        <div class="shareName">网页链接（复制到浏览器打开）</div>
                         <div class="shareDesc">不用安装，打开就能用</div>
                       </div>
                     </div>
                   </div>
 
+                  <div class="shareLabel">你要复制的内容就是下面这一条：</div>
                   <div class="shareUrl" id="webUrlShow">加载中…</div>
 
                   <div class="row" style="margin-top:12px;">
-                    <button class="btnPrimary grow" id="shareWebBtn">发给朋友</button>
-                    <button class="btnGhost grow" id="downloadApkBtn">下载APP（APK）</button>
+                    <button class="btnPrimary grow" id="copyWebBtn">一键复制网页链接</button>
                   </div>
                 </div>
+
+                <div class="shareItem">
+                  <div class="shareHead">
+                    <div class="shareLeft">
+                      <div class="shareIcon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">📱</div>
+                      <div class="shareText">
+                        <div class="shareName">APP 安装</div>
+                        <div class="shareDesc">需要安装时再下载</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top:12px;">
+                    <button class="btnPrimary grow" id="downloadAppBtn">下载APP</button>
+                  </div>
+                </div>
+
               </div>
 </div>
 
@@ -1236,6 +1278,21 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <div class="overlay" id="linkSelectorOv">
+    <div class="dialog">
+      <div class="dlgHead">
+        <p class="dlgTitle">请选择下载通道</p>
+        <button class="xBtn" id="xLinkSelector">✕</button>
+      </div>
+      <div class="dlgBody" style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+        <button class="btnPrimary" onclick="openSelected('https://snapany.com/zh')">通道 1 (SnapAny)</button>
+        <button class="btnPrimary" onclick="openSelected('https://snapwc.com/zh')">通道 2 (SnapWC)</button>
+        <button class="btnPrimary" onclick="openSelected('https://greenvideo.cc/')">通道 3 (GreenVideo)</button>
+        <button class="btnPrimary" onclick="openSelected('https://orbitdownloader.com/')">通道 4 (Orbit)</button>
+      </div>
+    </div>
+  </div>
 
   <div class="overlay" id="detailsOv">
     <div class="dialog" role="dialog" aria-modal="true" aria-label="招聘详情">
@@ -1430,16 +1487,16 @@ document.addEventListener('copy', function(e) {
   const scrollMap = {};
   let currentTab = null;
 
-  const LINKS = [
-    { id: 1, name: "无水印下载", url: "https://snapany.com/zh", tier: "diamond" },
-    { id: 2, name: "动画片", url: "https://www.touhaos.cc/video/?88273-2-138.html", tier: "diamond" },
-    { id: 3, name: "音乐大全", url: "https://www.fangpi.net/", tier: "gold" },
-    { id: 4, name: "影视大全", url: "https://www.xiaobaoyingshi.com/", tier: "gold" },
-    { id: 5, name: "开源平台", url: "https://github.com/", tier: "gold" },
-    { id: 6, name: "2FA验证码", url: "https://2fa.fan/", tier: "diamond" },
-    { id: 7, name: "改名笔记", url: "https://799342382.github.io/my-notes/", tier: "diamond" },
-    { id: 8, name: "免费影视", url: "https://www.wfei.la/", tier: "gold" },
-  ];
+  // 工具内容【从外部文件读取】（内容与框架分离：你以后只改 links.txt 就能自动更新）
+// 说明：这样“在线看源码”的网站通常只能看到网页框架，工具列表不在HTML里。
+// 但如果别人知道 links.txt 的地址，依然可以访问到（静态网站的本质）。
+let LINKS = [];
+
+// 你只需要维护这个文件：links.txt（和 index.html 放在同一目录）
+// 每一行格式：等级|名称|链接
+// 例：钻石|无水印下载|https://snapany.com/zh
+const LINKS_TXT_URL = "links.txt";
+
 
   const KEY_GOLD = "isGoldMember";
   const KEY_LAST_VIEW = "lastView";
@@ -1462,6 +1519,72 @@ document.addEventListener('copy', function(e) {
         await navigator.clipboard.writeText(text);
         return true;
       }
+
+function normalizeTier(t){
+  const s = (t || "").trim().toLowerCase();
+  if(s in {"diamond":1,"d":1,"钻石":1,"钻石会员":1}) return "diamond";
+  if(s in {"gold":1,"g":1,"白银":1,"白银会员":1,"silver":1}) return "gold";
+  // 兼容：如果没写等级，默认钻石
+  return "diamond";
+}
+
+// 解析 links.txt
+// 支持：
+// 1) 空行、#开头的注释行会忽略
+// 2) 每行：等级|名称|链接
+// 3) 也支持：名称|链接（不写等级默认钻石）
+function parseLinksTxt(text){
+  const lines = (text || "").split(/\r?\n/);
+  const out = [];
+  for(const raw of lines){
+    const line = (raw || "").trim();
+    if(!line) continue;
+    if(line.startsWith("#")) continue;
+
+    const parts = line.split("|").map(s=>s.trim()).filter(Boolean);
+    if(parts.length < 2) continue;
+
+    let tier, name, url;
+    if(parts.length >= 3){
+      tier = parts[0];
+      name = parts[1];
+      url  = parts[2];
+    }else{
+      tier = "diamond";
+      name = parts[0];
+      url  = parts[1];
+    }
+    if(!name || !url) continue;
+
+    out.push({
+      id: out.length + 1,   // 自动序号（你不用手填）
+      name,
+      url,
+      tier: normalizeTier(tier)
+    });
+  }
+  return out;
+}
+
+async function loadLinksFromTxt(){
+  try{
+    // 加时间戳避免缓存导致“改了内容不生效”
+    const res = await fetch(LINKS_TXT_URL + "?v=" + Date.now(), { cache: "no-store" });
+    if(!res.ok) throw new Error("links.txt 读取失败");
+    const txt = await res.text();
+    const parsed = parseLinksTxt(txt);
+    LINKS = parsed;
+
+    // 重新渲染（更新钻石/白银/搜索）
+    renderAll();
+    return true;
+  }catch(e){
+    LINKS = [];
+    renderAll();
+    return false;
+  }
+}
+
     }catch(e){}
     try{
       const ta = document.createElement("textarea");
@@ -1478,6 +1601,20 @@ document.addEventListener('copy', function(e) {
   }
 
   function isGold(){ return localStorage.getItem(KEY_GOLD) === "1"; }
+
+  // --- 下载选择器逻辑 ---
+  function openLinkSelector(){
+      $("linkSelectorOv").classList.add("show");
+  }
+  function closeLinkSelector(){
+      $("linkSelectorOv").classList.remove("show");
+  }
+  window.openSelected = function(url){
+      openUrl(url);
+      closeLinkSelector();
+  };
+  $("xLinkSelector").addEventListener("click", closeLinkSelector);
+  $("linkSelectorOv").addEventListener("click", (e)=>{ if(e.target === $("linkSelectorOv")) closeLinkSelector(); });
 
   // 渲染会员界面的样式更新函数
   function paintMember(){
@@ -1601,7 +1738,13 @@ document.addEventListener('copy', function(e) {
 
           return;
         }
-        openUrl(item.url);
+        
+        // 特殊处理无水印下载
+        if(item.id === 1){
+            openLinkSelector();
+        } else {
+            openUrl(item.url);
+        }
       });
 
       grid.appendChild(el);
@@ -1693,7 +1836,13 @@ document.addEventListener('copy', function(e) {
 
           return;
         }
-        openUrl(item.url);
+        
+        // 特殊处理无水印下载
+        if(item.id === 1){
+            openLinkSelector();
+        } else {
+            openUrl(item.url);
+        }
       });
 
       grid.appendChild(el);
@@ -2140,6 +2289,11 @@ document.addEventListener('copy', function(e) {
     localStorage.setItem(KEY_GOLD, "1");
     $("upgradeForm").classList.remove("show");
     showToast("已成功开通白银会员！");
+// 启动时读取外部内容（links.txt）
+// 如果你还没上传 links.txt，列表会是空的
+loadLinksFromTxt();
+
+
     paintMember();
   }
   
@@ -2187,24 +2341,9 @@ document.addEventListener('copy', function(e) {
   bind("navGold","gold");
   bind("navMy","my");
 
-  // 分享 / 下载链接（可直接替换成你的新地址）
-  const APK_URL = "https://github.com/799342382/AI-Toolbox/releases/download/%E5%AE%89%E8%A3%85/AI.apk";
-  const WEB_URL = "https://799342382.github.io/live-gifts/";
-
-  async function shareLink(title, text, url){
-    if(!url) return showToast("未配置链接");
-    if(navigator.share){
-      try{
-        await navigator.share({ title, text, url });
-        showToast("已唤起分享");
-        return;
-      }catch(e){
-        // 用户取消也算正常，走兜底即可
-      }
-    }
-    const ok = await copyText(url);
-    showToast(ok ? "已复制链接，可直接发给朋友" : "复制失败");
-  }
+  // 网页 / APP 入口
+  const APP_URL = "https://github.com/799342382/AI-Toolbox/releases/download/%E5%AE%89%E8%A3%85/AI.apk";
+  const WEB_URL = (window.location.href || "").split("#")[0];
 
   function openUrl(url){
     if(!url) return showToast("未配置链接");
@@ -2214,34 +2353,28 @@ document.addEventListener('copy', function(e) {
   }
 
   function bindShareDownload(){
-    // 显示网页链接
+    // 显示网页链接（用户看到的是什么，复制出去就是什么）
     const webShow = $("webUrlShow");
     if(webShow) webShow.textContent = WEB_URL || "未配置网页链接";
 
-    // 发给朋友：优先唤起系统分享；不支持时复制“网页+APK”两条链接
-    const shareBtn = $("shareWebBtn");
-    if(shareBtn){
-      shareBtn.addEventListener("click", async ()=>{
-        if(!WEB_URL && !APK_URL) return showToast("未配置链接");
-        const title = "工具入口";
-        const text = `网页版：${WEB_URL || "未配置"}
-APP下载：${APK_URL || "未配置"}`;
-        const url = WEB_URL || APK_URL; // 分享面板只能带一个 url，用网页优先
-        if(navigator.share){
-          try{
-            await navigator.share({ title, text, url });
-            showToast("已唤起分享");
-            return;
-          }catch(e){}
-        }
-        const ok = await copyText(text);
-        showToast(ok ? "已复制信息，可直接发给朋友" : "复制失败");
+    // 一键复制网页链接
+    const copyWebBtn = $("copyWebBtn");
+    if(copyWebBtn){
+      copyWebBtn.addEventListener("click", async ()=>{
+        if(!WEB_URL) return showToast("未配置网页链接");
+        const ok = await copyText(WEB_URL);
+        showToast(ok ? "已复制网页链接" : "复制失败");
       });
     }
 
-    // 下载 APP（APK）
-    const dBtn = $("downloadApkBtn");
-    if(dBtn) dBtn.addEventListener("click", ()=>openUrl(APK_URL));
+    // 下载 APP
+    const dBtn = $("downloadAppBtn");
+    if(dBtn){
+      dBtn.addEventListener("click", ()=>{
+        if(!APP_URL) return showToast("未配置APP下载链接");
+        openUrl(APP_URL);
+      });
+    }
   }
 
   bindShareDownload();
