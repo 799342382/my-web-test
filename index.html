@@ -583,7 +583,6 @@
       -webkit-touch-callout: default;
     }
 
-
     /* 会员中心 */
     .memCard{position:relative; overflow:hidden;}
     .memCard::before{
@@ -979,7 +978,6 @@
           <div class="grid" id="gridSearch"></div>
           <div class="emptyState" id="emptySearch" style="display:none;">没有找到相关内容</div>
         </section>
-
 
         <section class="view active" id="viewHome">
           <div class="homeHold">
@@ -1494,11 +1492,9 @@ document.addEventListener('copy', function(e) {
     { id: 1, name: "无水印下载", url: "https://snapany.com/zh", tier: "diamond" },
     { id: 2, name: "动画片", url: "https://www.touhaos.cc/video/?88273-2-138.html", tier: "diamond" },
     { id: 3, name: "音乐大全", url: "https://www.fangpi.net/", tier: "gold" },
-    { id: 4, name: "影视大全", url: "https://www.xiaobaoyingshi.com/", tier: "gold" },
     { id: 5, name: "开源平台", url: "https://github.com/", tier: "gold" },
     { id: 6, name: "2FA验证码", url: "https://2fa.fan/", tier: "diamond" },
     { id: 7, name: "改名笔记", url: "https://799342382.github.io/my-notes/", tier: "diamond" },
-    { id: 8, name: "免费影视", url: "https://www.wfei.la/", tier: "gold" },
   ];
 
   const KEY_GOLD = "isGoldMember";
@@ -2072,7 +2068,6 @@ document.addEventListener('copy', function(e) {
     }
   });
 
-
   // --- 留言功能 ---
   function buildMsgText(){
     const topicRaw = ($("mTopic").value || "").trim();
@@ -2193,8 +2188,6 @@ document.addEventListener('copy', function(e) {
       btn.style.opacity = "1";
     }
   });
-
-
 
   // --- 会员系统防盗版校验交互 ---
   $("upgradeBtn").addEventListener("click", ()=>{
@@ -2321,7 +2314,6 @@ document.addEventListener('copy', function(e) {
 
   bindShareDownload();
   bindGlobalSearch();
-
 
   $("buildDate").textContent = new Date().toISOString().slice(0,10);
 
