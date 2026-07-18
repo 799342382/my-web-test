@@ -285,35 +285,6 @@
     .panel.searching .view{ display:none !important; }
     .panel.searching #viewSearch{ display:block !important; }
 
-    .toolMeta{
-      margin-top:4px;
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .tierTag{
-      flex:0 0 auto;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 1100;
-      background: rgba(31,36,48,.06);
-      color: rgba(31,36,48,.78);
-      border: 1px solid rgba(31,36,48,.06);
-      user-select:none;
-    }
-    .tierTag.diamond{
-      background: rgba(74,218,255,.10);
-      border-color: rgba(74,218,255,.18);
-      color: rgba(46,90,140,.92);
-    }
-    .tierTag.gold{
-      background: rgba(158,158,158,.15);
-      border-color: rgba(158,158,158,.25);
-      color: rgba(80,80,80,.95);
-    }
 /* 工具条 */
     .tool{
       display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -1105,7 +1076,6 @@
         font-size:12px;
         line-height:1.38;
       }
-      .toolMeta,
       .jobMeta,
       .shareDesc{ white-space:normal; }
       .bottomNav{ padding-bottom: calc(14px + var(--safeB)); }
@@ -2054,7 +2024,6 @@ document.addEventListener('copy', function(e) {
           <div class="num" style="background:${colorById(showNo)}">${showNo}</div>
           <div class="nameWrap">
             <p class="name">${esc(item.name)}</p>
-            <div class="toolMeta">${getTierLabel(item.tier)}</div>
           </div>
         </div>
         <div class="arrow">›</div>
@@ -2201,13 +2170,9 @@ document.addEventListener('copy', function(e) {
           <div class="num" style="background:${colorById(localNo)}">${localNo}</div>
           <div class="nameWrap">
             <p class="name">${esc(item.name)}</p>
-            <div class="toolMeta">${getTierLabel(tier)}</div>
           </div>
         </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span class="tierTag ${tier}">${getTierLabel(tier)}</span>
-          <div class="arrow">›</div>
-        </div>
+        <div class="arrow">›</div>
       `;
 
       el.addEventListener("click", ()=>{
