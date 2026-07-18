@@ -1,10 +1,19 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VSKSWQSDF0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VSKSWQSDF0');
+</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#f3e9ff" />
-  <title>工具入口 · 手机版</title>
+  <title>AI · 工具箱</title>
   <style>
     :root{
       --bgA:#f3e9ff;
@@ -18,6 +27,12 @@
       --gap:14px;
       --safeB:env(safe-area-inset-bottom);
       --safeT:env(safe-area-inset-top);
+      --pagePadX:clamp(12px, 3.2vw, 32px);
+      --pagePadT:clamp(12px, 2.6vh, 24px);
+      --pageMax:560px;
+      --navMax:560px;
+      --contentScale:1;
+      --baseFont:13px;
     }
     *{box-sizing:border-box;}
 
@@ -37,6 +52,7 @@
       margin:0;
       font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC", Arial, sans-serif;
       color:var(--text);
+      font-size:var(--baseFont);
       background: linear-gradient(135deg, var(--bgA), var(--bgB));
       background-attachment: fixed;
       overflow-x:hidden;
@@ -60,19 +76,20 @@
 
     .shell{
       min-height:100vh;
-      padding: calc(18px + var(--safeT)) 14px calc(110px + var(--safeB));
+      min-height:100dvh;
+      padding: calc(var(--pagePadT) + var(--safeT)) var(--pagePadX) calc(108px + var(--safeB));
       display:flex;
       justify-content:center;
     }
     .frame{
-      width:min(560px, 100%);
+      width:min(var(--pageMax), 100%);
       display: flex;
       flex-direction: column;
     }
 
     /* 顶部招募广告 */
     .hero{
-      padding: 16px 16px 14px;
+      padding: clamp(13px, 1.45vw, 18px);
       border-radius: var(--radius);
       background: rgba(255,255,255,.62);
       border: 1px solid var(--stroke);
@@ -105,7 +122,7 @@
       box-shadow: 0 10px 24px rgba(22,25,38,.08);
     }
     .heroTitle{
-      font-size: 20px;
+      font-size: clamp(19px, 1.45vw, 25px);
       font-weight: 1100;
       letter-spacing: .5px;
       line-height: 1.15;
@@ -161,9 +178,10 @@
 
     .btnPrimary{
       border:0; cursor:pointer;
-      padding: 10px 12px;
+      padding: 9px 12px;
       border-radius: 14px;
       font-weight: 1100;
+      font-size:12px;
       color: rgba(31,36,48,.92);
       background: linear-gradient(90deg, rgba(245,182,235,.85), rgba(169,205,255,.85));
       border: 1px solid rgba(255,255,255,.82);
@@ -176,9 +194,10 @@
     }
     .btnGhost{
       border:0; cursor:pointer;
-      padding: 10px 12px;
+      padding: 9px 12px;
       border-radius: 14px;
       font-weight: 1100;
+      font-size:12px;
       color: rgba(31,36,48,.78);
       background: rgba(255,255,255,.72);
       border: 1px solid rgba(255,255,255,.82);
@@ -195,7 +214,7 @@
 
     .panel{
       margin-top:14px;
-      padding:14px;
+      padding: clamp(10px, 1.2vw, 14px);
       border-radius:var(--radius);
       background: rgba(255,255,255,.62);
       border:1px solid var(--stroke);
@@ -210,13 +229,12 @@
     .view.active{ display:block; }
 
     .grid{ display:grid; grid-template-columns:1fr; gap: var(--gap); }
-    @media (max-width: 820px){ .grid{ grid-template-columns:1fr; } }
 
     /* 搜索框 */
     .searchBox{
       margin-bottom: var(--gap);
-      padding:12px;
-      border-radius:22px;
+      padding:10px;
+      border-radius:20px;
       background:rgba(255,255,255,.76);
       border:1px solid rgba(255,255,255,.84);
       box-shadow:0 12px 30px rgba(22,25,38,.08);
@@ -225,7 +243,7 @@
       gap:10px;
     }
     .searchIcon{
-      width:34px;height:34px;border-radius:14px;
+      width:32px;height:32px;border-radius:13px;
       display:grid;place-items:center;
       background:rgba(31,36,48,.06);
       color:rgba(31,36,48,.70);
@@ -299,7 +317,7 @@
 /* 工具条 */
     .tool{
       display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:14px;border-radius:22px;
+      padding:11px 12px;border-radius:18px;
       background:rgba(255,255,255,.76);
       border:1px solid rgba(255,255,255,.84);
       box-shadow:0 12px 30px rgba(22,25,38,.10);
@@ -309,14 +327,14 @@
     .tool.disabled{ cursor:not-allowed; opacity:.72; }
     .left{ display:flex; align-items:center; gap:12px; min-width:0; }
     .num{
-      width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
       font-weight:1100;color:#fff;flex:0 0 auto;
       box-shadow:0 10px 24px rgba(22,25,38,.12);
     }
     .nameWrap{ min-width:0; }
-    .name{ font-weight:1100; font-size:16px; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .name{ font-weight:1100; font-size:14px; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .arrow{
-      width:34px;height:34px;border-radius:14px;display:grid;place-items:center;
+      width:30px;height:30px;border-radius:12px;display:grid;place-items:center;
       background:rgba(255,255,255,.62);
       border:1px solid rgba(255,255,255,.78);
       color:rgba(31,36,48,.70);
@@ -350,6 +368,7 @@
     .courseGrid{
       display:grid;
       gap: var(--gap);
+      grid-template-columns: 1fr;
     }
     .courseCard{
       border-radius:22px;
@@ -358,6 +377,8 @@
       box-shadow:0 12px 30px rgba(22,25,38,.10);
       overflow:hidden;
       position:relative;
+      display:flex;
+      flex-direction:column;
     }
     .courseTop{
       padding:14px 14px 12px;
@@ -381,17 +402,38 @@
       gap:10px;
       flex-wrap:wrap;
     }
+    .courseTitleLine{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      min-width:0;
+      flex:1 1 180px;
+    }
+    .courseNo{
+      width:26px;
+      height:26px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      font-size:12px;
+      font-weight:1100;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(157,86,255,.92), rgba(74,218,255,.82));
+      box-shadow:0 8px 18px rgba(22,25,38,.10);
+    }
     .courseName{
       margin:0;
-      font-size:17px;
+      font-size:15px;
       font-weight:1100;
       line-height:1.2;
+      min-width:0;
     }
     .pill{
       position:relative;
       padding:6px 10px;
       border-radius:999px;
-      font-size:12px;
+      font-size:11px;
       font-weight:1100;
       background:rgba(31,36,48,.06);
       color:rgba(31,36,48,.78);
@@ -402,8 +444,8 @@
       position:relative;
       margin-top:10px;
       display:grid;
-      gap:8px;
-      font-size:12px;
+      gap:7px;
+      font-size:11px;
       color:rgba(31,36,48,.72);
     }
     .metaRow{
@@ -427,8 +469,8 @@
       position:relative;
     }
     .courseBodyTitle{
-      margin:12px 0 12px;
-      font-size:13px;
+      margin:10px 0 10px;
+      font-size:12px;
       font-weight:1100;
       color:rgba(31,36,48,.92);
       display:flex;
@@ -444,15 +486,15 @@
       background:linear-gradient(180deg, #9d56ff, #4adaff);
     }
     .courseList{
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       padding: 0;
       list-style: none;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 9px;
     }
     .courseList li{
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 900;
       color: rgba(31,36,48,.86);
       display: flex;
@@ -463,8 +505,8 @@
     .courseList li::before{
       content: "";
       display: block;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       flex: 0 0 auto;
       background: rgba(157,86,255, 0.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239d56ff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center center;
       background-size: 10px 10px;
@@ -473,10 +515,10 @@
       margin-top: 0px;
     }
     .courseNote{
-      font-size: 12px;
+      font-size: 11px;
       color: rgba(31,36,48,.6);
       background: rgba(31,36,48,.03);
-      padding: 10px 12px;
+      padding: 9px 10px;
       border-radius: 12px;
       display: flex;
       align-items: flex-start;
@@ -494,6 +536,7 @@
       display:flex;
       gap:10px;
       flex-wrap:wrap;
+      margin-top:auto;
     }
 
     /* 我的 */
@@ -507,17 +550,63 @@
     }
 
     /* 分享与下载 */
+    #apkCard{
+      padding:14px;
+    }
+    .downloadHead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .downloadIntro{
+      min-width:0;
+    }
+    .downloadBadge{
+      flex:0 0 auto;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(74,218,255,.10);
+      border:1px solid rgba(74,218,255,.18);
+      color:rgba(46,90,140,.92);
+      font-size:11px;
+      font-weight:1100;
+      box-shadow:0 8px 18px rgba(22,25,38,.06);
+    }
+    .downloadLayout{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    .downloadSide{
+      display:grid;
+      gap:12px;
+    }
     .shareGrid{
       display:grid;
       gap: 12px;
     }
     .shareItem{
       padding: 14px;
-      border-radius: 22px;
+      border-radius: 18px;
       background: rgba(255,255,255,.70);
       border: 1px solid rgba(255,255,255,.84);
       box-shadow: 0 12px 30px rgba(22,25,38,.08);
       overflow:hidden;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .shareItem.featured{
+      min-height:176px;
+      background:
+        linear-gradient(135deg, rgba(157,86,255,.08), rgba(74,218,255,.08)),
+        rgba(255,255,255,.74);
+    }
+    .shareItem.compact{
+      min-height:82px;
     }
     .shareHead{
       display:flex;
@@ -532,12 +621,12 @@
       min-width:0;
     }
     .shareIcon{
-      width:46px;
-      height:46px;
-      border-radius:16px;
+      width:42px;
+      height:42px;
+      border-radius:15px;
       display:grid;
       place-items:center;
-      font-size:20px;
+      font-size:18px;
       font-weight:1100;
       color:#fff;
       box-shadow: 0 10px 24px rgba(22,25,38,.12);
@@ -546,7 +635,7 @@
     .shareText{ min-width:0; }
     .shareName{
       font-weight:1100;
-      font-size:15px;
+      font-size:14px;
       line-height:1.15;
       white-space:nowrap;
       overflow:hidden;
@@ -554,7 +643,7 @@
     }
     .shareDesc{
       margin-top:4px;
-      font-size:12px;
+      font-size:11px;
       color: var(--muted);
       white-space:nowrap;
       overflow:hidden;
@@ -562,18 +651,18 @@
     }
     .shareLabel{
       margin-top: 12px;
-      font-size: 12px;
+      font-size: 11px;
       color: rgba(31,36,48,.62);
       font-weight: 1000;
     }
     .shareUrl{
       margin-top: 8px;
-      padding: 10px 12px;
-      border-radius: 16px;
+      padding: 9px 11px;
+      border-radius: 14px;
       background: rgba(31,36,48,.03);
       border: 1px solid rgba(31,36,48,.06);
       color: rgba(31,36,48,.72);
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.4;
       word-break: break-all;
 
@@ -581,6 +670,15 @@
       -webkit-user-select: text;
       user-select: text;
       -webkit-touch-callout: default;
+    }
+    .shareAction{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+    }
+    .shareAction .btnPrimary,
+    .shareAction .btnGhost{
+      width:100%;
     }
 
     /* 会员中心 */
@@ -647,7 +745,7 @@
       padding: 14px 16px;
       gap: 12px;
     }
-    .input-label {
+    .input-row exit {
       font-weight: 1100;
       font-size: 14px;
       color: rgba(31,36,48,.85);
@@ -785,30 +883,30 @@
     .bottomNav{
       display:flex;
       position:fixed; left:0; right:0; bottom:0;
-      padding:10px 12px calc(10px + var(--safeB));
+      padding:10px var(--pagePadX) calc(10px + var(--safeB));
       justify-content:center;
       pointer-events:none;
       z-index:80;
     }
     .navInner{
-      width:min(560px, 100%);
+      width:min(var(--navMax), 100%);
       background: rgba(255,255,255,.72);
       border: 1px solid rgba(255,255,255,.78);
       border-radius: 22px;
       box-shadow: 0 18px 60px rgba(22,25,38,.16);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      padding: 8px;
+      padding: 6px;
       display:flex;
-      gap:8px;
+      gap:6px;
       pointer-events:auto;
     }
     .navBtn{
       flex:1;
       border:0;
       cursor:pointer;
-      padding:10px 6px;
-      border-radius:16px;
+      padding:8px 6px;
+      border-radius:14px;
       font-weight:1100;
       background:transparent;
       color: rgba(31,36,48,.68);
@@ -817,7 +915,7 @@
       justify-content:center;
       gap:8px;
       user-select:none;
-      font-size:13px;
+      font-size:12px;
     }
     .navBtn.active{
       background: rgba(255,255,255,.86);
@@ -825,7 +923,7 @@
       box-shadow: 0 12px 26px rgba(22,25,38,.10);
       border: 1px solid rgba(255,255,255,.86);
     }
-    .navI{ width:26px;height:26px;border-radius:12px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1100; }
+    .navI{ width:22px;height:22px;border-radius:10px;display:grid;place-items:center;background:rgba(31,36,48,.06);color:rgba(31,36,48,.75);font-weight:1100; }
 
     /* 高颜值毛玻璃悬浮 Toast 提示框 */
     .toast {
@@ -940,6 +1038,132 @@
       box-shadow: 0 6px 16px rgba(74,218,255,.12);
     }
 
+    @media (min-width: 720px){
+      :root{
+        --gap:16px;
+        --radius:24px;
+        --pageMax:760px;
+        --navMax:760px;
+      }
+      .heroTop{
+        display:grid;
+        grid-template-columns: 1fr auto;
+        align-items:center;
+        gap:10px 18px;
+      }
+      .heroTag,
+      .heroTitle{ grid-column:1; }
+      .heroActions{
+        grid-column:2;
+        grid-row:1 / span 2;
+        margin-top:0;
+        justify-content:flex-end;
+      }
+      .tool{ padding:11px 12px; }
+      .courseGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .courseList{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .shareGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .downloadLayout{ grid-template-columns: minmax(0, 1.08fr) minmax(270px, .92fr); }
+      .downloadSide{ grid-template-rows: 1fr 1fr; }
+    }
+
+    @media (min-width: 980px){
+      :root{
+        --gap:14px;
+        --pageMax:1040px;
+        --navMax:620px;
+      }
+      .shell{
+        align-items:flex-start;
+        padding-bottom: calc(96px + var(--safeB));
+      }
+      .frame{
+        min-height:0;
+      }
+      .panel{
+        margin-top:16px;
+        flex:0 0 auto;
+      }
+      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .homeHold{ grid-template-columns: 1fr; }
+      .courseGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .homeCard{ max-width: none; }
+      .courseCard,
+      .homeCard,
+      .card,
+      .shareItem{ border-radius:18px; }
+      .shareItem.featured{ min-height:190px; }
+      .shareItem.compact{ min-height:89px; }
+      .courseTop{ padding:13px 14px 10px; }
+      .courseBody{ padding:0 14px 12px; }
+      .courseFoot{ padding:12px 14px; }
+      .courseName{ font-size:15px; }
+      .courseList{
+        gap:10px;
+      }
+      .courseList li{
+        font-size:12px;
+        line-height:1.38;
+      }
+      .toolMeta,
+      .jobMeta,
+      .shareDesc{ white-space:normal; }
+      .bottomNav{ padding-bottom: calc(14px + var(--safeB)); }
+      .navInner{ border-radius:20px; }
+      .dialog{ width:min(680px, calc(100vw - 40px)); }
+    }
+
+    @media (min-width: 1280px){
+      :root{
+        --pageMax:1080px;
+        --navMax:640px;
+      }
+      .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .courseGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .shareGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .downloadLayout{ grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); }
+    }
+
+    @media (max-height: 720px) and (min-width: 720px){
+      :root{
+        --pagePadT:10px;
+        --gap:12px;
+        --radius:20px;
+      }
+      .hero,
+      .panel,
+      .homeCard,
+      .card,
+      .tool,
+      .courseTop,
+      .shareItem{ padding:12px; }
+      .heroTitle{ font-size:22px; }
+      .bottomNav{ padding-top:6px; }
+      .navInner{ padding:6px; }
+      .navBtn{ padding:8px 6px; }
+    }
+
+    @media (max-width: 719px){
+      :root{
+        --pageMax:560px;
+        --navMax:560px;
+      }
+      .courseList{ grid-template-columns:1fr; }
+      .shareGrid{ grid-template-columns:1fr; }
+      .downloadHead{ flex-direction:column; }
+      .downloadBadge{ align-self:flex-start; }
+      .tool,
+      .courseCard,
+      .card,
+      .homeCard{ border-radius:20px; }
+      .navBtn{
+        flex-direction:column;
+        gap:4px;
+        min-height:54px;
+      }
+      .navI{ width:24px; height:24px; border-radius:10px; }
+    }
+
     @media (max-width: 380px){
       .heroTitle{ font-size: 18px; }
       .jobActions .btnPrimary, .jobActions .btnGhost{ width:100%; }
@@ -982,89 +1206,7 @@
         <section class="view active" id="viewHome">
           <div class="homeHold">
 
-            <div class="courseGrid">
-              <div class="courseCard" id="course1">
-                <div class="courseTop">
-                  <div class="courseHead">
-                    <p class="courseName">课程名称：AI之道</p>
-                    <span class="pill">四天四晚</span>
-                  </div>
-
-                  <div class="courseMeta">
-                    <div class="metaRow">
-                      <span class="metaK">时间</span>
-                      <span class="metaV">2026年5月27日 - 5月30日</span>
-                    </div>
-                    <div class="metaRow">
-                      <span class="metaK">地点</span>
-                      <span class="metaV">广东</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="courseBody">
-                  <div class="courseBodyTitle">学习内容</div>
-                  
-                  <ul class="courseList">
-                    <li>AI 变现六大赛道</li>
-                    <li>一人顶一个团队</li>
-                    <li>AI 写爆款文案</li>
-                    <li>AI 打造个人 IP</li>
-                    <li>本地商家 AI 引流</li>
-                    <li>AI 生成直播脚本</li>
-                    <li>企业 AI 降本增效</li>
-                    <li>选对赛道快变现</li>
-                  </ul>
-                  <div class="courseNote">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                    <div>课程内容持续升级，以上仅为部分学习方向。</div>
-                  </div>
-                </div>
-
-                <div class="courseFoot">
-                  <button class="btnPrimary" type="button" data-enroll-course="AI之道">点击报名</button>
-                </div>
-              </div>
-
-              <div class="courseCard" id="course2">
-                <div class="courseTop">
-                  <div class="courseHead">
-                    <p class="courseName">课程名称：AI实操班</p>
-                    <span class="pill">四天三晚</span>
-                  </div>
-
-                  <div class="courseMeta">
-                    <div class="metaRow">
-                      <span class="metaK">时间</span>
-                      <span class="metaV">2026年6月12日 - 6月15日</span>
-                    </div>
-                    <div class="metaRow">
-                      <span class="metaK">地点</span>
-                      <span class="metaV">广东</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="courseBody">
-                  <div class="courseBodyTitle">学习内容</div>
-                  
-                  <ul class="courseList">
-                    <li>AI 实操教学</li>
-                    <li>制作智能体</li>
-                    <li>内容变现</li>
-                  </ul>
-                  <div class="courseNote">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                    <div>课程内容持续升级，以上仅为部分学习方向。</div>
-                  </div>
-                </div>
-
-                <div class="courseFoot">
-                  <button class="btnPrimary" type="button" data-enroll-course="AI实操班">点击报名</button>
-                </div>
-              </div>
-
-            </div>
+            <div class="courseGrid" id="courseGrid"></div>
 
             <div class="homeCard">
               <p class="homeTitle">温馨提示</p>
@@ -1137,70 +1279,69 @@
 
             
             <div class="card" id="apkCard">
-              <div class="cardTitle">
-                <span>网页入口与下载安装</span>
-              </div>
-              <div class="cardSub">
-                网页：复制下面「网页链接」粘贴到浏览器打开即可使用。<br/>
-                手机：如需安装，直接点「下载APP」。<br/>电脑：如需安装，点「下载安装包」。<br/>
-                （如微信里无法下载，请点右上角「…」用浏览器打开再下载。）
+              <div class="downloadHead">
+                <div class="downloadIntro">
+                  <div class="cardTitle"><span>网页入口与下载安装</span></div>
+                  <div class="cardSub">复制网页链接可直接打开；手机和电脑按设备选择安装包。</div>
+                </div>
+                <div class="downloadBadge">3 个入口</div>
               </div>
 
-              <div class="shareGrid" style="margin-top:12px;">
-
-                <div class="shareItem">
+              <div class="downloadLayout">
+                <div class="shareItem featured">
                   <div class="shareHead">
                     <div class="shareLeft">
                       <div class="shareIcon" style="background:linear-gradient(135deg, rgba(157,86,255,.95), rgba(74,218,255,.85));">🌐</div>
                       <div class="shareText">
-                        <div class="shareName">网页链接（复制到浏览器打开）</div>
-                        <div class="shareDesc">不用安装，打开就能用</div>
+                        <div class="shareName">网页链接</div>
+                        <div class="shareDesc">不用安装，复制后浏览器打开</div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="shareLabel">你要复制的内容就是下面这一条：</div>
+                  <div class="shareLabel">复制这一条链接：</div>
                   <div class="shareUrl" id="webUrlShow">加载中…</div>
 
-                  <div class="row" style="margin-top:12px;">
-                    <button class="btnPrimary grow" id="copyWebBtn">一键复制网页链接</button>
+                  <div class="shareAction">
+                    <button class="btnPrimary" id="copyWebBtn">复制网页链接</button>
                   </div>
                 </div>
 
-                <div class="shareItem">
-                  <div class="shareHead">
-                    <div class="shareLeft">
-                      <div class="shareIcon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">📱</div>
-                      <div class="shareText">
-                        <div class="shareName">手机APP 安装</div>
-                        <div class="shareDesc">安卓手机安装用</div>
+                <div class="downloadSide">
+                  <div class="shareItem compact">
+                    <div class="shareHead">
+                      <div class="shareLeft">
+                        <div class="shareIcon" style="background:linear-gradient(135deg, rgba(255,178,56,.95), rgba(255,92,140,.85));">📱</div>
+                        <div class="shareText">
+                          <div class="shareName">手机 APP</div>
+                          <div class="shareDesc">安卓手机安装用</div>
+                        </div>
                       </div>
+                    </div>
+
+                    <div class="shareAction">
+                      <button class="btnPrimary" id="downloadAppBtn">下载 APP</button>
                     </div>
                   </div>
 
-                  <div class="row" style="margin-top:12px;">
-                    <button class="btnPrimary grow" id="downloadAppBtn">下载APP</button>
+                  <div class="shareItem compact">
+                    <div class="shareHead">
+                      <div class="shareLeft">
+                        <div class="shareIcon" style="background:linear-gradient(135deg, rgba(64,210,255,.95), rgba(151,80,255,.85));">💻</div>
+                        <div class="shareText">
+                          <div class="shareName">电脑安装包</div>
+                          <div class="shareDesc">Windows 电脑安装用</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="shareAction">
+                      <button class="btnPrimary" id="downloadWinBtn">下载安装包</button>
+                    </div>
                   </div>
                 </div>
-
               </div>
-                <div class="shareItem">
-                  <div class="shareHead">
-                    <div class="shareLeft">
-                      <div class="shareIcon" style="background:linear-gradient(135deg, rgba(64,210,255,.95), rgba(151,80,255,.85));">💻</div>
-                      <div class="shareText">
-                        <div class="shareName">电脑安装包</div>
-                        <div class="shareDesc">Windows 电脑安装用</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row" style="margin-top:12px;">
-                    <button class="btnPrimary grow" id="downloadWinBtn">下载安装包</button>
-                  </div>
-                </div>
-
-</div>
+            </div>
 
             <div class="card">
                           <div class="cardTitle">
@@ -1218,7 +1359,7 @@
                           <div class="feature-list">
                             <div class="feature-item">
                               <div class="feature-icon" style="background: linear-gradient(135deg, rgba(64,210,255,.15), rgba(151,80,255,.15)); color: #7a5cf5;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 17 22 12"></polyline></svg>
                               </div>
                               <div class="feature-text">
                                 <div class="feature-title">双层级工具架构</div>
@@ -1488,19 +1629,112 @@ document.addEventListener('copy', function(e) {
   const scrollMap = {};
   let currentTab = null;
 
-  const LINKS = [
-    { id: 1, name: "无水印下载", url: "https://snapany.com/zh", tier: "diamond" },
-    { id: 2, name: "动画片", url: "https://www.touhaos.cc/video/?88273-2-138.html", tier: "diamond" },
-    { id: 3, name: "音乐大全", url: "https://www.fangpi.net/", tier: "gold" },
-    { id: 5, name: "开源平台", url: "https://github.com/", tier: "gold" },
-    { id: 6, name: "2FA验证码", url: "https://2fa.fan/", tier: "diamond" },
-    { id: 7, name: "改名笔记", url: "https://799342382.github.io/my-notes/", tier: "diamond" },
-  ];
+  /*
+    以后更新内容，只改这个 CONTENT 配置区。
+
+    1. 工具链接：复制一行，改 tier / name / url 即可。
+       tier 写 "diamond" 就进钻石，写 "gold" 就进白银，序号自动排。
+
+    2. 课程：复制一个课程块，改 name / tag / time / place / items 即可。
+       items 里面是一条条学习内容，页面会自动生成课程卡片。
+  */
+  const CONTENT = {
+    tools: [
+      // 新增工具就复制这一行，改分类、名字、链接：
+      // { tier: "diamond", name: "新工具名字", url: "https://这里放链接" },
+
+      { tier: "diamond", name: "无水印下载", url: "https://snapany.com/zh", action: "linkSelector" },
+      { tier: "diamond", name: "财富显化训练营", url: "https://nddm6.xetslk.com/s/24350k" },
+      { tier: "diamond", name: "OPC轻资产创业营", url: "https://nddm6.xetslk.com/s/4yrzy9" },
+      { tier: "diamond", name: "智能体大全", url: "https://nddm6.xetslk.com/s/VDX6x" },
+      { tier: "diamond", name: "2FA验证码", url: "https://2fa.fan/" },
+      { tier: "diamond", name: "改名笔记", url: "https://799342382.github.io/my-notes/" },
+
+      { tier: "gold", name: "音乐大全", url: "https://www.fangpi.net/" },
+      { tier: "gold", name: "开源平台", url: "https://github.com/" },
+    ],
+
+    courses: [
+      // 新增课程就复制下面这个格式，改文字即可：
+      // {
+      //   name: "新课程名称",
+      //   tag: "三天两晚",
+      //   time: "2026年1月1日 - 1月3日",
+      //   place: "广东",
+      //   items: ["学习内容1", "学习内容2", "学习内容3"],
+      //   note: "课程内容持续升级，以上仅为部分学习方向。",
+      // },
+
+      {
+        name: "AI之道",
+        tag: "四天四晚",
+        time: "2026年8月15日 - 8月18日",
+        place: "广东",
+        items: [
+          "AI 变现六大赛道",
+          "一人顶一个团队",
+          "AI 写爆款文案",
+          "AI 打造个人 IP",
+          "本地商家 AI 引流",
+          "AI 生成直播脚本",
+          "企业 AI 降本增效",
+          "选对赛道快变现",
+        ],
+        note: "课程内容持续升级，以上仅为部分学习方向。",
+      },
+      {
+        name: "OPC智能体创业营",
+        tag: "三天两晚",
+        time: "2026年6月12日 - 6月15日",
+        place: "广东",
+        items: [
+          "AI 实操教学",
+          "制作智能体",
+          "内容变现",
+        ],
+        note: "课程内容持续升级，以上仅为部分学习方向。",
+      },
+      {
+        name: "AI导师班",
+        tag: "三天两晚",
+        time: "2026年8月19日 - 8月21日",
+        place: "广东",
+        items: [],
+        note: "详细学习内容待公布，敬请期待。",
+      },
+    ],
+
+    downloads: {
+      webUrl: "https://799342382.github.io/live-gifts/",
+      apkUrl: "https://github.com/799342382/AI-Toolbox/releases/download/%E5%AE%89%E8%A3%85/AI.apk",
+      winUrl: "https://github.com/799342382/azb/actions/runs/26361144714/artifacts/7185097701",
+    },
+  };
+
+  const LINKS = CONTENT.tools.map((item, index)=>({ ...item, id: index + 1 }));
+  const COURSES = CONTENT.courses;
 
   const KEY_GOLD = "isGoldMember";
   const KEY_LAST_VIEW = "lastView";
 
   const $ = (id)=>document.getElementById(id);
+  function syncViewportProfile(){
+    const w = Math.round(window.innerWidth || document.documentElement.clientWidth || 0);
+    const h = Math.round(window.innerHeight || document.documentElement.clientHeight || 0);
+    const ratio = h ? (w / h) : 1;
+    const mode = w < 720 ? "mobile" : (w < 980 ? "tablet" : "pc");
+    const root = document.documentElement;
+
+    root.dataset.device = mode;
+    root.style.setProperty("--screenW", w + "px");
+    root.style.setProperty("--screenH", h + "px");
+    root.style.setProperty("--screenRatio", ratio.toFixed(3));
+    root.style.setProperty("--contentScale", Math.max(0.92, Math.min(1.06, Math.sqrt((w * h) / (390 * 844)))).toFixed(3));
+  }
+
+  syncViewportProfile();
+  window.addEventListener("resize", syncViewportProfile, {passive:true});
+  window.addEventListener("orientationchange", syncViewportProfile, {passive:true});
 
   
   let toastTimer = null;
@@ -1606,9 +1840,11 @@ document.addEventListener('copy', function(e) {
 
   let lastOpenTs = 0;
   function openUrl(url){
+    if(!url) return showToast("未配置链接");
     const now = Date.now();
     if(now - lastOpenTs < 800) return;
     lastOpenTs = now;
+    showToast("正在打开…");
 
     const ua = navigator.userAgent || "";
     const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
@@ -1623,6 +1859,16 @@ document.addEventListener('copy', function(e) {
 
   function norm(s){
     return (s||"").toString().toLowerCase().trim();
+  }
+
+  function esc(value){
+    return (value ?? "").toString().replace(/[&<>"']/g, (ch)=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[ch]));
   }
 
   function getTierLabel(tier){
@@ -1649,7 +1895,7 @@ document.addEventListener('copy', function(e) {
         <div class="left">
           <div class="num" style="background:${colorById(showNo)}">${showNo}</div>
           <div class="nameWrap">
-            <p class="name">${item.name}</p>
+            <p class="name">${esc(item.name)}</p>
             <div class="toolMeta">${getTierLabel(item.tier)}</div>
           </div>
         </div>
@@ -1672,8 +1918,8 @@ document.addEventListener('copy', function(e) {
           return;
         }
         
-        // 特殊处理无水印下载
-        if(item.id === 1){
+        // 特殊处理需要弹出通道选择的工具
+        if(item.action === "linkSelector"){
             openLinkSelector();
         } else {
             openUrl(item.url);
@@ -1687,6 +1933,58 @@ document.addEventListener('copy', function(e) {
   function renderAll(){
     renderInto("gridDiamond", "diamond");
     renderInto("gridGold", "gold");
+  }
+
+  function renderCourses(){
+    const grid = $("courseGrid");
+    if(!grid) return;
+
+    grid.innerHTML = COURSES.map((course, index)=>{
+      const items = Array.isArray(course.items) ? course.items.filter(Boolean) : [];
+      const itemHtml = items.length ? `
+        <div class="courseBodyTitle">学习内容</div>
+        <ul class="courseList">
+          ${items.map(text=>`<li>${esc(text)}</li>`).join("")}
+        </ul>
+      ` : "";
+
+      return `
+        <div class="courseCard" id="course${index + 1}">
+          <div class="courseTop">
+            <div class="courseHead">
+              <div class="courseTitleLine">
+                <span class="courseNo">${index + 1}</span>
+                <p class="courseName">课程名称：${esc(course.name)}</p>
+              </div>
+              <span class="pill">${esc(course.tag || "课程")}</span>
+            </div>
+
+            <div class="courseMeta">
+              <div class="metaRow">
+                <span class="metaK">时间</span>
+                <span class="metaV">${esc(course.time || "待定")}</span>
+              </div>
+              <div class="metaRow">
+                <span class="metaK">地点</span>
+                <span class="metaV">${esc(course.place || "待定")}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="courseBody">
+            ${itemHtml}
+            <div class="courseNote">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <div>${esc(course.note || "课程内容持续更新，具体安排以实际通知为准。")}</div>
+            </div>
+          </div>
+
+          <div class="courseFoot">
+            <button class="btnPrimary" type="button" data-enroll-course="${esc(course.name)}">点击报名</button>
+          </div>
+        </div>
+      `;
+    }).join("");
   }
 
   function hitAllTools(keyword){
@@ -1744,7 +2042,7 @@ document.addEventListener('copy', function(e) {
         <div class="left">
           <div class="num" style="background:${colorById(localNo)}">${localNo}</div>
           <div class="nameWrap">
-            <p class="name">${item.name}</p>
+            <p class="name">${esc(item.name)}</p>
             <div class="toolMeta">${getTierLabel(tier)}</div>
           </div>
         </div>
@@ -1770,8 +2068,8 @@ document.addEventListener('copy', function(e) {
           return;
         }
         
-        // 特殊处理无水印下载
-        if(item.id === 1){
+        // 特殊处理需要弹出通道选择的工具
+        if(item.action === "linkSelector"){
             openLinkSelector();
         } else {
             openUrl(item.url);
@@ -1832,6 +2130,16 @@ document.addEventListener('copy', function(e) {
     }
     currentTab = which;
 
+    const panel = document.querySelector(".panel");
+    const searchInput = $("searchAll");
+    if(panel && searchInput && !(searchInput.value || "").trim()){
+      panel.classList.remove("searching");
+    }
+
+    if(which === "diamond" || which === "gold"){
+      renderAll();
+    }
+
     const views = ["home","diamond","gold","my"];
     views.forEach(v=>{
       const sec = document.getElementById("view" + v.charAt(0).toUpperCase() + v.slice(1));
@@ -1842,6 +2150,8 @@ document.addEventListener('copy', function(e) {
 
     window.scrollTo(0, scrollMap[which] || 0);
   }
+
+  renderCourses();
 
   // --- 招聘详情弹窗逻辑 ---
   (function(){
@@ -2267,16 +2577,9 @@ document.addEventListener('copy', function(e) {
   bind("navMy","my");
 
   // 网页 / 下载入口
-  const APK_URL = "https://github.com/799342382/AI-Toolbox/releases/download/%E5%AE%89%E8%A3%85/AI.apk";
-  const WIN_URL = "https://github.com/799342382/azb/actions/runs/26361144714/artifacts/7185097701";
-  const WEB_URL = "https://799342382.github.io/live-gifts/";
-
-  function openUrl(url){
-    if(!url) return showToast("未配置链接");
-    showToast("正在打开…");
-    const w = window.open(url, "_blank");
-    if(!w){ window.location.href = url; }
-  }
+  const APK_URL = CONTENT.downloads.apkUrl;
+  const WIN_URL = CONTENT.downloads.winUrl;
+  const WEB_URL = CONTENT.downloads.webUrl;
 
   function bindShareDownload(){
     // 显示网页链接（用户看到的是什么，复制出去就是什么）
