@@ -1145,8 +1145,94 @@
 
     @media (max-width: 719px){
       :root{
+        --bgA:#f5f6f8;
+        --bgB:#f5f6f8;
+        --gap:10px;
+        --radius:0;
+        --pagePadX:0px;
+        --pagePadT:0px;
         --pageMax:560px;
         --navMax:560px;
+        --baseFont:13px;
+      }
+      html,
+      body{
+        background:#f5f6f8;
+      }
+      body{
+        background:#f5f6f8;
+      }
+      .shell{
+        display:block;
+        padding:0 0 calc(64px + var(--safeB));
+        min-height:100dvh;
+        background:#f5f6f8;
+      }
+      .frame{
+        width:100%;
+        min-height:calc(100dvh - 64px - var(--safeB));
+      }
+      .hero{
+        padding:calc(12px + var(--safeT)) 14px 12px;
+        border-radius:0;
+        border:0;
+        border-bottom:1px solid rgba(31,36,48,.07);
+        box-shadow:none;
+        background:rgba(255,255,255,.96);
+        backdrop-filter:none;
+        -webkit-backdrop-filter:none;
+      }
+      .hero::before{
+        inset:-70px -80px auto -80px;
+        height:130px;
+        opacity:.72;
+      }
+      .heroTitle{
+        font-size:19px;
+        letter-spacing:0;
+      }
+      .heroTag{
+        padding:5px 9px;
+        font-size:11px;
+        box-shadow:none;
+      }
+      .heroActions{
+        display:grid;
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:8px;
+        margin-top:10px;
+        width:100%;
+      }
+      .heroActions .btnPrimary,
+      .heroActions .btnGhost{
+        width:100%;
+        min-height:36px;
+        padding:8px 6px;
+        border-radius:10px;
+        box-shadow:none;
+      }
+      .panel{
+        margin-top:0;
+        padding:10px 10px 16px;
+        border-radius:0;
+        border:0;
+        box-shadow:none;
+        background:#f5f6f8;
+        backdrop-filter:none;
+        -webkit-backdrop-filter:none;
+      }
+      .searchBox{
+        margin-bottom:10px;
+        padding:8px;
+        border-radius:12px;
+        background:#fff;
+        border:1px solid rgba(31,36,48,.06);
+        box-shadow:none;
+      }
+      .searchIcon{
+        width:30px;
+        height:30px;
+        border-radius:10px;
       }
       .courseList{ grid-template-columns:1fr; }
       .shareGrid{ grid-template-columns:1fr; }
@@ -1155,13 +1241,85 @@
       .tool,
       .courseCard,
       .card,
-      .homeCard{ border-radius:20px; }
+      .homeCard,
+      .job,
+      .shareItem,
+      .memRow,
+      .feature-item,
+      .guide-section{
+        border-radius:12px;
+        box-shadow:none;
+        background:#fff;
+        border:1px solid rgba(31,36,48,.06);
+      }
+      .card,
+      .homeCard,
+      #apkCard{
+        padding:12px;
+      }
+      .tool{
+        padding:10px 11px;
+      }
+      .num{
+        width:36px;
+        height:36px;
+        border-radius:12px;
+      }
+      .courseTop{
+        padding:12px 12px 10px;
+      }
+      .courseBody{
+        padding:0 12px 12px;
+      }
+      .courseFoot{
+        padding:11px 12px 12px;
+      }
+      .shareItem.featured,
+      .shareItem.compact{
+        min-height:auto;
+      }
+      .bottomNav{
+        padding:0;
+        background:#fff;
+        border-top:1px solid rgba(31,36,48,.08);
+        box-shadow:none;
+      }
+      .navInner{
+        width:100%;
+        border-radius:0;
+        border:0;
+        box-shadow:none;
+        background:#fff;
+        backdrop-filter:none;
+        -webkit-backdrop-filter:none;
+        padding:4px 6px calc(4px + var(--safeB));
+        gap:0;
+      }
       .navBtn{
         flex-direction:column;
         gap:4px;
-        min-height:54px;
+        min-height:56px;
+        border-radius:0;
+        box-shadow:none;
+        border:0;
+        color:rgba(31,36,48,.56);
       }
-      .navI{ width:24px; height:24px; border-radius:10px; }
+      .navBtn.active{
+        background:transparent;
+        color:rgba(45,118,255,.95);
+        box-shadow:none;
+        border:0;
+      }
+      .navI{
+        width:22px;
+        height:22px;
+        border-radius:9px;
+        background:rgba(31,36,48,.05);
+      }
+      .navBtn.active .navI{
+        background:rgba(45,118,255,.10);
+        color:rgba(45,118,255,.95);
+      }
     }
 
     @media (max-width: 380px){
