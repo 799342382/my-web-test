@@ -76,6 +76,9 @@
     position:relative;z-index:30;
     transition:transform .28s cubic-bezier(.4,0,.2,1);
   }
+  @media (max-width:860px){
+    .sidebar{position:fixed;top:0;left:0;bottom:0;max-width:84vw;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+  }
   .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 14px;}
   .brandLogo{
     width:42px;height:42px;border-radius:13px;flex:0 0 auto;
@@ -145,11 +148,11 @@
     background:#f2f4f7;cursor:pointer;align-items:center;justify-content:center;}
   .hamburger svg{width:20px;height:20px;stroke:var(--text);}
   .greet{min-width:0;}
-  .greet b{font-size:16px;font-weight:900;display:block;line-height:1.2;}
+  .greet b{font-size:16px;font-weight:900;display:block;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .greet span{font-size:12px;color:var(--muted);font-weight:600;}
 
   .topSearch{
-    margin-left:auto;display:flex;align-items:center;gap:10px;
+    margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0;
     background:#f2f4f7;border:1px solid var(--line);
     border-radius:14px;padding:8px 12px;width:min(360px,38vw);
   }
@@ -537,6 +540,56 @@
   .scrim{position:fixed;inset:0;background:rgba(16,18,24,.4);z-index:25;display:none;}
   .scrim.show{display:block;}
 
+  /* 移动端底部标签栏 */
+  .bottomTab{
+    display:none;
+    position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-top:1px solid var(--line);
+    padding:7px 6px calc(7px + var(--safeB));
+    grid-template-columns:repeat(5,1fr);
+    gap:2px;
+  }
+  .bTab{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    padding:5px 2px;border-radius:14px;cursor:pointer;
+    color:var(--muted-2);font-size:10.5px;font-weight:800;line-height:1;
+    position:relative;transition:color .18s,background .18s,transform .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .bTab .bIco{width:24px;height:24px;display:grid;place-items:center;}
+  .bTab .bIco svg{width:22px;height:22px;stroke:currentColor;display:block;}
+  .bTab:active{transform:scale(.92);}
+  .bTab.active{color:var(--primary);background:rgba(47,111,184,.09);}
+  .bTab.active .bIco{animation:iconPop .25s ease;}
+  .bBadge{
+    position:absolute;top:1px;right:calc(50% - 19px);
+    min-width:16px;height:16px;padding:0 4px;border-radius:999px;
+    background:var(--danger);color:#fff;font-size:10px;font-weight:900;
+    display:grid;place-items:center;box-shadow:0 0 0 2px #fff;
+  }
+
+  /* 我的页面：快捷入口（下载/联系） */
+  .quickEntries{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .qeCard{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;}
+  .qeCard:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.08);border-color:rgba(31,36,48,.18);}
+  .qeIco{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(47,111,184,.08);color:var(--primary);flex:0 0 auto;}
+  .qeIco svg{width:20px;height:20px;stroke:currentColor;}
+  .qeName{font-weight:900;font-size:13.5px;color:var(--text);}
+  .qeDesc{font-size:11px;color:var(--muted);margin-top:2px;}
+  .qeArrow{margin-left:auto;color:var(--muted-2);font-weight:900;font-size:16px;}
+
+  /* 首次使用引导气泡 */
+  .tabHint{
+    position:fixed;left:50%;bottom:calc(74px + var(--safeB));transform:translateX(-50%);
+    background:var(--primary);color:#fff;font-size:12.5px;font-weight:800;
+    padding:9px 15px;border-radius:999px;box-shadow:0 10px 26px rgba(47,111,184,.32);
+    z-index:45;display:none;align-items:center;gap:6px;white-space:nowrap;
+  }
+  .tabHint::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:var(--primary);}
+  .tabHint.show{display:flex;animation:fadeIn .3s ease;}
+
   /* 通知面板 */
   .notifPanel{position:absolute;top:calc(100% + 8px);right:18px;width:340px;max-width:92vw;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);z-index:60;display:none;overflow:hidden;animation:fade .2s ease;}
   .notifPanel.show{display:block;}
@@ -561,35 +614,52 @@
     .jobs{grid-template-columns:1fr;}
   }
   @media (max-width:860px){
-    .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);box-shadow:var(--shadow-lg);}
-    .sidebar.open{transform:none;}
-    .hamburger{display:flex;}
+    .sidebar{display:none;}
+    .hamburger{display:none;}
+    .bottomTab{display:grid;}
     .topSearch{width:auto;flex:1;margin-left:10px;}
     .greet b{font-size:14px;}
     .greet span{display:none;}
-    .scrim.show{display:block;}
+    .scroller{padding-bottom:calc(96px + var(--safeB));}
   }
   @media (max-width:560px){
-    .scroller{padding:16px 14px calc(24px + var(--safeB));}
-    .topbar{padding:0 14px;padding-top:var(--safeT);}
+    .scroller{padding:16px 14px calc(96px + var(--safeB));}
+    .topbar{padding:0 14px;padding-top:var(--safeT);gap:10px;}
+    .topActions{gap:6px;}
     .stats{grid-template-columns:1fr 1fr;gap:12px;}
     .quick{grid-template-columns:1fr 1fr;}
     .courseList{grid-template-columns:1fr;}
+    .secHead{flex-wrap:wrap;gap:8px;}
     .greet{display:none;}
-    .topSearch{margin-left:0;}
+    .topSearch{margin-left:0;flex:1 1 0;min-width:0;}
     .sidebar{padding-top:calc(18px + var(--safeT));}
     .sidebar .brand{padding-left:4px;}
   }
+  @media (max-width:480px){
+    .topbar{gap:8px;}
+    .topSearch{padding:7px 10px;gap:8px;}
+    .topSearch input{font-size:13px;}
+    .iconBtn,.topAvatar,.hamburger{width:38px;height:38px;}
+    .iconBtn svg{width:18px;height:18px;}
+    .heroInner{gap:16px;}
+    .heroArt{width:84px;height:84px;border-radius:24px;}
+    .heroArt svg{width:44px;height:44px;}
+    .qBtn{padding:11px;gap:10px;}
+    .qBtn .qi{width:36px;height:36px;}
+  }
   @media (max-width:380px){
-    .scroller{padding:14px 12px calc(20px + var(--safeB));}
+    .scroller{padding:14px 12px calc(96px + var(--safeB));}
     .stats{grid-template-columns:1fr 1fr;gap:10px;}
     .stat .num{font-size:21px;}
+    .stat .ico{width:36px;height:36px;border-radius:12px;}
+    .stat .ico svg{width:18px;height:18px;}
     .hero{padding:18px 16px;}
     .heroTitle{font-size:19px;}
+    .tool{padding:12px;gap:11px;}
   }
   @media (max-height:480px) and (orientation:landscape){
     .topbar{height:56px;}
-    .scroller{padding-top:14px;}
+    .scroller{padding:14px 12px calc(96px + var(--safeB));}
     .sidebar{width:210px;}
     .sidebar .brandText span{display:none;}
     .greet{display:none;}
@@ -849,6 +919,18 @@
         <!-- ========== 我的账号 ========== -->
         <section class="view" id="view-mine">
           <div class="secHead"><h2><span class="bar"></span>我的账号</h2></div>
+          <div class="quickEntries">
+            <div class="qeCard" data-view="download">
+              <span class="qeIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></span>
+              <div><div class="qeName">下载中心</div><div class="qeDesc">网页链接 / APP / 安装包</div></div>
+              <span class="qeArrow">›</span>
+            </div>
+            <div class="qeCard" data-view="messages">
+              <span class="qeIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+              <div><div class="qeName">联系与支持</div><div class="qeDesc">留言 / 咨询 / 反馈</div></div>
+              <span class="qeArrow">›</span>
+            </div>
+          </div>
           <div class="grid" style="grid-template-columns:1fr;">
             <div class="card memCard">
               <div class="memTop">
@@ -890,10 +972,41 @@
       </div>
     </div>
   </div>
+
+  <!-- 移动端底部标签栏 -->
+  <nav class="bottomTab" id="bottomTab">
+    <div class="bTab active" data-view="home">
+      <span class="bIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 20v-6h5v6"/></svg></span>
+      <span class="bTxt">首页</span>
+    </div>
+    <div class="bTab" data-view="tools">
+      <span class="bIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/><path d="M4.5 7h15A1.5 1.5 0 0 1 21 8.5v10A2.5 2.5 0 0 1 18.5 21h-13A2.5 2.5 0 0 1 3 18.5v-10A1.5 1.5 0 0 1 4.5 7Z"/><path d="M9 13h6"/><path d="M12 10v6"/></svg></span>
+      <span class="bTxt">工具</span>
+    </div>
+    <div class="bTab" data-view="learn">
+      <span class="bIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z"/><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z"/></svg></span>
+      <span class="bTxt">学习</span>
+    </div>
+    <div class="bTab" data-view="jobs">
+      <span class="bIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg></span>
+      <span class="bTxt">招聘</span>
+      <span class="bBadge" id="tabJobBadge">2</span>
+    </div>
+    <div class="bTab" data-view="mine">
+      <span class="bIco"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span>
+      <span class="bTxt">我的</span>
+    </div>
+  </nav>
 </div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- 首次使用引导 -->
+<div class="tabHint" id="tabHint">
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m5 12 7 7 7-7"/></svg>
+  点这里切换板块
+</div>
 
 <!-- Spotlight 全局搜索 -->
 <div class="spotlightOv" id="spotlightOv">
@@ -1184,6 +1297,7 @@ const VIEWS=['home','tools','learn','jobs','download','messages','mine','search'
 function switchView(v,save=true){
   VIEWS.forEach(x=>{ const el=$('view-'+x); if(el) el.classList.toggle('active',x===v); });
   document.querySelectorAll('.navItem[data-view]').forEach(el=>el.classList.toggle('active',el.dataset.view===v));
+  document.querySelectorAll('.bTab[data-view]').forEach(el=>el.classList.toggle('active',el.dataset.view===v));
   if(save) localStorage.setItem(KEY_LAST_VIEW,v);
   const sc=$('scroller'); if(sc) sc.scrollTop=0; else window.scrollTo(0,0);
   closeSidebar();
@@ -1410,6 +1524,7 @@ function renderJobs(){
   $('jobGrid').querySelectorAll('[data-resume]').forEach(b=>b.addEventListener('click',()=>openResume(b.dataset.resume)));
   $('jobGrid').querySelectorAll('[data-msg]').forEach(b=>b.addEventListener('click',()=>openMsg(b.dataset.msg)));
   $('navJobBadge').textContent=JOBS.length;
+  const tb=$('tabJobBadge'); if(tb) tb.textContent=JOBS.length;
   animateChildren($('jobGrid'),'.job','anim-popIn');
   animateChildren($('jobGrid'),'.jobList li','anim-fadeUp');
 }
@@ -1895,6 +2010,19 @@ function init(){
   if(last&&VIEWS.includes(last)&&last!=='search') switchView(last,false);
   const acc=getAccount();
   if(!acc) setTimeout(()=>openAccount(true),400);
+  maybeShowTabHint();
+}
+function maybeShowTabHint(){
+  if(localStorage.getItem('tab_guide_seen')) return;
+  if(!window.matchMedia('(max-width:860px)').matches) return;
+  const hint=$('tabHint');
+  if(!hint) return;
+  hint.classList.add('show');
+  let done=false;
+  const hide=()=>{ if(done) return; done=true; hint.classList.remove('show'); localStorage.setItem('tab_guide_seen','1'); document.removeEventListener('click',onTab); };
+  const onTab=(e)=>{ if(e.target.closest('.bTab')) hide(); };
+  document.addEventListener('click',onTab);
+  setTimeout(hide,4500);
 }
 init();
 
