@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2f6fb8" />
+  <meta name="description" content="AI · 工具箱已迁移至新版智汇工作台，点击立即前往。" />
+  <title>AI · 工具箱 · 已迁移</title>
+  <style>
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; padding:0; }
+    body{
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:#f2f3f6; color:#141923; min-height:100vh;
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .card{
+      width:100%; max-width:420px; background:#fff; border:1px solid rgba(31,36,48,.13);
+      border-radius:22px; padding:34px 28px 28px; text-align:center; box-shadow:0 14px 40px rgba(22,25,38,.10);
+      animation: popIn .5s ease-out;
+    }
+    @keyframes popIn{
+      from{ opacity:0; transform:translateY(12px) scale(.98); }
+      to{ opacity:1; transform:translateY(0) scale(1); }
+    }
+    .logo{
+      width:56px; height:56px; margin:0 auto 18px; border-radius:16px;
+      background:linear-gradient(135deg,#2f6fb8,#4a6aa8); display:grid; place-items:center;
+      color:#fff; font-size:24px; font-weight:900;
+    }
+    h1{ font-size:20px; font-weight:900; margin:0 0 8px; letter-spacing:.3px; }
+    .sub{ font-size:13px; color:rgba(31,36,48,.70); margin:0 0 22px; line-height:1.6; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      width:100%; padding:13px 18px; border-radius:13px; font-size:14px; font-weight:800;
+      text-decoration:none; border:1px solid transparent; cursor:pointer; transition:transform .14s, box-shadow .14s;
+    }
+    .btn:hover{ transform:translateY(-2px); box-shadow:0 8px 22px rgba(22,25,38,.12); }
+    .btnPrimary{ background:#2f6fb8; color:#fff; }
+    .btnGhost{ background:#fff; color:#2f6fb8; border-color:rgba(47,111,184,.25); margin-top:10px; }
+    .tag{
+      display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:800;
+      color:#ef4444; background:rgba(239,68,68,.10); border:1px solid rgba(239,68,68,.18);
+      padding:5px 12px; border-radius:999px; margin-bottom:16px;
+    }
+    .footer{ margin-top:20px; font-size:11.5px; color:rgba(31,36,48,.54); line-height:1.6; }
+    .footer a{ color:#2f6fb8; text-decoration:none; font-weight:700; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">AI</div>
+    <div class="tag">✓ 已迁移</div>
+    <h1>AI · 工具箱 搬家了</h1>
+    <p class="sub">
+      为了给你更好的体验，原「AI · 工具箱」已升级为「智汇工作台」。<br>
+      支持 PC / 平板 / 手机，功能更全、界面更专业。
+    </p>
+    <a id="newLink" class="btn btnPrimary" href="https://8e07b13c7991473ea9915794d7f99e55.app.workbuddy.link" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="m10 14 11-11"/></svg>
+      前往新版工作台
+    </a>
+    <a class="btn btnGhost" href="./index-original.html" rel="noopener">
+      还想用旧版入口？
+    </a>
+    <div class="footer">
+      © 2026 智汇工作台 · 版权所有<br>
+      内容受著作权法保护，未经授权禁止复制或商用。
+    </div>
+  </div>
+  <script>
+    // 3 秒后自动跳转新版（如果用户没有主动点击）
+    setTimeout(function(){
+      window.location.href = document.getElementById('newLink').href;
+    }, 5000);
+  </script>
+</body>
+</html>
