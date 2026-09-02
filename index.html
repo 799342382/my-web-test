@@ -1,0 +1,2819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小说智能体 · 续写 / 同风格 / 清洗拼书 / 朗读</title>
+<style>
+  :root{
+    --bg:#f5f3ef; --panel:#ffffff; --ink:#2b2b2b; --sub:#7a7468;
+    --line:#e6e1d8; --brand:#b8543c; --brand2:#d9774f; --ok:#3a7d52;
+    --shadow:0 6px 24px rgba(70,50,30,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;padding:24px 14px 60px}
+  .wrap{max-width:960px;margin:0 auto}
+  header{text-align:center;margin-bottom:22px}
+  header h1{font-size:26px;letter-spacing:1px}
+  header p{color:var(--sub);font-size:14px;margin-top:6px}
+
+  .settings{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;box-shadow:var(--shadow);margin-bottom:20px}
+  .settings summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none;
+    display:flex;align-items:center;gap:8px}
+  .settings summary::-webkit-details-marker{display:none}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  .api-banner{display:flex;align-items:flex-start;gap:12px;font-size:14px;
+    border-radius:14px;padding:14px 16px;margin-bottom:18px;box-shadow:var(--shadow);line-height:1.55}
+  .api-banner b{display:block;margin-bottom:3px;font-weight:700}
+  .api-banner span{font-weight:400;opacity:.92}
+  .api-banner .banner-icon{font-size:22px;line-height:1.2;flex:none;margin-top:1px}
+  .api-banner.on{background:#eef7ef;border:1px solid #bfe0c4;color:#237a3c}
+  .api-banner.off{background:#f5f3f0;border:1px solid #e0dcd5;color:#5e574f}
+  .api-banner.warn{background:#fff8e6;border:1px solid #f0d59e;color:#8a5d08}
+  .api-key-card{background:#fffdf9;border:1px solid #ecdcd0;margin-bottom:14px}
+  .api-on-row{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+  .api-on-left b{font-size:14px}
+  .api-on-left .ak-sub{display:block;font-size:11px;color:var(--sub);margin-top:3px;max-width:420px;line-height:1.5}
+  /* 开关 */
+  .switch{position:relative;display:inline-block;width:50px;height:28px;flex:none}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;inset:0;background:#d8d2c8;border-radius:28px;transition:.25s}
+  .slider:before{content:"";position:absolute;height:22px;width:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s}
+  .switch input:checked + .slider{background:var(--brand)}
+  .switch input:checked + .slider:before{transform:translateX(22px)}
+  .ak-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .ak-head>label{font-size:13px;color:var(--sub)}
+  .ak-state{font-size:12px;font-weight:600}
+  .ak-state.s-empty{color:var(--sub)}
+  .ak-state.s-on{color:#2e8b57}
+  .ak-state.s-off{color:var(--brand)}
+  /* Key 列表 */
+  .key-list{display:flex;flex-direction:column;gap:10px}
+  .key-item{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:10px 12px;transition:.2s}
+  .key-item.current{border-color:var(--brand);box-shadow:0 0 0 2px rgba(184,84,60,.1)}
+  .key-item input[type=radio]{width:18px;height:18px;flex:none;accent-color:var(--brand);cursor:pointer}
+  .key-item .ki-main{flex:1;min-width:0}
+  .key-item .ki-name{font-size:13px;font-weight:600;color:var(--ink)}
+  .key-item .ki-key{font-size:13px;color:var(--sub);font-family:monospace;margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .key-item .ki-actions{display:flex;gap:6px;flex:none}
+  .key-item .ki-actions .btn{padding:5px 9px;font-size:12px}
+  .empty-tip{font-size:13px;color:var(--sub);text-align:center;padding:14px 0}
+  /* 添加 Key */
+  .add-key{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+  .add-key-row{display:flex;gap:8px;flex-wrap:wrap}
+  .add-key-row .ak-name{flex:1;min-width:120px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:#fff;font-family:inherit}
+  .add-key-row .ak-val{flex:2;min-width:200px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:#fff;font-family:inherit}
+  .add-key-row input:focus{outline:none;border-color:var(--brand2)}
+  .field label{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}
+  .field input,.field select{width:100%;border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;font-size:14px;background:#fcfbf9;color:var(--ink);
+    font-family:inherit}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--brand2)}
+  .card textarea{width:100%;min-height:260px;border:1px solid #ded6cc;border-radius:12px;
+    padding:16px 18px 56px 18px;font-size:15px;line-height:1.75;color:#2c2c2c;background:#ffffff;
+    font-family:inherit;resize:vertical;transition:.2s}
+  .card textarea:focus{outline:none;border-color:#b58a6e;background:#fffdf9}
+  textarea::placeholder{color:#b8b0a6;font-size:14px}
+  .input-box{position:relative}
+  .input-actions{position:absolute;right:10px;bottom:10px;display:flex;gap:8px;z-index:2}
+  .input-actions .btn.sm{padding:7px 12px;font-size:13px}
+  .hint{font-size:12px;color:var(--sub);margin-top:6px}
+  .row{display:flex;align-items:center;gap:10px}
+  .row input[type=range]{flex:1}
+  .row .val{width:46px;text-align:right;font-variant-numeric:tabular-nums;color:var(--brand)}
+
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .tab{flex:1;text-align:center;padding:12px 8px;border-radius:12px;cursor:pointer;
+    background:var(--panel);border:1px solid var(--line);font-weight:600;font-size:14px;
+    color:var(--sub);transition:.2s;min-width:120px}
+  .tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+  .card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:14px}
+  .controls .field{flex:1;min-width:140px}
+  .btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:12px 22px;
+    font-size:15px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap}
+  .btn:hover{background:var(--brand2)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.ghost{background:#f0ece4;color:var(--ink)}
+  .btn.sm{padding:8px 14px;font-size:13px}
+
+  .output{background:#fcfbf9;border:1px dashed var(--line);border-radius:12px;
+    padding:16px;min-height:120px;white-space:pre-wrap;font-size:15px;margin-top:14px}
+  /* 清洗结果：可编辑、可滚动 */
+  #cleanOut{width:100%;min-height:220px;max-height:460px;overflow:auto;border:1px dashed var(--line);
+    border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.8;color:#2c2c2c;background:#fcfbf9;
+    font-family:inherit;resize:vertical}
+  #cleanOut:focus{outline:none;border-color:#b58a6e;background:#fffdf9}
+  .output:empty::before{content:"生成结果将显示在这里…";color:var(--sub)}
+  .outbar{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .outbar .count{font-size:13px;color:var(--sub);margin-left:auto}
+  .status{font-size:13px;color:var(--brand);margin-top:8px;min-height:18px}
+
+  /* ===== 朗读功能 ===== */
+  .read-actions{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .upload-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+    background:var(--brand);color:#fff;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600}
+  .upload-btn:hover{opacity:.92}
+  .read-controls{align-items:flex-end}
+  .read-controls .field input[type=range]{width:100%}
+  .read-controls .field label{display:flex;justify-content:space-between;align-items:center}
+  .rate-btns{display:flex;gap:6px;margin-top:8px}
+  .btn.tiny{padding:5px 12px;font-size:12px;background:#f0ece4;color:#5e574f;border:none}
+  .btn.tiny:hover{background:#e6e0d6}
+  .read-hint{font-size:12px;color:var(--brand);margin:6px 0 4px}
+  .follow-toggle{float:right;font-weight:normal;color:var(--sub);cursor:pointer;user-select:none;font-size:12px}
+  .follow-toggle input{vertical-align:-1px;margin-right:3px}
+  .read-view{margin-top:8px;background:#fcfbf9;border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;min-height:140px;white-space:pre-wrap;font-size:16px;line-height:1.9;color:#3a3a3a;
+    max-height:340px;overflow:auto}
+  .rh-empty{color:var(--sub);font-size:14px}
+  .rh-sent{transition:background .2s;cursor:pointer;border-radius:4px;padding:0 1px}
+  .rh-sent:hover{background:#eef3ff}
+  .rh-sent.hl{background:#fff2c4;border-radius:4px;box-shadow:0 0 0 2px #ffe39a}
+  .rh-sent.done{color:#b9b1a6}
+
+  /* 章节列表 */
+  .book-title{margin-bottom:12px}
+  .chapter{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:#fcfbf9}
+  .chapter .ch-head{display:flex;gap:10px;align-items:center}
+  .chapter .ch-head input{flex:1}
+  .chapter .ch-prev{font-size:12px;color:var(--sub);margin-top:6px;max-height:60px;overflow:auto;white-space:pre-wrap}
+  .chapter .ch-del{background:#f7e3de;color:var(--brand);border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px}
+  .chapter .ch-move{background:#e8eef5;color:#3a6ea5;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px}
+  .ch-summary{font-size:13px;color:var(--sub);margin:10px 0}
+
+  /* ===== 引擎切换（本地离线 / AI）===== */
+  .engine-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+  .engine-row .lab{font-size:13px;color:var(--sub)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;flex:none}
+  .seg button{border:none;background:#fff;color:var(--sub);padding:9px 13px;font-size:13px;cursor:pointer;
+    font-family:inherit;transition:.2s;white-space:nowrap}
+  .seg button+button{border-left:1px solid var(--line)}
+  .seg button.on{background:var(--brand);color:#fff;font-weight:600}
+  .seg button.disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.4)}
+  .engine-note{font-size:12px;color:var(--sub);line-height:1.6;margin-top:8px;
+    background:#f7f4ef;border-radius:9px;padding:8px 11px;border:1px solid var(--line)}
+  .engine-note.warn{background:#fff6f4;border-color:#f0cfc7;color:#8f3a2a}
+
+  /* ===== 续写要求：可点选的常用指令 + 自定义指令 ===== */
+  .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  .chips-lab{font-size:12px;color:var(--sub)}
+  .chip{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;
+    padding:6px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
+  .chip:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .chip.on{background:#e8f0e6;border-color:#bcd3b3;color:#3c6b34;font-weight:600}
+  .chip.on:hover{background:#d8e8d2;color:#33592c;border-color:#a9c89f}
+  .chip.custom{background:#eef3fb;border-color:#c3d4ec;color:#2f5a93}
+  .chip.custom:hover{background:#dbe7f7}
+  .chip-clear{border:1px solid var(--line);background:#fff;color:#a23b2c;border-radius:999px;
+    padding:6px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap;margin-left:6px}
+  .chip-clear:hover{background:#fff1ee;border-color:#e6b3a6}
+  .req-add{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  .req-add .chips-lab{margin-right:2px}
+  .req-add input{flex:1;min-width:210px;border:1px solid var(--line);border-radius:999px;padding:6px 13px;
+    font-size:12.5px;font-family:inherit;color:var(--ink);background:#fff}
+  .req-add input:focus{outline:none;border-color:var(--brand)}
+  .req-add .add-btn{border:1px solid var(--brand);background:var(--brand);color:#fff;border-radius:999px;
+    padding:6px 15px;font-size:12.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .req-add .add-btn:hover{filter:brightness(1.06)}
+  textarea#contReq{width:100%;resize:vertical;font-family:inherit;font-size:14px;line-height:1.6;
+    border:1px solid var(--line);border-radius:10px;padding:9px 11px;color:var(--ink);background:#fff}
+  textarea#contReq:focus{outline:none;border-color:var(--brand)}
+
+  /* ===== 清洗选项 / 报告 ===== */
+  .clean-opts{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+  .clean-opts summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none}
+  .clean-opts summary::-webkit-details-marker{display:none}
+  .opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:9px 14px;margin-top:12px}
+  .opt{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:var(--ink);cursor:pointer;line-height:1.45}
+  .opt input{width:15px;height:15px;accent-color:var(--brand);cursor:pointer;flex:none;margin-top:2px}
+  .opt small{display:block;color:var(--sub);font-size:11px}
+  .report{margin-top:12px;font-size:12.5px;line-height:1.75;color:var(--sub);background:#fdfcfa;
+    border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .report b{color:var(--ink)}
+  .report .r-head{font-weight:600;color:var(--ink);margin-bottom:4px}
+  .report .r-tag{display:inline-block;background:#f0ece4;border-radius:5px;padding:1px 8px;margin:2px 5px 2px 0;
+    font-size:12px;color:#6b6459}
+  .report .r-tag.hot{background:#fdeceb;color:#b8543c}
+  .report .r-tag.ok{background:#eef7ef;color:#2e8b57}
+  .leftover{margin-top:10px;background:#fff6f4;border:1px solid #f0cfc7;color:#8f3a2a;border-radius:10px;
+    padding:10px 12px;font-size:12.5px;line-height:1.7}
+  .leftover code{background:#fff;border:1px solid #f0dcd6;border-radius:4px;padding:0 4px;font-size:12px;
+    word-break:break-all}
+  .out-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+
+  footer{text-align:center;color:var(--sub);font-size:12px;margin-top:30px}
+  .badge{display:inline-block;background:#f0ece4;border-radius:6px;padding:2px 8px;font-size:12px;color:var(--sub)}
+
+  /* ===== 手机端适配（朗读为高频场景，重点优化触屏体验）===== */
+  @media(max-width:768px){
+    body{padding:14px 10px 48px}
+    header h1{font-size:22px}
+    header p{font-size:13px;line-height:1.5}
+    .settings{padding:14px}
+    .card{padding:14px;margin-bottom:14px}
+    .card h3{font-size:14px}
+    .grid{grid-template-columns:1fr}
+    /* 标签页：两列网格，方便手机点击 */
+    .tabs{gap:6px;margin-bottom:14px}
+    .tab{flex:1 1 46%;min-width:0;padding:12px 4px;font-size:13px}
+    /* 朗读控制：单列堆叠，每个控件占满宽度 */
+    .read-controls{flex-direction:column;align-items:stretch;gap:14px}
+    .read-controls .field{flex:1 1 auto;width:100%;min-width:0}
+    .read-controls .field input[type=range]{margin-top:4px}
+    /* 播放控制：主按钮三等分、点击区域放大；从选中处读整行 */
+    #readPlay,#readPause,#readStop{flex:1 1 30%;min-width:86px;padding:14px 6px;font-size:14px}
+    #readFromSel{flex:1 1 100%;padding:12px;font-size:14px}
+    /* 上传按钮更醒目 */
+    .read-actions{margin-top:10px}
+    .upload-btn{padding:11px 16px;font-size:14px}
+    /* 朗读预览字号与高度适配手机屏幕 */
+    .read-view{font-size:15px;line-height:1.85;max-height:46vh;padding:14px 16px}
+    .read-hint{font-size:12px}
+    /* 输入区按钮在手机上更好点 */
+    .input-actions{right:8px;bottom:8px;gap:6px}
+    .input-actions .btn.sm{padding:9px 13px;font-size:13px}
+    /* 通用按钮加大触摸区，便于手指点按 */
+    .btn{padding:13px 18px}
+    .api-on-left .ak-sub{font-size:10.5px}
+  }
+  /* ===== 保存到手机（下载面板 / 提示条）===== */
+  .sv-mask{position:fixed;inset:0;background:rgba(45,32,20,.45);z-index:9998;
+    display:flex;align-items:center;justify-content:center;padding:18px}
+  .sv-box{background:var(--panel);border-radius:16px;box-shadow:0 18px 48px rgba(60,40,20,.22);
+    width:100%;max-width:430px;max-height:88vh;overflow:auto;padding:20px 20px 14px}
+  .sv-box h4{font-size:16px;margin-bottom:4px}
+  .sv-sub{font-size:12.5px;color:var(--sub);line-height:1.65;margin-bottom:14px}
+  .sv-tip{font-size:12.5px;line-height:1.6;margin-bottom:14px;border-radius:10px;padding:10px 12px}
+  .sv-tip.warn{background:#fff8e6;border:1px solid #f0d59e;color:#8a5d08}
+  .sv-tip.info{background:#f2f6fb;border:1px solid #cfdeee;color:#2c5c86}
+  .sv-list{display:flex;flex-direction:column;gap:10px}
+  .sv-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;
+    cursor:pointer;transition:.18s;font-family:inherit;color:inherit}
+  .sv-item:hover{border-color:var(--brand2);background:#fffaf7}
+  .sv-item:active{transform:scale(.985)}
+  .sv-item>div{flex:1;min-width:0}
+  .sv-item .sv-ico{font-size:20px;flex:none;line-height:1}
+  .sv-item .sv-t{font-size:14px;font-weight:600}
+  .sv-item .sv-d{font-size:11.5px;color:var(--sub);margin-top:3px;line-height:1.5}
+  .sv-item.rec{border-color:var(--brand);background:#fff6f2}
+  .sv-item .sv-badge{margin-left:auto;flex:none;font-size:10.5px;color:#fff;background:var(--brand);
+    border-radius:20px;padding:2px 8px}
+  .sv-close{margin-top:14px;width:100%;background:transparent;border:1px solid var(--line);
+    border-radius:10px;padding:9px;color:var(--sub);font-size:13px;cursor:pointer;font-family:inherit}
+  .sv-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;z-index:9999;
+    background:#2f2a24;color:#fff;border-radius:12px;padding:11px 14px 11px 16px;font-size:13px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;align-items:center;gap:12px;max-width:94vw}
+  .sv-toast button{background:var(--brand);border:0;color:#fff;border-radius:8px;
+    padding:7px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;flex:none;white-space:nowrap}
+  .sv-toast .sv-x{background:transparent;color:rgba(255,255,255,.6);font-size:16px;padding:2px 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📖 小说智能体</h1>
+    <p>不用 Key 也能用 · 智能清洗拼书 + 本地续写 + 同风格创作 + 朗读（可选接 DeepSeek 增强）</p>
+  </header>
+
+  <!-- ===== API 状态横幅（置顶，提醒 API 会产生费用）===== -->
+  <div class="api-banner" id="apiBanner"></div>
+
+  <!-- ===== 设置区（API Key 管理器）===== -->
+  <details class="settings" id="settingsBox" open>
+    <summary>⚙️ API 设置（可选 · 不配 Key 也能用全部功能）</summary>
+
+    <div class="card api-key-card">
+      <div class="ak-head">
+        <label>DeepSeek API Key 管理</label>
+        <div class="ak-state" id="keyState"></div>
+      </div>
+
+      <!-- 总开关：使用 / 不使用 API -->
+      <div class="api-on-row">
+        <div class="api-on-left">
+          <b>⚡ 使用 API</b>
+          <span class="ak-sub">关闭即离线模式：清洗 / 拼书 / 朗读本来就是本地功能；续写与同风格会自动切到「本地离线引擎」，不用 Key 也能用（长句逻辑不如 AI）。想用 AI 大模型时，再打开此开关即可，Key 会一直保留</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="apiOn">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- 已保存的 Key 列表 -->
+      <div id="keyList" class="key-list"></div>
+
+      <!-- 添加新 Key -->
+      <div class="add-key">
+        <div class="add-key-row">
+          <input type="text" id="newKeyName" placeholder="备注名（如：主用 / 备用1）" class="ak-name">
+          <input type="password" id="newKeyVal" placeholder="sk-xxxxxxxxxxxxxxxx" class="ak-val">
+          <button type="button" class="btn sm" id="addKeyBtn">➕ 添加</button>
+        </div>
+        <div class="hint" id="keyHint">Key 仅保存在你浏览器本地，不会上传任何第三方。可添加多个，点圆圈选「当前使用」的那条。</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label>API 地址（一般无需修改）</label>
+        <input type="text" id="baseUrl" value="https://api.deepseek.com">
+      </div>
+      <div class="field">
+        <label>模型</label>
+        <select id="model">
+          <option value="deepseek-chat">deepseek-chat（推荐）</option>
+          <option value="deepseek-reasoner">deepseek-reasoner（深度思考）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>创造力（Temperature）</label>
+        <div class="row">
+          <input type="range" id="temperature" min="0" max="1.5" step="0.1" value="0.8">
+          <span class="val" id="tempVal">0.8</span>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ===== 标签页 ===== -->
+  <div class="tabs">
+    <div class="tab active" data-tab="continue">✍️ 小说续写</div>
+    <div class="tab" data-tab="mimic">🎭 同风格创作</div>
+    <div class="tab" data-tab="clean">🧹 清洗整理拼书</div>
+    <div class="tab" data-tab="read">🎧 朗读</div>
+  </div>
+
+  <!-- ===== 功能一：续写 ===== -->
+  <section class="panel active" id="panel-continue">
+    <div class="card">
+      <h3>原文内容</h3>
+      <textarea id="contIn" placeholder="把你已经写好的小说内容粘贴到这里，智能体会接着结尾继续写…"></textarea>
+    </div>
+    <div class="card">
+      <h3>续写参数</h3>
+      <div class="engine-row">
+        <span class="lab">生成引擎</span>
+        <div class="seg" data-engine="cont">
+          <button type="button" data-mode="local">💻 本地离线（免 Key）</button>
+          <button type="button" data-mode="ai">⚡ AI 大模型（需 Key）</button>
+        </div>
+      </div>
+      <div class="engine-note" id="contEngineNote"></div>
+      <div class="engine-row" id="contLocalOpts" style="display:none">
+        <div class="field" style="flex:1;min-width:150px">
+          <label>连贯度（越高越贴近原句，越低越跳跃）</label>
+          <div class="row"><input type="range" id="contOrder" min="1" max="3" step="1" value="2"><span class="val" id="contOrderVal">2</span></div>
+        </div>
+        <div class="field" style="flex:1;min-width:150px">
+          <label>发散度（越高越跳跃）</label>
+          <div class="row"><input type="range" id="contRand" min="1" max="10" step="1" value="4"><span class="val" id="contRandVal">4</span></div>
+        </div>
+      </div>
+      <!-- 续写要求：先设好要求，再点生成 -->
+      <div class="controls" style="margin-top:12px;flex-direction:column;align-items:stretch;gap:6px">
+        <div class="field" style="flex:1">
+          <label>续写要求（可选自由补充 · 下方点选 / 自定义会叠加生效，AI 引擎<b>逐条严格执行</b> ✦）</label>
+          <textarea id="contReq" rows="2" placeholder="（可选）在这里自由补充任何要求，如主角设定、情节走向、禁忌等；常用要求点一下、自定义要求自己写，都会一起生效…"></textarea>
+        </div>
+      </div>
+      <div class="chips" id="contReqChips">
+        <span class="chips-lab">常用要求（点一下加入，再点取消）：</span>
+        <button type="button" class="chip" data-add="写得更详细、描写更丰富、不水字数">更详细</button>
+        <button type="button" class="chip" data-add="更有画面感、更生动、有灵魂、能让人共情">更生动·有灵魂</button>
+        <button type="button" class="chip" data-add="主角保持强势爽文，绝不被人欺负，打脸要狠、出气要爽">主角爽文·不被欺负</button>
+        <button type="button" class="chip" data-add="多写主角心理活动与情绪变化，让人读懂他在想什么">多心理描写</button>
+        <button type="button" class="chip" data-add="每章结尾留悬念钩子，让人忍不住想继续看">结尾留钩子</button>
+        <button type="button" class="chip" data-add="对话自然有性格、能推动剧情，少说废话">对话自然</button>
+        <button type="button" class="chip" data-add="节奏加快、爽点密集、少铺垫多高潮">爽点密集</button>
+        <button type="button" class="chip-clear" id="contReqClear">🗑 清空全部</button>
+      </div>
+      <div class="req-add">
+        <span class="chips-lab">自定义要求（想加什么自己写）：</span>
+        <input type="text" id="contReqInput" placeholder="如：主角要有金手指、实力碾压全场；反派阴谋更曲折；女主更主动…">
+        <button type="button" class="add-btn" id="contReqAdd">＋ 添加</button>
+      </div>
+      <div class="chips" id="contReqCustomChips"></div>
+
+      <!-- 风格参考样本：可选，粘贴一段想模仿的小说文字，AI/本地引擎都会学它的文风来续写 -->
+      <div class="controls" style="margin-top:12px;flex-direction:column;align-items:stretch;gap:6px">
+        <div class="field" style="flex:1">
+          <label>风格参考样本（可选 · 粘贴一段你想模仿的小说文字，续写会模仿它的文风、句式与节奏 ✦）</label>
+          <textarea id="contStyleRef" rows="3" placeholder="（可选）粘贴一段你喜欢的小说段落、某位作者的原文；填了它，续写就照着这个"笔感"写（只学文风，不抄情节）。不填则按下方文风预设来…"></textarea>
+        </div>
+      </div>
+
+      <!-- 自定义文风：仅当选「自定义」时出现 -->
+      <div class="controls" id="contStyleCustomWrap" style="margin-top:12px;display:none">
+        <div class="field">
+          <label>自定义文风（选「自定义」时填写）</label>
+          <input type="text" id="contStyleCustom" placeholder="如：第一人称、幽默毒舌、每章结尾留钩子…">
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="field" style="flex:1.2">
+          <label>文风预设（本地引擎时为提示方向）</label>
+          <select id="contStyle">
+            <option value="爽文">爽文（打脸逆袭·爽点密集）</option>
+            <option value="悬疑紧张">悬疑紧张</option>
+            <option value="轻松诙谐">轻松诙谐</option>
+            <option value="古风言情">古风言情</option>
+            <option value="都市热血">都市热血</option>
+            <option value="玄幻修仙">玄幻修仙</option>
+            <option value="末世废土">末世废土</option>
+            <option value="校园青春">校园青春</option>
+            <option value="自定义">自定义（下方填写）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>续写字数（不限 · 超单次上限自动分段接力写够）</label>
+          <input type="number" id="contWords" value="800" min="50" max="200000" step="50">
+        </div>
+        <button class="btn" id="contBtn">开始续写</button>
+        <button class="btn ghost" id="contStop" style="display:none">⏹ 停止</button>
+      </div>
+      <div class="output" id="contOut"></div>
+      <div class="outbar">
+        <button class="btn ghost" id="contCopy">复制全文</button>
+        <button class="btn ghost" id="contDown">📥 下载完整小说</button>
+        <button class="btn ghost" id="contRead">🎧 朗读整本</button>
+        <span class="count" id="contCount"></span>
+      </div>
+      <div class="status" id="contStatus"></div>
+    </div>
+  </section>
+
+  <!-- ===== 功能二：同风格创作 ===== -->
+  <section class="panel" id="panel-mimic">
+    <div class="card">
+      <h3>参考内容（用于学习文风）</h3>
+      <textarea id="mimicIn" placeholder="粘贴一段你喜欢的、想模仿其文风的小说内容。智能体会写出风格一致但情节全新的内容…"></textarea>
+    </div>
+    <div class="card">
+      <h3>创作参数</h3>
+      <div class="engine-row">
+        <span class="lab">生成引擎</span>
+        <div class="seg" data-engine="mimic">
+          <button type="button" data-mode="local">💻 本地离线（免 Key）</button>
+          <button type="button" data-mode="ai">⚡ AI 大模型（需 Key）</button>
+        </div>
+      </div>
+      <div class="engine-note" id="mimicEngineNote"></div>
+      <div class="engine-row" id="mimicLocalOpts" style="display:none">
+        <div class="field" style="flex:1;min-width:150px">
+          <label>连贯度（越高越贴近原句式）</label>
+          <div class="row"><input type="range" id="mimicOrder" min="1" max="3" step="1" value="2"><span class="val" id="mimicOrderVal">2</span></div>
+        </div>
+        <div class="field" style="flex:1;min-width:150px">
+          <label>发散度（越高越跳跃）</label>
+          <div class="row"><input type="range" id="mimicRand" min="1" max="10" step="1" value="5"><span class="val" id="mimicRandVal">5</span></div>
+          <div class="hint">从参考文里拆出短语再重新编织：句子是新的，味道是原来的。</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="field" style="flex:1.2">
+          <label>文风预设（本地引擎时为提示方向）</label>
+          <select id="mimicStyle">
+            <option value="爽文">爽文（打脸逆袭·爽点密集）</option>
+            <option value="悬疑紧张">悬疑紧张</option>
+            <option value="轻松诙谐">轻松诙谐</option>
+            <option value="古风言情">古风言情</option>
+            <option value="都市热血">都市热血</option>
+            <option value="玄幻修仙">玄幻修仙</option>
+            <option value="末世废土">末世废土</option>
+            <option value="校园青春">校园青春</option>
+            <option value="自定义">自定义（下方填写）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>生成字数（中文字符）</label>
+          <input type="number" id="mimicWords" value="800" min="50" max="6000" step="50">
+        </div>
+        <button class="btn" id="mimicBtn">开始创作</button>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <div class="field">
+          <label>主题 / 情节方向（可留空）</label>
+          <input type="text" id="mimicTopic" placeholder="如：写一段雨夜重逢、写主角初入江湖…">
+        </div>
+        <div class="field" id="mimicStyleCustomWrap" style="display:none">
+          <label>自定义文风（选「自定义」时填写）</label>
+          <input type="text" id="mimicStyleCustom" placeholder="如：冷峻硬汉风、文艺治愈系…">
+        </div>
+      </div>
+      <div class="output" id="mimicOut"></div>
+      <div class="outbar">
+        <button class="btn ghost" id="mimicCopy">复制</button>
+        <button class="btn ghost" id="mimicDown">下载 .txt</button>
+        <button class="btn ghost" id="mimicRead">🎧 朗读</button>
+        <span class="count" id="mimicCount"></span>
+      </div>
+      <div class="status" id="mimicStatus"></div>
+    </div>
+  </section>
+
+  <!-- ===== 功能三：清洗整理拼书 ===== -->
+  <section class="panel" id="panel-clean">
+    <div class="card">
+      <h3>① 粘贴复制的小说原文（含广告/废话也没关系）</h3>
+      <div class="input-box">
+        <textarea id="cleanIn" placeholder="把从小说网站全选复制的内容粘贴到这里。网址、裸域名、邮箱、QQ群、微信号、站点水印、广告求票、导航按钮、评论区、版权声明都会被自动识别并清除…"></textarea>
+        <div class="input-actions">
+          <button class="btn sm" id="cleanBtn">🧹 深度清洗</button>
+          <button class="btn sm" id="cleanAI">✨ AI 精修</button>
+        </div>
+      </div>
+      <div class="engine-note" id="aiCleanNote"></div>
+      <details class="clean-opts" id="cleanOptsBox">
+        <summary>🧰 清洗选项（默认全开，点一下即可关掉某一项）</summary>
+        <div class="controls" style="margin-top:10px">
+          <div class="field" style="flex:0 0 auto;min-width:168px">
+            <label>清洗强度</label>
+            <select id="cleanStrength">
+              <option value="normal" selected>标准（推荐）</option>
+              <option value="mild">温和（保守，宁可留着）</option>
+              <option value="strong">激进（宁杀错不放过）</option>
+              <option value="nuclear">彻底（整页全选复制时用）</option>
+            </select>
+          </div>
+          <button class="btn ghost sm" id="cleanOptAll">全部勾选</button>
+          <button class="btn ghost sm" id="cleanOptNone">全部取消</button>
+        </div>
+        <div class="opt-grid" id="cleanOptGrid"></div>
+      </details>
+      <div class="controls" style="margin-top:10px">
+        <span class="status" id="cleanStatus" style="margin:0"></span>
+      </div>
+      <div id="cleanReport"></div>
+    </div>
+
+    <div class="card">
+      <h3>② 清洗结果（可直接手动修改）</h3>
+      <textarea id="cleanOut" placeholder="点上方「🧹 深度清洗」后，干净正文会出现在这里，可以随意编辑…"></textarea>
+      <div class="out-tools">
+        <button class="btn ghost sm" id="cleanRead">🎧 朗读</button>
+        <button class="btn ghost sm" id="cleanBack">↩ 写回输入框再洗一遍</button>
+        <button class="btn ghost sm" id="cleanCopy">📋 复制</button>
+        <button class="btn ghost sm" id="cleanDownload">📥 下载 TXT</button>
+        <span class="count" id="cleanCount"></span>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <div class="field">
+          <label>本章标题（用于拼书目录，留空自动编号）</label>
+          <input type="text" id="chTitle" placeholder="如：第一章 重生归来">
+        </div>
+        <button class="btn sm" id="addCh">➕ 添加为章节</button>
+        <button class="btn sm ghost" id="splitCh">✂️ 自动按「第X章」拆分</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>③ 章节列表（可添加不同小说 / 不同章节）</h3>
+      <div class="field book-title">
+        <label>整本书名（下载文件名 & 标题）</label>
+        <input type="text" id="bookName" placeholder="如：逆袭人生" value="我的小说合集">
+      </div>
+      <div class="ch-summary" id="chSummary">还没有章节，清理后点「添加为章节」即可。</div>
+      <div id="chapterList"></div>
+      <div class="controls" style="margin-top:8px">
+        <button class="btn" id="downloadBook">📦 生成并下载整本 TXT</button>
+        <button class="btn ghost sm" id="clearCh">清空章节</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 功能四：朗读 ===== -->
+  <section class="panel" id="panel-read">
+    <div class="card">
+      <h3>🎧 朗读（纯本地语音，不消耗 API 额度）</h3>
+      <textarea id="readIn" placeholder="把要朗读的小说 / 文字粘贴到这里；或点右侧「📂 上传文档」导入 TXT / Word(.docx) / PDF…"></textarea>
+      <div class="read-actions">
+        <label class="upload-btn">
+          📂 上传文档
+          <input type="file" id="readFile" accept=".txt,.md,.docx,.pdf" hidden>
+        </label>
+        <button class="btn ghost sm" id="readClear">清空</button>
+        <span class="status" id="readStatus" style="margin:0"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>朗读控制</h3>
+      <div class="controls read-controls">
+        <div class="field" style="flex:1.4">
+          <label>语音 / 音色</label>
+          <select id="readVoice"><option value="">（加载中…）</option></select>
+        </div>
+        <div class="field">
+          <label>语速 <span class="val" id="rateVal">1.5</span></label>
+          <input type="range" id="readRate" min="0.5" max="5" step="0.1" value="1.5">
+          <div class="rate-btns">
+            <button type="button" class="btn tiny" id="rateDown">🐢 慢</button>
+            <button type="button" class="btn tiny" id="rateUp">🚀 快</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>音量 <span class="val" id="volVal">1.0</span></label>
+          <input type="range" id="readVol" min="0" max="1" step="0.1" value="1">
+        </div>
+        <div class="field">
+          <label>音调 <span class="val" id="pitchVal">1.0</span></label>
+          <input type="range" id="readPitch" min="0" max="2" step="0.1" value="1">
+        </div>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <button class="btn" id="readPlay">▶ 播放</button>
+        <button class="btn ghost" id="readPause">⏸ 暂停</button>
+        <button class="btn ghost" id="readStop">⏹ 停止</button>
+        <button class="btn ghost sm" id="readFromSel">📍 从选中处读</button>
+        <span class="count" id="readCount">第 0 / 0 句</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>朗读预览（当前句高亮）</h3>
+      <div class="read-hint">👆 点击预览里的任意一句，即可从那一句开始朗读<label class="follow-toggle"><input type="checkbox" id="readFollow" checked> 跟随高亮自动滚动</label></div>
+      <div class="read-view" id="readView"><span class="rh-empty">播放后，正在朗读的句子会在这里高亮显示…</span></div>
+    </div>
+  </section>
+
+  <footer>内容仅在你本地处理；启用 API 时才会与 DeepSeek 传输，绝不上传其他任何服务器 · Made with WorkBuddy</footer>
+</div>
+
+<!-- 文档解析库（联网时可用 Word/PDF 上传；离线则仅支持 TXT 与粘贴） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+/* ====== 若想写死 Key：把 null 改成 'sk-xxxx'（注意会随网页公开）====== */
+const HARDCODED_KEY = null;
+
+/* ============ 通用工具 ============ */
+const $ = id => document.getElementById(id);
+/* ======== API Key 多 Key 管理器 ======== */
+const visibleIds = new Set();   // 当前展开明文显示的 Key id（仅内存）
+function loadSettings(){
+  const s = JSON.parse(localStorage.getItem('novelAI')||'{}');
+  // 旧版 single-key 数据迁移
+  if(s.apiKey && !Array.isArray(s.keys)){
+    s.keys = [{id:Date.now()+'', name:'我的 Key', key:s.apiKey, current:true}];
+    delete s.apiKey; delete s.keyEnabled;
+    localStorage.setItem('novelAI', JSON.stringify(s));
+  }
+  if(!Array.isArray(s.keys)) s.keys = [];
+  if(typeof s.apiOn !== 'boolean') s.apiOn = s.keys.length>0;  // 默认：有 Key 即开
+  $('apiOn').checked = s.apiOn;
+  if(s.baseUrl) $('baseUrl').value = s.baseUrl;
+  if(s.model) $('model').value = s.model;
+  if(typeof s.temperature==='number'){ $('temperature').value=s.temperature; $('tempVal').textContent=s.temperature; }
+  renderKeys();
+}
+function getStore(){ return JSON.parse(localStorage.getItem('novelAI')||'{}'); }
+function setStore(obj){
+  const s = getStore();
+  localStorage.setItem('novelAI', JSON.stringify({...s, ...obj}));
+}
+function maskKey(k){
+  if(!k) return '';
+  if(k.length<=8) return '•'.repeat(k.length);
+  return k.slice(0,5) + '••••••' + k.slice(-4);
+}
+function getCurrentKey(){
+  const s = getStore();
+  const list = s.keys||[];
+  if(HARDCODED_KEY) return HARDCODED_KEY;
+  const cur = list.find(x=>x.current);
+  return cur ? cur.key : '';
+}
+function getKey(){ return getCurrentKey(); }
+function keyBlockedReason(){
+  const s = getStore();
+  if(!s.keys || s.keys.length===0) return '⚠️ 请先在 API 设置添加并选中一个 DeepSeek API Key';
+  const cur = s.keys.find(x=>x.current);
+  if(!cur) return '⚠️ 请在 API 设置点选一个「当前使用」的 Key';
+  return '⚠️ 当前 Key 无效，请检查后重试';
+}
+function renderKeys(){
+  const s = getStore();
+  const list = s.keys||[];
+  const box = $('keyList');
+  box.innerHTML = '';
+  if(list.length===0){
+    box.innerHTML = '<div class="empty-tip">还没有保存任何 Key，在下方「添加」即可 👇</div>';
+  } else {
+    list.forEach(k=>{
+      const item = document.createElement('div');
+      item.className = 'key-item' + (k.current ? ' current' : '');
+      const shown = visibleIds.has(k.id);
+      item.innerHTML =
+        '<input type="radio" name="curKey" '+(k.current?'checked':'')+' title="选为当前使用" data-id="'+k.id+'">'+
+        '<div class="ki-main">'+
+          '<div class="ki-name">'+esc(k.name)+' '+(k.current?'<span style="color:#2e8b57;font-size:11px">· 当前使用</span>':'')+'</div>'+
+          '<div class="ki-key">'+(shown?esc(k.key):maskKey(k.key))+'</div>'+
+        '</div>'+
+        '<div class="ki-actions">'+
+          '<button class="btn ghost sm" data-act="show" data-id="'+k.id+'">'+(shown?'🙈 隐藏':'👁 显示')+'</button>'+
+          '<button class="btn ghost sm" data-act="del" data-id="'+k.id+'">🗑 删除</button>'+
+        '</div>';
+      box.appendChild(item);
+    });
+  }
+  const cur = list.find(x=>x.current);
+  const st = $('keyState');
+  const apiOn = getStore().apiOn;
+  if(!apiOn){ st.className='ak-state s-off'; st.textContent='⏸ API 已关闭（离线）'; }
+  else if(list.length===0){ st.className='ak-state s-empty'; st.textContent='○ 未添加 Key'; }
+  else if(cur){ st.className='ak-state s-on'; st.textContent='🟢 当前使用：'+cur.name; }
+  else { st.className='ak-state s-off'; st.textContent='⏸ 已添加 '+list.length+' 个，未选「当前使用」'; }
+  refreshApiAvailability();
+}
+/* 是否有可用的当前 Key */
+function apiReady(){
+  if(HARDCODED_KEY) return true;
+  const s = getStore();
+  if(!s.apiOn) return false;                 // 总开关关闭 → 离线
+  return !!(s.keys||[]).some(x=>x.current);   // 且需有选中的 Key
+}
+/* 根据 API 状态刷新横幅 + 启用/禁用需 API 的功能 */
+function refreshApiAvailability(){
+  const s = getStore();
+  const on = apiReady();
+  const b = $('apiBanner');
+  const cur = (s.keys||[]).find(x=>x.current);
+  if(!s.apiOn){
+    b.className='api-banner off';
+    b.innerHTML='<span class="banner-icon">🛡️</span><div><b>离线模式：全部功能照常可用</b><span>清洗拼书 / 朗读 本来就是本地处理；续写与同风格会自动使用「本地离线引擎」，不花一分钱。想要 AI 级逻辑再打开上面开关</span></div>';
+  } else if(cur){
+    b.className='api-banner on';
+    b.innerHTML='<span class="banner-icon">⚡</span><div><b>API 已启用：'+esc(cur.name)+'</b><span>续写 / 同风格 / AI 精修 会产生费用，请谨慎使用</span></div>';
+  } else {
+    b.className='api-banner warn';
+    b.innerHTML='<span class="banner-icon">⚠️</span><div><b>API 开关已打开，但未选中 Key</b><span>请在下方 API 设置里点选一条「当前使用」，否则无法调用</span></div>';
+  }
+  // 按钮不再一刀切禁用：选「本地离线引擎」时照样可用
+  updateEngineUI(on);
+}
+/* 统一刷新：引擎切换按钮状态 + 提示文案（AI 引擎缺 Key 时才禁用） */
+function updateEngineUI(apiOn){
+  const on = (typeof apiOn==='boolean') ? apiOn : apiReady();
+  [['cont','contBtn'],['mimic','mimicBtn']].forEach(([pfx,btnId])=>{
+    const mode = getEngine(pfx);
+    document.querySelectorAll('.seg[data-engine="'+pfx+'"] button').forEach(b=>{
+      const isAi = b.dataset.mode==='ai';
+      b.classList.toggle('on', b.dataset.mode===mode);
+      b.classList.toggle('disabled', isAi && !on);
+      b.title = isAi
+        ? (on ? 'AI 大模型：有逻辑、理解上下文（消耗 API 额度）'
+               : '当前未配置可用 Key，仅高亮不生效；请到「⚙️ API 设置」添加并选中 Key，或点「💻 本地离线」')
+        : '本地离线引擎：免费、不联网、不上传内容';
+    });
+    const aiBtn = $(btnId);
+    if(!aiBtn) return;
+    if(mode==='ai'){
+      aiBtn.textContent = '开始'+(pfx==='cont'?'续写':'创作')+'（AI）';
+      aiBtn.disabled = !on;
+      aiBtn.title = on ? '' : '需在 API 设置打开开关并选中一个 Key，或切到「本地离线引擎」';
+    }else{
+      aiBtn.textContent = '开始'+(pfx==='cont'?'续写':'创作')+'（本地）';
+      aiBtn.disabled = false;
+      aiBtn.title = '本地引擎：从你粘贴的文字里学习用词与句式，免费离线生成';
+    }
+    const note = $(pfx+'EngineNote');
+    if(note){
+      note.className = 'engine-note' + (mode==='ai'&&!on ? ' warn' : '');
+      note.innerHTML = (mode==='ai')
+        ? (on ? '⚡ <b>AI 引擎</b>：情节有逻辑、能理解上下文，会消耗 API 额度。'
+              : '⚠️ <b>AI 引擎</b>未就绪：请到「⚙️ API 设置」打开开关并选中 Key，或点上方「💻 本地离线」直接用。')
+        : '💻 <b>本地离线引擎</b>：完全在你电脑/手机上运行，不联网、不花一分钱、不上传任何内容。'
+          + '它会学习这段原文的用词、句式与节奏来续写，<b>能模仿味道，但长句逻辑靠不住</b>，适合找语感、破卡文、凑初稿；'
+          + '要真正有逻辑的情节请切到「⚡ AI 大模型」。';
+    }
+    const lo = $(pfx+'LocalOpts');
+    if(lo) lo.style.display = (mode==='local') ? '' : 'none';
+  });
+  const ca = $('cleanAI');
+  if(ca){
+    ca.disabled = !on;
+    ca.title = on ? '' : '离线时请用「🧹 深度清洗」（本地引擎，已足够干净）';
+  }
+  const cn = $('aiCleanNote');
+  if(cn){
+    cn.className = 'engine-note' + (on?'':' warn');
+    cn.innerHTML = on
+      ? '⚡ 深度清洗在本地跑（免费）；「✨ AI 精修」会调用大模型做语义级整理，产生费用。'
+      : '🛡️ 当前离线：<b>深度清洗、拼书、下载、朗读全部可用</b>；只有「✨ AI 精修」需要 Key。';
+  }
+}
+/* 引擎偏好：local / ai（记住用户上次选择；首次按 API 是否可用自动定） */
+function getEngine(pfx){
+  const s = getStore();
+  const key = 'engine_'+pfx;
+  if(s[key]==='local' || s[key]==='ai') return s[key];
+  return apiReady() ? 'ai' : 'local';
+}
+function setEngine(pfx, mode){ const o={}; o['engine_'+pfx]=mode; setStore(o); updateEngineUI(); }
+function esc(t){ return (t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function saveBaseSettings(){
+  setStore({
+    baseUrl: $('baseUrl').value.trim(),
+    model: $('model').value,
+    temperature: parseFloat($('temperature').value)
+  });
+}
+function addKey(){
+  const name = $('newKeyName').value.trim() || ('Key '+(getStore().keys.length+1));
+  const val = $('newKeyVal').value.trim();
+  if(!val){ alert('请先输入 API Key'); return; }
+  const s = getStore();
+  const keys = s.keys||[];
+  const isFirst = keys.length===0;
+  keys.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,6), name, key:val, current:isFirst});
+  setStore({keys});
+  $('newKeyName').value=''; $('newKeyVal').value='';
+  renderKeys();
+  alert('已添加 Key：'+name+(isFirst?'（已设为当前使用）':'')+' ✅');
+}
+function setCurrent(id){
+  const s = getStore();
+  (s.keys||[]).forEach(k=> k.current = (k.id===id));
+  setStore({keys:s.keys});
+  renderKeys();
+}
+function deleteKey(id){
+  const s = getStore();
+  const k = (s.keys||[]).find(x=>x.id===id);
+  if(!k) return;
+  if(!confirm('确定删除 Key「'+(k.name||'未命名')+'」吗？此操作不可撤销。')) return;
+  let keys = (s.keys||[]).filter(x=>x.id!==id);
+  if(k.current && keys.length) keys[0].current = true;  // 删掉当前用的，自动选下一个
+  setStore({keys});
+  renderKeys();
+}
+/* 事件委托：列表内点击 */
+$('keyList').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act]');
+  if(btn){
+    const id = btn.dataset.id, act = btn.dataset.act;
+    if(act==='show'){ visibleIds.has(id)?visibleIds.delete(id):visibleIds.add(id); renderKeys(); }
+    else if(act==='del'){ deleteKey(id); }
+    return;
+  }
+  const radio = e.target.closest('input[type=radio][data-id]');
+  if(radio){ setCurrent(radio.dataset.id); }
+});
+/* 添加 Key 按钮 */
+$('addKeyBtn').onclick = addKey;
+$('newKeyVal').addEventListener('keydown', e=>{ if(e.key==='Enter') addKey(); });
+/* 总开关：使用 / 不使用 API */
+$('apiOn').addEventListener('change', e=>{
+  const on = e.target.checked;
+  const s = getStore();
+  s.apiOn = on;
+  if(on && s.keys && s.keys.length && !s.keys.some(x=>x.current)){
+    s.keys[0].current = true;   // 开启时若无选中 Key，自动选第一个
+  }
+  setStore({apiOn:on, keys:s.keys});
+  renderKeys();
+  if(on && (!s.keys || !s.keys.length)){ $('keyHint').textContent='已开启 API，请在下方添加一个 Key 并点选「当前使用」。'; }
+  else if(!on){ $('keyHint').textContent='已关闭 API，进入离线模式。Key 仍保留，开启开关即可恢复使用。'; }
+});
+
+$('temperature').addEventListener('input', e=>{ $('tempVal').textContent=e.target.value; });
+['baseUrl','model','temperature'].forEach(id=> $(id).addEventListener('change', saveBaseSettings));
+
+function countChars(t){ return (t||'').replace(/\s/g,'').length; }
+function setCount(el, t){ el.textContent = '字数：' + countChars(t); }
+
+/* 文风预设 */
+const STYLE_MAP = {
+  '爽文':'节奏明快、爽点密集、主角强势逆袭、打脸情节自然、替读者出气的"爽文"风格',
+  '悬疑紧张':'悬疑紧张、氛围压抑、层层设谜、扣人心弦',
+  '轻松诙谐':'轻松诙谐、语言幽默、吐槽自然、读感愉快',
+  '古风言情':'古风雅致、辞藻温婉、情感细腻、有古典韵味',
+  '都市热血':'都市背景、热血拼搏、节奏燃、现实感强',
+  '玄幻修仙':'玄幻修仙、世界观宏大、修炼体系清晰、气势磅礴',
+  '末世废土':'末世废土、苍凉求生、危机四伏、人性刻画',
+  '校园青春':'校园青春、清新自然、少年感强、情感真挚'
+};
+function styleNote(prefix){
+  const sel = $(prefix+'Style').value;
+  if(sel==='自定义'){
+    const c = $(prefix+'StyleCustom').value.trim();
+    return c ? '风格/要求：'+c : '';
+  }
+  return '文风要求：'+STYLE_MAP[sel];
+}
+
+/* 标签页切换 */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    $('panel-'+t.dataset.tab).classList.add('active');
+  });
+});
+
+/* ===== 输出区通用读写（同时支持 div 与 textarea）===== */
+function getOut(el){ return el && el.tagName === 'TEXTAREA' ? el.value : (el ? el.textContent : ''); }
+function setOut(el, v){ if(!el) return; if(el.tagName === 'TEXTAREA') el.value = v; else el.textContent = v; }
+function appendOut(el, p){ if(!el) return; if(el.tagName === 'TEXTAREA') el.value += p; else el.textContent += p; }
+
+/* ============ 核心：调用 DeepSeek（流式）============ */
+async function callDeepSeek(systemPrompt, userPrompt, outEl, statusEl, btn, opt){
+  opt = opt || {};
+  const key = getKey();
+  if(!key){ statusEl.textContent = keyBlockedReason(); return ''; }
+  const base = $('baseUrl').value.trim().replace(/\/+$/,'');
+  const model = $('model').value;
+  const temp = parseFloat($('temperature').value);
+
+  btn.disabled = true; btn.textContent='生成中…'; statusEl.textContent='正在连接 DeepSeek…';
+  if(!opt.append) setOut(outEl, '');
+
+  try{
+    const resp = await fetch(base + '/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      signal: opt.signal,
+      body: JSON.stringify({
+        model, temperature:temp, stream:true, max_tokens:8192,
+        messages:[
+          {role:'system', content:systemPrompt},
+          {role:'user', content:userPrompt}
+        ]
+      })
+    });
+    if(!resp.ok){
+      let msg = '请求失败（'+resp.status+'）';
+      try{ const j=JSON.parse(await resp.text()); if(j.error&&j.error.message) msg+='：'+j.error.message; }catch(e){}
+      statusEl.textContent='⚠️ '+msg;
+      if(!opt.keepBusy){ btn.disabled=false; btn.textContent= btn.dataset.label; }
+      return getOut(outEl);
+    }
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buf='', first=true;
+    while(true){
+      const {done,value} = await reader.read();
+      if(done) break;
+      buf += decoder.decode(value,{stream:true});
+      const lines = buf.split('\n'); buf = lines.pop();
+      for(const line of lines){
+        const t = line.trim();
+        if(!t.startsWith('data:')) continue;
+        const data = t.slice(5).trim();
+        if(data==='[DONE]') continue;
+        try{
+          const j = JSON.parse(data);
+          const piece = j.choices?.[0]?.delta?.content || '';
+          if(piece){ if(first){first=false; statusEl.textContent='生成中…';} appendOut(outEl, piece); outEl.scrollTop=outEl.scrollHeight; }
+        }catch(e){}
+      }
+    }
+    statusEl.textContent='✅ 已完成';
+  }catch(err){
+    if(err && err.name==='AbortError'){ statusEl.textContent='⏹ 已停止'; }
+    else { statusEl.textContent='⚠️ 网络错误：'+err.message; }
+  }finally{
+    if(!opt.keepBusy){ btn.disabled=false; btn.textContent = btn.dataset.label; }
+  }
+  return getOut(outEl);
+}
+
+/* ============ 功能一：续写（AI / 本地双引擎） ============ */
+const contBtn = $('contBtn'); contBtn.dataset.label='开始续写';
+contBtn.addEventListener('click', async ()=>{
+  const content = $('contIn').value.trim();
+  if(!content){ $('contStatus').textContent='⚠️ 请先粘贴原文内容'; return; }
+  if(getEngine('cont')==='local'){ localContinue(); return; }
+  const totalWords = Math.max(50, parseInt($('contWords').value||'800',10));
+  const req = getContReq();
+  const styleRef = $('contStyleRef').value.trim();
+  await aiContinueRelay(content, totalWords, req, styleRef);
+});
+
+/* ===== AI 分段接力续写：单次调用有输出上限，自动一段接一段接着写，直到写够目标字数（不限字数） ===== */
+const contRelay = { running:false, stop:false, ctrl:null };
+const CONT_SYS = '你是一位专业的小说续写助手。请严格基于用户给出的已有内容，紧接其结尾自然续写，保持人物、世界观、叙事视角一致，不要复述或总结已有内容，直接产出新的情节文字。'
+  + '用户会给出「文风要求」和「续写要求」，请务必逐条落实：详细度、画面感与生动度、主角人设（如强势爽文不被欺负）、心理描写、节奏与结尾钩子等，都要在续写中真正体现出来。'
+  + '若用户给出「风格参考样本」，请以它的文风为最高优先级来模仿——句式长短、用词偏好、叙事节奏、描写密度都要向它靠拢；但只借它的"笔感"，绝不照抄它的情节与具体句子。'
+  + '每次只需紧接已有内容的结尾继续写指定字数的新情节：不要复述、不要总结、不要加章节标题，直接从结尾续上。';
+
+async function aiContinueRelay(content, totalWords, req, styleRef){
+  const status = $('contStatus');
+  const outEl = $('contOut');
+  const CHUNK = 1800;                                   // 每段目标字数（单次调用的安全输出量）
+  const maxRounds = Math.ceil(totalWords / CHUNK) + 6;  // 安全上限，防死循环
+  const sn = styleNote('cont');
+  let generated = '';
+  let prevChunk = '';
+  let round = 0;
+  contRelay.running = true; contRelay.stop = false;
+  contRelay.ctrl = ('AbortController' in window) ? new AbortController() : null;
+  $('contStop').style.display = '';
+  contBtn.disabled = true; contBtn.textContent = '接力生成中…';
+  setOut(outEl, '');
+
+  while(countChars(generated) < totalWords && round < maxRounds){
+    if(contRelay.stop) break;
+    round++;
+    const curTail = (content + (generated ? '\n\n' + generated : '')).slice(-6000);  // 只带结尾部分，控制提示词长度
+    const remain = totalWords - countChars(generated);
+    const ask = Math.min(CHUNK, Math.max(400, remain));
+    let user = `已有内容（结尾部分）如下：\n\n"""\n${curTail}\n"""\n\n这是第 ${round} 段接力。请紧接结尾继续写约 ${ask} 字（中文字符）的新情节，不要重复已有内容，直接从结尾续上。`;
+    if(sn) user += '\n'+sn;
+    if(req) user += '\n\n【续写要求】（请逐条严格执行）\n' + req;
+    if(styleRef) user += '\n\n【风格参考样本】（请深入模仿它的文风、句式、用词习惯与叙事节奏来续写，但绝不能照抄它的情节和句子）\n"""\n' + styleRef.slice(0,1500) + '\n"""';
+
+    status.textContent = `🔄 分段接力生成中… 第 ${round} 段 · 已生成 ${countChars(generated)} / ${totalWords} 字`;
+    const before = generated.length;
+    await callDeepSeek(CONT_SYS, user, outEl, status, contBtn, { append:true, keepBusy:true, signal: contRelay.ctrl ? contRelay.ctrl.signal : undefined });
+    const full = getOut(outEl);
+    if(contRelay.stop){ generated = full; break; }    // 手动停止：保留已生成（含进行中的半段）
+    const chunk = full.slice(before).trim();
+    if(!chunk){ break; }                          // 空响应/出错 → 停止，保留已生成部分
+    if(chunk === prevChunk){ break; }             // 模型开始复读 → 停止，防死循环
+    prevChunk = chunk;
+    generated = full;
+    status.textContent = `🔄 分段接力生成中… 第 ${round} 段完成 · 已生成 ${countChars(generated)} / ${totalWords} 字`;
+  }
+
+  contRelay.running = false;
+  $('contStop').style.display = 'none';
+  contBtn.disabled = false; contBtn.textContent = contBtn.dataset.label;
+  const gen = generated.trim();
+  if(gen){
+    $('contIn').value = (content + '\n\n' + gen).trim();
+    setCount($('contCount'), $('contIn').value);
+    const stopped = contRelay.stop && countChars(gen) < totalWords;
+    status.textContent = (stopped ? '⏹ 已手动停止：' : '✅ ')
+      + '共生成 ' + countChars(gen) + ' 字（' + round + ' 段接力），已自动拼接到原文末尾，可继续续写或下载';
+  }else{
+    status.textContent = '⚠️ 没有生成出内容，请检查 Key / 网络后重试';
+  }
+  contRelay.stop = false;
+}
+/* 手动停止：打断进行中的请求，保已生成的部分 */
+$('contStop').addEventListener('click', ()=>{
+  contRelay.stop = true;
+  try{ if(contRelay.ctrl) contRelay.ctrl.abort(); }catch(e){}
+  $('contStatus').textContent = '⏹ 正在停止…（已生成部分会保留）';
+});
+/* 本地离线续写：字符级变阶马尔可夫链 */
+function localContinue(){
+  const content = $('contIn').value.trim();
+  const status = $('contStatus');
+  const words = parseInt($('contWords').value||'800',10);
+  const order = parseInt($('contOrder').value||'4',10);
+  const rand  = parseInt($('contRand').value||'4',10);
+  if(countChars(content) < 80){
+    status.textContent='⚠️ 本地引擎需要至少 80 字原文来学习用词，请先多粘贴一些（或切到 AI 引擎）';
+    return;
+  }
+  status.textContent='⏳ 正在学习你的用词习惯…';
+  setTimeout(()=>{
+    let out;
+    const styleRef = $('contStyleRef').value.trim();
+    try{
+      const learn = CLEAN.run(content, {...getCleanOpt(), indent:false, mergeLines:true}).text;
+      if(countChars(learn) < 60){ status.textContent='⚠️ 可学习的文字太少，再多粘贴一些吧'; return; }
+      let corpus = learn;
+      if(styleRef){
+        // 把风格参考样本一起喂给马尔可夫链学习（用词/句式/节奏向样本靠拢），但仍从原文结尾接着走
+        const refLearn = CLEAN.run(styleRef, {...getCleanOpt(), indent:false, mergeLines:true}).text;
+        if(countChars(refLearn) > 20) corpus = learn + '\n' + refLearn;
+      }
+      const ph = LOCAL_GEN.splitPhrases(learn);   // 从原文最后一句往下接着走
+      out = LOCAL_GEN.generate(corpus, { words, rand, order, seed: ph.length ? ph[ph.length-1] : '' });
+    }catch(err){ status.textContent='⚠️ 本地生成出错：'+err.message; return; }
+    if(!out.trim()){ status.textContent='⚠️ 没生成出来，换个连贯度/发散度再试一次'; return; }
+    setOut($('contOut'), out);
+    setCount($('contCount'), out);
+    $('contIn').value = (content + '\n\n' + out).trim();
+    status.textContent='✅ 本地引擎续写完成（'+countChars(out)+' 字）'
+      + (styleRef ? '，已融合风格参考样本的文风' : '') + '，已拼接到原文末尾';
+  const req = getContReq();
+  if(req) status.textContent += '　⚠️ 提示：本地引擎只重组原文文风，无法理解「' + '更详细 / 主角不被欺负' + '」这类语义指令，已忽略。要严格执行你的续写要求，请切到 ⚡AI 大模型。';
+  }, 20);
+}
+$('contOut').addEventListener('input',()=>setCount($('contCount'), getOut($('contOut'))));
+$('contCopy').onclick=()=>copyText($('contIn').value);
+$('contDown').onclick=()=>downloadText($('contIn').value, '完整小说.txt');
+
+/* 续写要求：常用指令可点选（再点取消），自定义要求用户自己加 */
+const _contReqSet = new Set();        // 已选常用指令
+const _contReqCustom = [];            // 自定义指令（字符串数组）
+document.querySelectorAll('#contReqChips .chip').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const add = b.dataset.add;
+    if(_contReqSet.has(add)){ _contReqSet.delete(add); b.classList.remove('on'); }
+    else { _contReqSet.add(add); b.classList.add('on'); }
+  });
+});
+$('contReqAdd').addEventListener('click', addCustomReq);
+$('contReqInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); addCustomReq(); }});
+function addCustomReq(){
+  const inp = $('contReqInput');
+  const v = inp.value.trim();
+  if(!v) return;
+  if(_contReqCustom.includes(v)){ inp.value=''; return; }
+  _contReqCustom.push(v);
+  renderCustomChips();
+  inp.value='';
+}
+function renderCustomChips(){
+  const box = $('contReqCustomChips');
+  box.querySelectorAll('.chip.custom').forEach(n=>n.remove());
+  _contReqCustom.forEach((v,i)=>{
+    const c = document.createElement('button');
+    c.type='button'; c.className='chip custom on';
+    c.textContent = v + ' ✕';
+    c.title='点击移除该自定义要求';
+    c.addEventListener('click', ()=>{ _contReqCustom.splice(i,1); renderCustomChips(); });
+    box.appendChild(c);
+  });
+}
+function getContReq(){
+  const parts = [..._contReqSet, ..._contReqCustom];
+  let req = parts.join('，');
+  const free = $('contReq').value.trim();
+  if(free) req = req ? (req + '　' + free) : free;
+  return req;
+}
+/* 一键清空所有续写要求：常用选择 / 自定义 / 自由文本全部复位 */
+function clearContReq(){
+  _contReqSet.clear();
+  _contReqCustom.length = 0;
+  $('contReq').value = '';
+  document.querySelectorAll('#contReqChips .chip').forEach(b=>b.classList.remove('on'));
+  renderCustomChips();
+}
+$('contReqClear').addEventListener('click', clearContReq);
+
+/* 文风选「自定义」时才显示自定义文风输入框，避免无谓干扰 */
+function syncStyleCustom(pfx){
+  const sel = $(pfx+'Style'), wrap = $(pfx+'StyleCustomWrap');
+  if(sel && wrap){ wrap.style.display = sel.value==='自定义' ? '' : 'none'; }
+}
+['cont','mimic'].forEach(p=>{
+  const s = $(p+'Style'); if(s) s.addEventListener('change', ()=>syncStyleCustom(p));
+});
+syncStyleCustom('cont'); syncStyleCustom('mimic');
+
+/* ============ 功能二：同风格创作（AI / 本地双引擎） ============ */
+const mimicBtn = $('mimicBtn'); mimicBtn.dataset.label='开始创作';
+mimicBtn.addEventListener('click',()=>{
+  const ref = $('mimicIn').value.trim();
+  if(!ref){ $('mimicStatus').textContent='⚠️ 请先粘贴参考内容'; return; }
+  if(getEngine('mimic')==='local'){ localMimic(); return; }
+  const words = $('mimicWords').value || '800';
+  const topic = $('mimicTopic').value.trim();
+  const sys = '你是一位专业的小说创作助手。请深度分析用户提供的参考内容，精准模仿其文风、语言节奏、叙事视角、用词习惯与情绪基调，然后创作一段全新的小说文字。新内容与参考内容情节不同，但笔调高度一致。';
+  let user = `参考内容如下：\n\n"""\n${ref}\n"""\n\n请模仿上述文风，创作一段全新的小说内容，约 ${words} 字（中文字符）。`;
+  const sn = styleNote('mimic'); if(sn) user += '\n'+sn;
+  if(topic) user += '\n情节/主题方向：'+topic;
+  user += '\n注意：不要复述参考内容本身，要写出风格一致的新故事。';
+  callDeepSeek(sys, user, $('mimicOut'), $('mimicStatus'), mimicBtn);
+});
+/* 本地离线同风格：短语级变阶马尔可夫链（用原文的短语重新编织） */
+function localMimic(){
+  const ref = $('mimicIn').value.trim();
+  const status = $('mimicStatus');
+  const words = parseInt($('mimicWords').value||'800',10);
+  const order = parseInt($('mimicOrder').value||'2',10);
+  const rand  = parseInt($('mimicRand').value||'5',10);
+  const topic = $('mimicTopic').value.trim();
+  if(countChars(ref) < 80){
+    status.textContent='⚠️ 本地引擎需要至少 80 字参考文来学习句式，请先多粘贴一些（或切到 AI 引擎）';
+    return;
+  }
+  status.textContent='⏳ 正在拆解原文句式…';
+  setTimeout(()=>{
+    let out;
+    try{
+      const learn = CLEAN.run(ref, {...getCleanOpt(), indent:false, mergeLines:true}).text;
+      if(countChars(learn) < 60){ status.textContent='⚠️ 可学习的句式太少，再多粘贴一些吧'; return; }
+      // 给了主题就挑与主题用字最贴近的短语当开头
+      let seed = '';
+      if(topic){
+        const tc = new Set(topic.replace(/[\s，。、！？]/g,'').split(''));
+        let best='', bs=0;
+        LOCAL_GEN.splitPhrases(learn).forEach(p=>{
+          let s2=0; for(const c of p) if(tc.has(c)) s2++;
+          if(s2>bs){ bs=s2; best=p; }
+        });
+        seed = best;
+      }
+      out = LOCAL_GEN.generate(learn, { words, rand, order, seed });
+    }catch(err){ status.textContent='⚠️ 本地生成出错：'+err.message; return; }
+    if(!out.trim()){ status.textContent='⚠️ 没生成出来，换个连贯度/发散度再试一次'; return; }
+    setOut($('mimicOut'), out);
+    setCount($('mimicCount'), out);
+    status.textContent='✅ 本地引擎创作完成（'+countChars(out)+' 字）· 味道像原句，情节随机，可当灵感底稿';
+  }, 20);
+}
+$('mimicOut').addEventListener('input',()=>setCount($('mimicCount'), getOut($('mimicOut'))));
+$('mimicCopy').onclick=()=>copyText(getOut($('mimicOut')));
+$('mimicDown').onclick=()=>downloadText(getOut($('mimicOut')), '同风格创作.txt');
+
+/* ============ 引擎切换（本地离线 / AI）============ */
+document.querySelectorAll('.seg[data-engine]').forEach(seg=>{
+  seg.addEventListener('click', e=>{
+    const b = e.target.closest('button[data-mode]');
+    if(!b) return;
+    setEngine(seg.dataset.engine, b.dataset.mode);
+  });
+});
+[['contOrder','contOrderVal'],['contRand','contRandVal'],
+ ['mimicOrder','mimicOrderVal'],['mimicRand','mimicRandVal']].forEach(([a,b])=>{
+  $(a).addEventListener('input', e=>{ $(b).textContent = e.target.value; });
+});
+
+/* ==================================================================
+   功能三：本地智能清洗引擎（纯前端 · 不需要任何 API）
+   流程：归一化 → 行内精确剔除 → 行级启发式判定 → 频率统计去水印
+        → 正文范围定位 → 段落重排 → 标点规范 → 残留复检
+   ================================================================== */
+const CLEAN = (function () {
+  /* ---------------- 正则库 ---------------- */
+  // URL 里允许出现的字符（遇到空白或中英标点就截断）
+  const NSP = "[^\\s\\u3000-\\u303f\\uff01-\\uff65\"'|]";
+  const TLD =
+    "(?:com|cn|net|org|cc|co|io|me|tv|xyz|top|info|biz|la|tw|hk|vip|club|site|online|fun|pw|su|ru|uk|jp|kr|de|fr|us|in|pro|app|dev|shop|store|work|link|icu|wang|xin|ren|mobi|asia|moe|lol|art|wiki|blog|news|book|read|ltd|group|team|space|world|life|love|today|zone|run|tech|media|press|studio|design|center|guru|ninja|plus|one|red|blue|kim|mom|party|review|trade|date|faith|racing|stream|download|science|fit|golf|house|menu|photo|rent|tips|edu|gov)";
+
+  const RE_EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+  const RE_HTTP = new RegExp("(?:https?|ftp)\\s*[:：]\\s*\\/\\/" + NSP + "*", "gi");
+  const RE_PROTO = new RegExp("\\/\\/" + NSP + "*\\." + NSP + "*", "g");
+  const RE_WWW = new RegExp(
+    "\\bwww\\s*[.。．]\\s*" + NSP + "*(?:\\s*[.。．]\\s*" + NSP + "*)+", "gi");
+  const RE_SUB = new RegExp(
+    "\\b(?:m|wap|mobile|3g|book|read|novel|my|bbs|app|txt|manhua|xs)\\s*[.。．]\\s*" +
+      NSP + "*\\s*[.。．]\\s*" + NSP + "*", "gi");
+  // 裸域名：biquge.com / m.xbiquge.la/12/12345/
+  const RE_DOMAIN = new RegExp(
+    "(?:[a-z0-9](?:[a-z0-9\\-]{0,61}[a-z0-9])?\\s*[.。．]\\s*)+(?:" + TLD +
+      ")(?![a-z0-9])" + NSP + "*", "gi");
+  // 变形域名：笔趣阁点com / www点baidu点com
+  const RE_CNDOM =
+    /[\u4e00-\u9fa5A-Za-z0-9]{1,15}\s*[点點]\s*(?:com|cn|net|cc|co|org|la|info|tv)\b/gi;
+  const RE_QQ =
+    /(?:QQ|Qq|qQ|qq|Q群|加群|群号|书友群|交流群|群)\s*(?:号|号码)?\s*[:：]?\s*\d{5,13}/g;
+  const RE_WX =
+    /(?:微信|weixin|WeChat|公众号|V信|vx|VX|wx|WX)\s*(?:公众)?(?:号|ID|id|账号)?\s*[:：]?\s*[A-Za-z0-9_-]{5,24}/g;
+  const RE_PCT = /(?:%[0-9A-Fa-f]{2}){4,}/g;
+  const RE_LONGTOK = /[A-Za-z0-9]{18,}/g;
+  const RE_LONGNUM = /\d{9,}/g;
+
+  /* 站名（精确词表） */
+  const SITE_WORDS = [
+    "笔趣阁", "笔趣库", "笔趣岛", "新笔趣", "笔趣", "顶点小说", "顶点", "八一中文",
+    "八一小说", "红薯网", "落秋", "燃文", "88读书", "5200小说", "小说阅读网",
+    "言情小说吧", "看书网", "书包网", "飘天", "宜搜", "神马小说", "百度小说",
+    "爱下电子书", "知轩藏书", "采薇", "刺猬猫", "欢乐书客", "起点中文网",
+    "起点读书", "起点", "创世中文网", "云起书院", "红袖添香", "飞卢", "纵横",
+    "17K", "17k", "晋江", "潇湘", "番茄小说", "番茄", "七猫", "书旗", "掌阅",
+    "QQ阅读", "网易云阅读", "豆瓣阅读", "微信读书", "米读", "疯读", "必看小说",
+    "塔读", "磨铁", "不可能的世界", "长佩", "海棠文学", "废文网", "LOFTER",
+    "lofter", "百度贴吧", "贴吧", "知乎", "微博", "番茄畅听", "畅读书城",
+    "追书神器", "多多看书", "读书屋", "天籁小说", "小说屋", "求书网", "书朋",
+    "久久小说", "笔下文学", "酷匠", "黑岩", "八一中文网", "新笔趣阁", "品书网",
+    "顶点中文", "无弹窗", "无广告", "手机阅读网", "小说网",
+  ];
+  // 通用站名：XX小说网 / XX书城 / XX电子书 …
+  const SITE_GENERIC =
+    /[\u4e00-\u9fa5A-Za-z0-9]{2,8}(?:小说网|中文网|文学网|看书网|读书网|书城|书屋|书院|电子书|下载网|阅读网|文学城|小说站|书库|阅读器|中文小说)/g;
+  const SITE_ALL = new RegExp(
+    "(?:" + SITE_WORDS.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") +
+      "|" + SITE_GENERIC.source + ")", "g");
+
+  /* 站方特征词（出现这些才算"站方口吻"，避免误伤正文里恰好提到的站名） */
+  const RE_SITE_FEATURE =
+    /(?:网址|域名|本站|本网|本页|首发|提供|整理|收录|转载|来自|访问|阅读|下载|更新|收藏|搜索|客户端|扫|二维码|无弹窗|无广告|最新章节|全文|完本|免费|版权|所有|声明|侵权|联系|举报|书架|连载|TXT|txt|手机版|电脑版|APP|app)/;
+
+  /* 广告 / 求票 / 导航 句式 */
+  const AD_PATTERNS = [
+    /(?:求|跪求|恳请|希望大家)(?:各位|大家)?(?:收藏|推荐|月票|订阅|打赏|鲜花|票|支持|点击|关注|评论|评分|追读|投)/,
+    /(?:请|记得|别忘了|欢迎)(?:大家|各位)?(?:支持正版|收藏|订阅|关注|投票|投|打赏|推荐|移步|登录|点击|记住|搜索|长按|识别|扫码|前往)/,
+    /(?:月票|推荐票|催更|加更|爆更|贵宾票|投鲜花|打赏支持)/,
+    /(?:新书|新作|老书)(?:已|即|马上)?(?:上传|发布|开更|求|需要)(?:支持|收藏|推荐|关注|票)/,
+    /(?:本书|小说|内容|章节|本文)(?:由|来自|首发于|发布于|转载自|整理自|采集自)[^\n，。]{0,26}(?:提供|发布|整理|上传|首发|收录|转载)/,
+    /(?:本站|本网|本小说|本页|本作品)[^\n]{0,12}(?:网址|域名|地址|首发|提供|更新|收录|连载|版权|所有)/,
+    /(?:请记住|牢记|记下|收藏)(?:本站|本书|本网)?(?:网址|域名|地址)?/,
+    /(?:手机|电脑|安卓|苹果|IOS|ios|Android|kindle)[^\n]{0,8}(?:阅读|看书|下载|客户端|APP|app)/,
+    /(?:下载|安装|前往)[^\n]{0,6}(?:APP|app|客户端|软件)/,
+    /(?:扫码|扫一扫|长按|识别二维码|二维码|关注公众号|微信搜索|搜索公众号)/,
+    /(?:最新章节|全文阅读|无弹窗|无广告|更新最快|手打|纯文字|TXT下载|txt下载|免费阅读|在线阅读|完整版|完本小说|全集下载)/,
+    /(?:本章未完|未完待续|精彩继续|下章更精彩|请点击|点击下一页|下一页继续|请翻页|继续阅读|剩余内容|后续内容|请等待更新|本章完|本章结束)/,
+    /(?:上一[章节页]|下一[章节页]|返回目录|返回书页|回到顶部|回到首页|加入书架|加入书签|我的书架|目录页|章节目录|全部章节|查看目录)/,
+    /(?:热门推荐|相关推荐|同类推荐|猜你喜欢|喜欢这本书|看过本书|本书星级|书友评价|最新评论|发表评论|精彩书评|网友评论|用户评论|评论列表|全部评论|书评区|留言板|本章说)/,
+    /(?:本章|本篇|本文|全书)(?:字数|共|共计)?\s*\d+\s*字/,
+    /(?:更新时间|最后更新|更新于|更新至|本书首发|首发站点)/,
+    /(?:章节错误|内容错误|缺章|重复章节|报错|纠错|举报本章|段落错误|内容举报)/,
+    /(?:喜欢|喜欢上|觉得不错|看得爽|还不错)(?:本书|这本|这篇|这个|的话)?[^\n]{0,8}(?:请|记得|别忘|麻烦|还请)(?:到|去|来|收藏|订阅|支持|关注|投票|投|打赏|推荐|点)/,
+    /(?:请到|请前往|请移步|请登录|请搜索)[^\n]{0,30}(?:支持|阅读|观看|订阅|收藏|正版|本站|官网)/,
+    /(?:复制|拷贝|转载|摘录)[^\n]{0,10}(?:请注明|注明出处|标明出处)/,
+  ];
+
+  /* 导航条 / 面包屑 / 推荐位（整页全选复制时最容易混进来的一类） */
+  const NAV_WORD =
+    "(?:首页|主页|书城|分类|排行|榜单|书架|完本|连载|搜索|登录|注册|我的|下载|充值|会员" +
+    "|玄幻|奇幻|武侠|仙侠|都市|言情|历史|军事|科幻|网游|悬疑|恐怖|轻小说|同人|名著|小说)";
+  const NAV_PATTERNS = [
+    /(?:您的位置|当前位置|所在位置|你的位置|您在这里)/,
+    new RegExp("^" + NAV_WORD + "(?:[\\s|>》›·、,，|｜／/]{1,3}" + NAV_WORD + "){2,}"),
+    /(?:大家都在看|大家在看|都在看|本周热门|本月热门|今日热门|热门排行|人气排行|点击榜|推荐榜|收藏榜|新书榜|编辑推荐|站长推荐|精品推荐|强力推荐|同类好书|相似推荐|看过此书|读过此书|为您推荐|为你推荐|推荐阅读|猜你在看|猜你喜欢|喜欢这本书|看过本书)/,
+    /(?:本书|本小说)?\s*(?:星级|评分)\s*[:：]?\s*[★☆\d.\s]{1,12}/,
+  ];
+  function isNavLine(l) {
+    const raw = l || "";
+    const s = raw.replace(/\s/g, "");
+    if (!s) return false;
+    // 面包屑/导航条靠分隔符识别，所以去空白前后都要试一次
+    return NAV_PATTERNS.some((re) => re.test(raw) || re.test(s));
+  }
+
+  /* 单行 UI 词（去掉空白后完全相等才删） */
+  const UI_EXACT = new Set([
+    "首页", "分类", "排行", "排行榜", "书架", "目录", "上一章", "下一章", "上一页",
+    "下一页", "上一节", "下一节", "返回目录", "返回首页", "返回", "顶部", "底部",
+    "加入书架", "投推荐票", "求收藏", "求月票", "发表评论", "最新评论", "热门推荐",
+    "相关推荐", "猜你喜欢", "登录", "注册", "搜索", "APP", "app", "手机阅读",
+    "扫码", "下载", "客户端", "书评区", "全本", "完本", "TXT下载", "txt下载",
+    "加入书签", "我的书架", "阅读记录", "历史记录", "清空", "设置", "反馈",
+    "意见", "举报", "投诉", "版权", "关于我们", "联系我们", "商务合作",
+    "侵权删除", "广告投放", "站点地图", "电脑版", "手机版", "桌面版", "触屏版",
+    "简体", "繁體", "繁体", "A+", "A-", "放大", "缩小", "背景", "夜间", "日间",
+    "亮度", "自动", "全屏", "退出", "打赏", "投币", "催更", "加更", "爆更",
+    "首发", "收藏", "推荐", "投票", "分享", "纠错", "报错", "本章完", "本章终",
+    "完", "END", "end", "The End", "请稍候", "加载中", "正在加载", "广告",
+    "AD", "免费", "VIP", "vip", "充值", "订阅", "包月", "全订", "追读", "书签",
+    "目录页", "继续阅读", "点击继续", "更多", "展开", "收起", "刷新", "上一章<",
+    "下一章>", "返回顶部", "用户中心", "个人中心", "会员", "签到", "书架>",
+  ]);
+
+  /* 评论 / 楼层 / 时间戳 */
+  const COMMENT_PATTERNS = [
+    /^\d{1,3}\s*楼/,
+    /^(?:.{0,14})(?:发表于|发布|回复|楼层|楼主|沙发|板凳|地板|顶一下|赞一下)/,
+    /^(?:.{0,12})(?:网友|书友|读者|用户|游客|匿名|访客|会员|道友)[_0-9]{0,10}\s*[:：]/,
+    /^(?:书评|评论|留言|短评|读后感)\s*[:：]?/,
+    /^(?:好评|差评|中评|评分|打分)\s*[:：]?/,
+  ];
+  const RE_DATE_LINE = /^\d{4}\s*[-年\/.]\s*\d{1,2}\s*[-月\/.]\s*\d{1,2}/;
+  const RE_TIME_LINE = /^\d{1,2}\s*[:：]\s*\d{2}(?:\s*[:：]\s*\d{2})?/;
+
+  /* 版权 / 免责 */
+  const CR_PATTERNS = [
+    /copyright/i, /版权所有|版权归|版权声明|版权属于/i,
+    /未经授权|侵权必究|禁止转载|转载请|免责声明|免责条款|免责/i,
+    /本文来自|本文由|内容来自|来源于网络|如有侵权|联系删除|侵权删|侵删/,
+    /ICP备|备案号|公安备案|经营许可证|网络文化经营|出版物经营|电信与信息服务/,
+    /违法和不良信息|举报电话|举报邮箱|举报中心|互联网ICP|增值电信/,
+    /本站(?:所有|提供)?(?:内容|小说|作品)?(?:均|都)?(?:为|来自)?(?:网友|网络)?(?:上传|提供|收集)/,
+  ];
+
+  /* 站点声明 / 年龄警告（成人站点尾部常见，非小说内容，正文锚定法会误判为正文） */
+  const DISCLAIMER_PATTERNS = [
+    // 以“警告/申明/声明/提示/免责/站点申明”等开头，且含年龄/成人/离开/法律/本网站 任一信号
+    /^(?:警告|敬告|提示|申明|声明|免责|站点申明|站点声明|本站声明|网站声明|本声明|本网站声明|风险提示)[:：﹕︰]/,
+    // 年龄限制句：未满/十八岁或以上/只适合十八岁/只供成人…
+    /(?:未满|未滿)\s*1?\s*8\s*岁|十八\s*岁\s*(?:或|以)\s*(?:以上|以下)|十八岁\s*或\s*以上|只(?:适合|供|限)\s*(?:十八|18)\s*岁|只(?:适合|供|限)\s*(?:成年|成人)\s*(?:人士|用户|观众)?\s*(?:观看|浏览|阅读)?/,
+    // 立于某国 + 受…法律保护（成人站点经典措辞）
+    /(?:立足于|位于)\s*(?:美利坚|美国|北美)[^。，]{0,18}(?:法律|保护)/,
+    // 请立即离开 / 被误导来到这里
+    /请(?:立即|马上|速|尽快)\s*(?:离开|关闭|退出)|被(?:误导|骗|误引)\s*(?:来到|进入|来到这里)/,
+    // 本网站/本站 + 只供十八岁/成人
+    /(?:本网站|本站|本网|本页面)\s*(?:只|仅|只供|仅供|适合|供)\s*(?:十八|18|成人|成年)/,
+  ];
+  function isDisclaimerLine(line) {
+    const s = (line || "").replace(/\s/g, "");
+    if (!s) return false;
+    if (/^(?:警告|敬告|提示|申明|声明|免责|站点申明|站点声明|本站声明|网站声明|本声明|本网站声明|风险提示)[:：﹕︰]/.test(s)) {
+      // 开头词需配合“年龄/成人/离开/法律/本网站”等信号，避免误删正文中出现的“声明”二字
+      return /十八|18|成人|成年|未满|离开|法律|保护|观看|浏览|美利坚|北美|本网站|本站|限制/.test(s);
+    }
+    return DISCLAIMER_PATTERNS.slice(1).some((re) => re.test(s));
+  }
+
+  /* 页码 / 分隔线 */
+  const PAGE_PATTERNS = [
+    /^[\s\-—=_*·.。•●○◆■□※]{3,}$/,
+    /^\s*(?:第)?\s*\d{1,4}\s*(?:[/／|｜]\s*\d{1,4}\s*)?\s*(?:页|頁)?\s*$/,
+    /^\s*[（(]\s*\d{1,4}\s*[/／]\s*\d{1,4}\s*[)）]\s*$/,
+    /^\s*\d{1,3}\s*%\s*$/,
+    /^\s*(?:共|总共)\s*\d{1,4}\s*(?:页|章)\s*$/,
+  ];
+
+  /* 成人/博彩/导航广告连词（常挤成一行，如「传媒91传媒精东…」） */
+  const SPAM_TOKENS = [
+    "传媒", "91", "精东", "麻豆", "映画", "猫爪", "蜜桃", "天美", "星空", "果冻", "尤物",
+    "杏吧", "51", "福利", "自拍", "偷拍", "探花", "直播", "国产", "日韩", "欧美", "亚洲",
+    "中文字幕", "字幕", "无码", "有码", "高清", "在线", "视频", "影视", "影院",
+    "情色", "色情", "黄色", "成人", "激情", "裸体", "巨乳", "丝袜", "美腿",
+    "乱伦", "人妻", "萝莉", "熟女", "SM", "sm", "三级", "禁片", "约炮", "援交",
+    "做爱", "性交", "性爱", "换妻", "绿帽", "群交", "内射", "口交", "肛交",
+    "porn", "Porn", "AV", "av", "xvideos", "pornhub", "xhamster", "se", "SE",
+    // ↓ 补充：成人站常用引流词 / 品牌名
+    // 注意：这里只做「密集度计分」，要 3 个以上词扎堆才会判成广告墙，
+    // 所以宁可多收也不能收高频日常字（"热""东京"这类会误伤正文，已剔除）。
+    "草榴", "sis", "SIS", "xyz", "XYZ", "91porn", "91pron",
+    "一本道", "东京热", "色情五月", "丁香五月", "人人爽", "人人澡", "人人碰",
+    "爱威", "麻豆传媒", "麻豆映画", "麻豆厂", "星空传媒",
+    "精东传媒", "精东影业", "蜜桃传媒", "猫爪",
+    "杏吧", "杏吧原创", "色中色", "色界", "色一点", "国产自拍", "偷拍自拍",
+    "美女视频", "美女直播", "美女图片", "性感美女", "嫩模",
+    "无码av", "有码av", "av女优", "女优", "里番",
+    "快播", "QVOD", "qvod", "西瓜影音", "吉吉影音", "先锋影音",
+    "磁力", "磁力链", "BT种子", "种子下载", "迅雷下载", "网盘下载",
+    "精品国产", "日韩无码", "欧美无码", "亚洲无码", "中文字幕",
+    "福利专区", "福利导航", "福利入口", "福利地址", "福利发布页",
+    "宅男天堂", "宅男必备", "宅男福利", "男人天堂", "男人最爱",
+    "夜夜啪", "夜夜啪啪", "一区二区", "亚洲欧美",
+  ];
+  function adWallScore(s) {
+    let score = 0; const seen = new Set();
+    for (const t of SPAM_TOKENS) {
+      if (s.indexOf(t) >= 0 && !seen.has(t)) { score++; seen.add(t); }
+    }
+    return score;
+  }
+
+  /* ===== 色情 / 成人广告：组合强特征，命中即整行删除 =====
+     设计原则：单词不删（"澳门""东京"在正文里很常见），
+     必须"敏感词 + 推广/站点动作词"成对出现才判定为广告，
+     这样既能删干净，又不会误伤正文。 */
+  const ADULT_HARD = [
+    /(?:免费|在线|高清|极速|海量|最新|尽在|尽享)?\s*(?:看片|看毛片|看A片|看黄片|看三级|看福利片|看成人片|看大片)/,
+    /(?:无码|有码|高清|全裸|露点|激情|限制级|18禁|十八禁)[^\n]{0,8}(?:视频|影片|电影|大片|片源|在线|观看|播放|下载|资源|专区|频道)/,
+    /(?:色情|情色|黄色|成人|限制级|18禁|十八禁)[^\n]{0,8}(?:网站|网址|论坛|社区|电影|影片|视频|图片|图片区|频道|专区|内容|导航|入口|大全)/,
+    /(?:成人|色情|情色|黄色|福利)[^\n]{0,6}(?:福利|资源|专区|导航|入口|发布页|永久|地址|网址)/,
+    /(?:宅男|老司机|你懂的|懂的来|懂的入|秒懂|男人|福利姬)[^\n]{0,10}(?:福利|专区|导航|入口|网址|地址|必看|首选|天堂|圣地|请进|点击|都懂)/,
+    /(?:夜夜|午夜|深夜|一夜|同城|约炮|约爱|寻欢|偷欢|艳遇)[^\n]{0,8}(?:啪|激情|约会|交友|神器|福利|专区|网站|入口|导航)/,
+    /(?:自拍|偷拍|裸聊|裸体|脱衣|卖淫|嫖娼|援交|换妻|约炮)[^\n]{0,10}(?:视频|影片|直播|网站|网址|论坛|专区|入口|点击|注册|下载|免费|在线|观看|资源|图片)/,
+    /(?:葡京|新葡京|威尼斯人|太阳城|金沙|美高梅|银河|英皇|永利|菲律宾|柬埔寨)[^\n]{0,12}(?:赌场|娱乐城|官网|注册|开户|投注|开户送|官网直达|上线)/,
+    /(?:博彩|赌博|赌场|彩票|私彩|外围|六合|时时彩|赛车|分分彩)[^\n]{0,10}(?:注册|开户|投注|下注|开户送|官网|平台|网站|充值|返水|返利|彩金|提现|走势)/,
+    /(?:棋牌|捕鱼|老虎机|德州|炸金花|斗地主|麻将|真人)[^\n]{0,10}(?:下载|注册|充值|开户|官网|平台|送彩金|提现|娱乐)/,
+    /(?:做爱|性交|性爱|口交|肛交|内射|群交|乱伦|强奸|迷奸)[^\n]{0,10}(?:视频|影片|直播|网站|网址|论坛|专区|入口|点击|注册|下载|免费|在线|观看|资源|小说)/,
+    /(?:色情|成人|情色)\s*(?:网站|网址|导航|入口|论坛|社区|小说)\s*(?:大全|合集|汇总|推荐|排行榜)/,
+    /\b(?:pornhub|xvideos|xhamster|xnxx|redtube|youporn|brazzers|onlyfans|javdb|javbus|javlibrary|91porn|t66y|sexinsex)\b/i,
+    /(?:传媒|影业|映画|原创)\s*(?:出品|制作|官网|入口|导航|地址)/,
+  ];
+
+  /* ===== 软件 / App 推广 ===== */
+  const APP_PROMO = [
+    /(?:安卓|Android|android|苹果|iOS|IOS|iphone|iPhone|iPad|鸿蒙|华为|小米|OPPO|vivo)[^\n]{0,8}(?:版|客户端|安装包|APP|app)?[^\n]{0,8}(?:下载|安装)/,
+    /(?:扫码|扫一扫|长按|识别二维码|二维码)[^\n]{0,10}(?:下载|安装)[^\n]{0,8}(?:APP|app|客户端|软件|应用)?/,
+    /(?:应用宝|应用市场|苹果商店|App\s*Store|AppStore|Google\s*Play|华为应用|小米商店|豌豆荚|360手机助手|腾讯应用宝)[^\n]{0,12}(?:搜索|下载|安装|获取|上线)/,
+    /(?:安装包|apk|APK)[^\n]{0,10}(?:下载|安装|大小|版本|获取|地址)/,
+    /(?:APP|app|软件|应用|客户端)[^\n]{0,10}(?:免费下载|官方下载|最新版|极速版|破解版|内购版|去广告版|纯净版)/,
+    /(?:点击|立即|马上|一键|前往)[^\n]{0,6}(?:下载|安装)[^\n]{0,8}(?:APP|app|客户端|软件|应用|安装包)/,
+    /(?:下载|安装)[^\n]{0,8}(?:APP|app|客户端|软件)[^\n]{0,12}(?:送|领|得|享|即送|领取|送会员|送VIP)/,
+    /(?:手机|电脑)[^\n]{0,6}(?:用户|版)?[^\n]{0,6}(?:请|可|前往|到|去)[^\n]{0,8}(?:下载|安装)/,
+  ];
+
+  function isAdultAd(l) {
+    const s = (l || "").replace(/\s/g, "");
+    if (!s) return false;
+    return ADULT_HARD.some((re) => re.test(s));
+  }
+  function isAppPromo(l) {
+    const s = (l || "").replace(/\s/g, "");
+    if (!s || s.length > 160) return false;
+    return APP_PROMO.some((re) => re.test(s));
+  }
+  // 行内剔除用的全局版本（预编译一次，避免逐行重建正则）
+  const ADULT_HARD_G = ADULT_HARD.map((re) => new RegExp(re.source, "gi"));
+  const APP_PROMO_G = APP_PROMO.map((re) => new RegExp(re.source, "gi"));
+
+  /* 很像广告墙：Spam 词密集 + 几乎没有正常句尾 + 非标题 */
+  function isAdWallLine(l) {
+    const s = l.replace(/\s/g, "");
+    if (s.length < 8 || TITLE_RE.test(s)) return false;
+    const score = adWallScore(s);
+    if (score < 3) return false;
+    const ends = (s.match(/[。！？.!?]/) || []).length;
+    // 3~4 个 spam 词且无句尾 → 广告墙；>=5 个 spam 词几乎肯定是
+    if (score >= 5) return true;
+    if (score >= 3 && ends === 0) return true;
+    return false;
+  }
+
+  /* 书名 / 作者 等元信息 */
+  const META_RE =
+    /^\s*(?:书名|小说名|作品名|作者|作者名|笔名|分类|类型|标签|状态|字数|总字数|更新时间|最后更新|更新于|首发|首发站点|简介|内容简介|作品简介|主角|主角名|配角|其它|其他|作品标签|创作时间|入站时间|本书主角|文章状态)\s*[:：]/;
+
+  /* 括号内推广 */
+  const RE_BRACKET_PROMO =
+    /(?:【|\[|\(|\uff08)[^\]\)\uff09】]{0,40}?(?:网址|官网|本站|首发|下载|阅读|提供|收藏|推荐|公众号|微信|QQ|APP|app|版权|转载|来自|整理|更新最快|无弹窗|笔趣|小说网|看书网)[^\]\)\uff09】]{0,40}?(?:】|\]|\)|\uff09)/g;
+
+  /* 行内推广短语 */
+  const INLINE_PROMO = [
+    /(?:本书|小说|内容|章节|本文)由[^\n，。]{0,30}(?:提供|发布|整理|上传|首发|收录|转载)/g,
+    /(?:转载|采集|整理|摘录)自[^\n，。]{0,30}/g,
+    /(?:请记住|牢记|收藏)(?:本站|本书|本网)?(?:网址|域名|地址)?[^\n，。]{0,20}/g,
+  ];
+
+  /* 章节标题 */
+  const TITLE_RE =
+    /^\s*(?:第\s*[零一二三四五六七八九十百千万两0-9]+\s*[章节回卷部篇集话幕]|[Cc]hapter\s*\d+|[Ee]pisode\s*\d+|序章|序言|楔子|引子|引章|番外[^。]{0,12}|尾声|后记|终章|完结感言|开篇|前言|自序)/;
+
+  /* 页脚特征（用于裁尾） */
+  const FOOTER_RE =
+    /(?:热门推荐|相关推荐|猜你喜欢|看过本书|喜欢这本书|发表评论|最新评论|书友评价|网友评论|精彩书评|全部评论|评论区|书评区|本章说|免责声明|版权所有|Copyright|copyright|APP下载|下载客户端|扫码|扫一扫|关注公众号|加入书架|返回目录|返回首页|电脑版|手机版|侵权|ICP备|商务合作|关于我们|联系我们|站点地图|广告投放)/;
+
+  const SENT_END = /[。！？…！？”’』」）】》\.!?'"]$/;
+
+  /* ---------------- 工具 ---------------- */
+  function cnt(str, re, repl) {
+    let c = 0;
+    const out = str.replace(re, function () {
+      c++;
+      return typeof repl === "function" ? repl.apply(null, arguments) : repl;
+    });
+    return [out, c];
+  }
+  function cnLen(s) { return (s || "").replace(/\s/g, "").length; }
+  function endsStop(s) { return SENT_END.test(s || ""); }
+  function hasQuote(s) { return /[“”"「」『』‘’']/.test(s || ""); }
+
+  /* ---------------- 1. 归一化 ---------------- */
+  function normalize(raw, opt) {
+    let t = String(raw == null ? "" : raw);
+    t = t.replace(/\r\n?/g, "\n");
+    if (opt.rmHtml) {
+      const ENT = {
+        "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&apos;": "'",
+        "&#39;": "'", "&#34;": '"', "&#x27;": "'", "&#x22;": '"',
+      };
+      t = t
+        .replace(/<script[\s\S]*?<\/script>/gi, "\n")
+        .replace(/<style[\s\S]*?<\/style>/gi, "\n")
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/(p|div|tr|h[1-6]|li|section|article|td)>/gi, "\n")
+        .replace(/<[^>]{1,300}>/g, "")
+        .replace(/&(?:nbsp|#160|#xa0);/gi, " ")
+        .replace(/&(?:amp|lt|gt|quot|apos|#39|#34|#x27|#x22);/gi,
+          (m) => ENT[m.toLowerCase()] || "")
+        .replace(/&#(\d+);/g, (m, d) => {
+          const c = +d;
+          return c < 32 || c === 127 ? "" : String.fromCharCode(c);
+        })
+        .replace(/&#x([0-9a-f]+);/gi, (m, h) => {
+          const c = parseInt(h, 16);
+          return c < 32 || c === 127 ? "" : String.fromCharCode(c);
+        });
+    }
+    t = t.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, "");
+    t = t.replace(/[\u200b-\u200f\u202a-\u202e\u00ad\ufeff]/g, "");
+    t = t.replace(/\u3000/g, " ");
+    return t;
+  }
+
+  /* ---------------- 2. 行内精确剔除 ---------------- */
+  function inlineStrip(line, opt, rep) {
+    let l = line, c;
+    const hit = {};
+    if (opt.rmUrl) {
+      [l, c] = cnt(l, RE_EMAIL, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_HTTP, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_WWW, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_SUB, " "); rep.url += c; if (c) hit.url = true;
+      l = l.replace(RE_DOMAIN, function (m) {
+        const off = arguments[arguments.length - 2];
+        const str = arguments[arguments.length - 1];
+        const prev = off > 0 ? str[off - 1] : "";
+        if (/[\w@\-./]/.test(prev)) return m;   // 邮箱/小数的内部片段 → 不动
+        rep.url++; hit.url = true;
+        return " ";
+      });
+      [l, c] = cnt(l, RE_CNDOM, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_QQ, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_WX, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_PCT, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_LONGTOK, " "); rep.url += c; if (c) hit.url = true;
+      [l, c] = cnt(l, RE_LONGNUM, " "); rep.url += c; if (c) hit.url = true;
+    }
+    if (opt.rmBracket) {
+      [l, c] = cnt(l, RE_BRACKET_PROMO, " "); rep.bracket += c; if (c) hit.bracket = true;
+    }
+    if (opt.rmAd) {
+      INLINE_PROMO.forEach((re) => {
+        [l, c] = cnt(l, re, " "); rep.promo += c; if (c) hit.promo = true;
+      });
+      // 混在正文句子里的色情广告 / 软件推广片段，剔掉片段、留下正文
+      ADULT_HARD_G.forEach((re) => {
+        [l, c] = cnt(l, re, " "); rep.adult += c; if (c) hit.adult = true;
+      });
+      APP_PROMO_G.forEach((re) => {
+        [l, c] = cnt(l, re, " "); rep.app += c; if (c) hit.app = true;
+      });
+    }
+    // 行首的站名前缀：「笔趣阁 www.x.com 」→ 直接去掉前缀
+    if (opt.rmSite) {
+      const before = l;
+      l = l.replace(/^\s*(?:【|\[|\uff08|\()?\s*(?:笔趣阁|笔趣库|笔趣岛|新笔趣阁|顶点小说|八一中文|起点中文网|番茄小说|七猫小说|刺猬猫|飞卢小说网|纵横中文网|晋江文学城|17K小说网|17k小说网)\s*(?:】|\]|\uff09|\))?\s*[:：,，.。\s]*/i, "");
+      if (l !== before) { rep.site++; hit.site = true; }
+    }
+    // 全角乱码串（圈码水印：①②③ ㈠㈡）
+    l = l.replace(/[\u3220-\u32ff\u2460-\u24ff]{3,}/g, " ");
+    l = l.replace(/[ \t]{2,}/g, " ");
+    return { text: l.trim(), hit };
+  }
+
+  /* ---------------- 3. 行级判定 ---------------- */
+  function hasSite(line) {
+    SITE_ALL.lastIndex = 0;
+    const r = SITE_ALL.test(line);
+    SITE_ALL.lastIndex = 0;
+    return r;
+  }
+  function judge(l, opt, rep, ctx) {
+    const s = l.replace(/\s/g, "");
+    const DROP = { drop: true }, KEEP = { drop: false };
+
+    if (TITLE_RE.test(l)) return KEEP;                       // 标题行永不删
+    if (opt.rmRepeat && ctx.repeatSet.has(l.trim())) { rep.repeat++; return DROP; }
+
+    // 站点声明 / 年龄警告（成人站点尾部，正文锚定法会误判为正文）
+    if ((opt.rmAd || opt.rmSite) && isDisclaimerLine(l)) { rep.disclaimer++; return DROP; }
+
+    // 色情 / 成人广告：命中组合强特征即删，不受"像不像正文"保护
+    if ((opt.rmAd || opt.rmSite) && isAdultAd(l)) { rep.adult++; return DROP; }
+    // 软件 / App 推广
+    if (opt.rmAd && isAppPromo(l)) { rep.app++; return DROP; }
+    // 导航条 / 面包屑 / 推荐位
+    if (opt.rmAd && isNavLine(l)) { rep.ad++; return DROP; }
+
+    // 广告墙 / 站名连珠炮（如「传媒91传媒精东传媒麻豆…」）
+    if ((opt.rmAd || opt.rmSite) && isAdWallLine(s)) { rep.ad++; return DROP; }
+
+    if (opt.rmPage) {
+      for (let i = 0; i < PAGE_PATTERNS.length; i++)
+        if (PAGE_PATTERNS[i].test(l)) { rep.page++; return DROP; }
+      if (s.length <= 10 && !/[\u4e00-\u9fa5]/.test(s)) { rep.page++; return DROP; }
+    }
+    if (opt.rmCopyright) {
+      for (let i = 0; i < CR_PATTERNS.length; i++)
+        if (CR_PATTERNS[i].test(l) && s.length <= 200) { rep.copyright++; return DROP; }
+    }
+    if (opt.rmComment) {
+      for (let i = 0; i < COMMENT_PATTERNS.length; i++)
+        if (COMMENT_PATTERNS[i].test(s) && s.length <= 45) { rep.comment++; return DROP; }
+      if ((RE_DATE_LINE.test(s) || RE_TIME_LINE.test(s)) && s.length <= 30) {
+        rep.comment++; return DROP;
+      }
+    }
+    // 命中 URL/QQ/微信 且剔除后几乎不剩东西 → 整行删
+    if (opt.rmUrl && ctx.hit.url && cnLen(l) <= 8) { rep.url++; return DROP; }
+
+    // 站名 + 站方口吻
+    if (opt.rmSite && hasSite(l)) {
+      const rest = l.replace(SITE_ALL, "");
+      if (cnLen(rest) <= 6 || RE_SITE_FEATURE.test(l) ||
+          opt.strength === "strong" || opt.strength === "nuclear") {
+        rep.site++; return DROP;
+      }
+      SITE_ALL.lastIndex = 0;
+    }
+    // 营销广告整段（带标点、词库难覆盖，靠"像不像正文"判定）
+    if (opt.rmAd && isPromoLine(l)) { rep.ad++; return DROP; }
+    // 广告 / 求票 / 导航
+    if (opt.rmAd) {
+      let n = 0;
+      for (let i = 0; i < AD_PATTERNS.length; i++) if (AD_PATTERNS[i].test(l)) n++;
+      if (n >= 1 && (s.length <= 50 || n >= 2)) { rep.ad++; return DROP; }
+      if (UI_EXACT.has(s)) { rep.ui++; return DROP; }
+    }
+    // 书名 / 作者等元信息
+    if (opt.rmMeta && META_RE.test(l) && s.length <= 60) { rep.meta++; return DROP; }
+
+    // 智能短行 / 乱码行
+    if (opt.rmShort) {
+      const strong = opt.strength === "strong" || opt.strength === "nuclear";
+      const mild = opt.strength === "mild";
+      const limit = opt.strength === "nuclear" ? 20 : strong ? 14 : mild ? 6 : 10;
+      if (s.length < limit && !endsStop(s) && !hasQuote(s)) {
+        const dup = (ctx.freq.get(l.trim()) || 1) >= 2;
+        const atEdge = ctx.idx < 20 || ctx.idx > ctx.total - 20;
+        if (strong || mild || dup || atEdge || /[\dA-Za-z]/.test(s)) { rep.short++; return DROP; }
+      }
+      const cn = (s.match(/[\u4e00-\u9fa5]/g) || []).length;
+      if (s.length >= 10 && cn / s.length < (strong ? 0.5 : 0.35)) { rep.junk++; return DROP; }
+    }
+    // 彻底模式：短行必须"够像小说正文"才留下（对付整页全选复制的推荐位/导航条）
+    if (opt.strength === "nuclear" && !isTitle(l)) {
+      if (cnLen(l) < 40 && bodyScore(l) < 2) { rep.junk++; return DROP; }
+    }
+    return KEEP;
+  }
+
+  /* ============ 正文/剧情识别（核心：靠"像不像小说"判断，而非只认广告词） ============ */
+  // 叙事特征字：正文小说极常见，广告几乎不会有
+  const NARR_WORDS = "他她道说看听闻想走忽于是却便这那心里眼睛声音手门脸笑摇点站坐抬低转望轻微仿似毕原此随终猛";
+  // 营销/广告强信号词（命中即减分，几乎只出现在广告）
+  const PROMO_WORDS = ["免费","优惠","注册","会员","充值","福利","限时","特惠","优惠券","红包","折扣","满减","秒杀","抢购","狂欢","返利","邀请","代理","招商","加盟","客服","长按识别","扫码","下载APP","看片","看剧","追剧","福利姬","磁力","种子","网盘","盘搜","高清无码","在线看","免费看","抢先看","独播","首播","主播","充值币","阅币","书币","金币","钻石","通票","包邮","分期","白条","花呗","借款","贷款","理财","基金","股票","彩票","博彩","赌博","赌场","开奖","走势图","私彩","外围","盘口","投注","下注","押注","赢钱","翻倍","倍投","稳赚","包赢","带单","包月","推广","广告","客户端","官网","本站","本网","VIP","vip","充值中心","充值送","新人","立减","专属","特权","海量","畅读","畅享","随便看","任你看","宅男","资源","免费阅读","全网","最热","火爆","人气","必看","客服","咨询","热线","售后","合作伙伴","共同成长","视频","观看","剧集","直播","热播","上映","影评","优质","精选","独家","7*24","24小时","全天候","全年无休","免费在线","一起观看","讨论","最新","商务合作","招商加盟"];
+  function narrCount(s){ let n=0; for(const c of NARR_WORDS) if(s.indexOf(c)>=0) n++; return n; }
+  function promoCount(s){ let n=0; for(const w of PROMO_WORDS) if(s.indexOf(w)>=0) n++; return n; }
+  // 一行"像正文/剧情"的得分：>0 像正文，<=0 不像
+  function bodyScore(line){
+    const s = (line||"").replace(/\s/g,"");
+    if(!s) return 0;                                  // 空行中立
+    if(isDisclaimerLine(line)) return -5;             // 站点声明/年龄警告 → 必非正文
+    if(isAdultAd(line)) return -10;                   // 色情广告 → 必非正文
+    if(isAppPromo(line)) return -6;                   // 软件推广 → 必非正文
+    if(TITLE_RE.test(s)) return 100;                  // 标题是强锚
+    const cn = (s.match(/[\u4e00-\u9fa5]/g)||[]).length;
+    if(cn===0) return -1;                             // 纯符号/英文/数字行
+    const ratio = cn/s.length;
+    let sc = 0;
+    if(ratio>=0.6) sc+=2; else if(ratio>=0.4) sc+=1; else sc-=1;
+    if(endsStop(s)) sc+=2;                            // 完整叙事句
+    if(hasQuote(s)) sc+=1;                            // 对话
+    if(cn>=12) sc+=1; else sc-=1;                     // 剧情句通常不很短
+    if(narrCount(s)>0) sc+=1;                         // 含叙事词
+    if(/https?|www\.|\.com|\.cn|点com|@qq|@/i.test(s)) sc-=3;
+    const pc = promoCount(s); if(pc>0) sc-=pc;        // 营销词直接减分
+    if(pc>=2) sc-=2; if(pc>=3) sc-=3;                 // 服务词密集 → 必非正文
+    if(/(?:7\s*[\*×xX]\s*24|24\s*小时|全天候|全年无休)/.test(s)) sc-=2; // 客服时段词
+    if(/请|欢迎|快来|点击|立即|马上|速来/.test(s) && /你|您/.test(s)) sc-=2;
+    if(/(QQ|微信|公众号|客服|电话|手机|热线)/.test(s)) sc-=1;
+    const aw = adWallScore(s); if(aw>=3) sc-=3;
+    return sc;
+  }
+  // 一行是否为营销/服务推广（judge 用，覆盖"带标点、词库难覆盖"的整段广告）
+  function isPromoLine(line){
+    const s = (line||"").replace(/\s/g,"");
+    if(s.length>320) return false;                    // 超长段落不轻易判，避免误伤
+    // 明显像正文：带句尾标点的长叙事句，或有引号对话 → 保留，绝不误删小说
+    if(endsStop(s) && narrCount(s) >= 1) return false;
+    if(hasQuote(s) && cnLen(s) >= 8) return false;
+    if(bodyScore(line) >= 3) return false;            // 很像正文也保留
+    const pc = promoCount(s);
+    // 客服时段 + 服务词（如「7*24小时免费在线咨询」）
+    if(/(?:7\s*[\*×xX]\s*24|24\s*小时|全天候|全年无休)/.test(s) && /(咨询|客服|服务|热线|观看|阅读|讨论)/.test(s)) return true;
+    if(pc>=2) return true;                            // 服务/营销词密集（≥2）几乎必为站点内容
+    if(pc>=1 && /(你|您|请|点击|快来|立即|下载|关注|领取|注册|一起|免费|在线|咨询|客服)/.test(s)) return true;
+    if(adWallScore(s)>=3) return true;
+    return false;
+  }
+
+  /* ---------------- 4. 正文范围定位（正文锚定法） ---------------- */
+  function trimRange(t, opt, rep) {
+    if (!opt.trimRange) return t;
+    const lines = t.split("\n");
+    if (lines.length < 6) return t;                   // 太短不裁，避免误删
+    const scores = lines.map(bodyScore);
+    // 每个"像正文"的行，向两侧扩展到第一个非正文(分<0)边界，得到正文区间
+    const keep = new Array(lines.length).fill(false);
+    function spanOf(i) {
+      let lo = i, hi = i;
+      while (lo > 0 && scores[lo - 1] >= 0) lo--;
+      while (hi < lines.length - 1 && scores[hi + 1] >= 0) hi++;
+      return [lo, hi];
+    }
+    for (let i = 0; i < lines.length; i++) {
+      if (scores[i] >= 1) {
+        const [lo, hi] = spanOf(i);
+        for (let j = lo; j <= hi; j++) keep[j] = true;
+      }
+    }
+    let first = -1, last = -1;
+    keep.forEach((k, i) => { if (k) { if (first < 0) first = i; last = i; } });
+    if (first < 0 || last - first < 3) return t;      // 找不到可信正文则不动
+    if (first > 0) rep.head += first;
+    if (last < lines.length - 1) rep.tail += (lines.length - 1 - last);
+    return lines.slice(first, last + 1).join("\n");
+  }
+
+  /* ---------------- 5. 段落重排 ---------------- */
+  function isTitle(l) { return TITLE_RE.test(l || ""); }
+  function reflow(t, opt) {
+    const groups = [];
+    t.split(/\n[ \t]*\n/).forEach((b) => {
+      let ls = b.split("\n").map((x) => x.trim()).filter(Boolean);
+      if (!ls.length) return;
+      if (opt.mergeLines) {                     // 合并被网页强行断开的半截句子
+        const merged = [];
+        ls.forEach((line) => {
+          if (isTitle(line)) { merged.push(line); return; }
+          const prev = merged[merged.length - 1];
+          if (prev && !isTitle(prev) && !endsStop(prev) && cnLen(prev) < 200) {
+            merged[merged.length - 1] = prev + line;
+          } else merged.push(line);
+        });
+        ls = merged;
+      }
+      groups.push(ls);
+    });
+    const out = [];
+    groups.forEach((ls, gi) => {
+      if (gi > 0) out.push("");
+      ls.forEach((l) => {
+        if (isTitle(l)) {
+          if (out.length && out[out.length - 1] !== "") out.push("");
+          out.push(l); out.push("");
+        } else out.push(opt.indent ? "\u3000\u3000" + l : l);
+      });
+    });
+    return out.join("\n").replace(/\n{3,}/g, "\n\n");
+  }
+
+  /* ---------------- 6. 标点规范化 ---------------- */
+  function fixPunct(t) {
+    let s = t;
+    s = s.replace(/([\u4e00-\u9fa5]),([\u4e00-\u9fa5])/g, "$1，$2");
+    s = s.replace(/([\u4e00-\u9fa5])!([\u4e00-\u9fa5])/g, "$1！$2");
+    s = s.replace(/([\u4e00-\u9fa5])\?([\u4e00-\u9fa5])/g, "$1？$2");
+    s = s.replace(/([\u4e00-\u9fa5]);([\u4e00-\u9fa5])/g, "$1；$2");
+    s = s.replace(/([\u4e00-\u9fa5]):([\u4e00-\u9fa5])/g, "$1：$2");
+    s = s.replace(/。{2,}/g, "。").replace(/，{2,}/g, "，");
+    s = s.replace(/！{2,}/g, "！").replace(/？{2,}/g, "？");
+    s = s.replace(/…{2,}/g, "……").replace(/\.{3,}/g, "……");
+    s = s.replace(/，\s*。/g, "。").replace(/、\s*。/g, "。");
+    s = s.replace(/^[，。、；：]/gm, "");
+    s = s.replace(/[ \t]+$/gm, "");
+    // 英文直引号 → 中文弯引号（按顺序配对；奇数个则把最后一个补成右引号）
+    let open = true, lastOpen = -1;
+    s = s.replace(/"/g, (m, off) => {
+      if (open) { open = false; lastOpen = off; return "\u201c"; }
+      open = true; return "\u201d";
+    });
+    if (!open && lastOpen >= 0) s = s.slice(0, lastOpen) + "\u201d" + s.slice(lastOpen + 1);
+    return s;
+  }
+
+  /* ---------------- 7. 残留复检 ---------------- */
+  function scanLeftover(t) {
+    const found = [];
+    const push = (arr) => {
+      (arr || []).forEach((x) => {
+        x = String(x).trim();
+        if (x && found.length < 40 && found.indexOf(x) < 0) found.push(x);
+      });
+    };
+    push(t.match(RE_EMAIL));
+    push(t.match(RE_HTTP));
+    push(t.match(RE_WWW));
+    push((t.match(RE_DOMAIN) || []).filter((m) =>
+      /^[a-z0-9][a-z0-9.\-]*\.(com|cn|net|org|cc|co|la|info|top|xyz|vip|io|me|tv)$/i.test(m)));
+    push(t.match(RE_QQ));
+    push(t.match(RE_WX));
+    t.split("\n").forEach((line) => {           // 短行里的站名
+      const s = line.trim().replace(/\s/g, "");
+      if (s && s.length <= 22 && hasSite(s)) push([s]);
+    });
+    return found;
+  }
+
+  /* ---------------- 主流程 ---------------- */
+  function run(raw, opt) {
+    opt = opt || {};
+    const rep = {
+      url: 0, site: 0, ad: 0, ui: 0, repeat: 0, short: 0, page: 0, comment: 0,
+      copyright: 0, meta: 0, bracket: 0, promo: 0, junk: 0, lines: 0, head: 0, tail: 0,
+      disclaimer: 0, adult: 0, app: 0,
+    };
+    let t = normalize(raw, opt);
+    const lines = t.split("\n");
+
+    // 频率统计：重复水印行
+    const freq = new Map();
+    lines.forEach((l) => {
+      const k = l.trim();
+      if (!k || k.length > 60 || k.length < 3) return;
+      freq.set(k, (freq.get(k) || 0) + 1);
+    });
+    const minRep = (opt.strength === "strong" || opt.strength === "nuclear") ? 2 : 3;
+    const repeatSet = new Set();
+    freq.forEach((v, k) => { if (v >= minRep && !TITLE_RE.test(k)) repeatSet.add(k); });
+
+    const out = [];
+    for (let i = 0; i < lines.length; i++) {
+      if (!lines[i].trim()) { out.push(""); continue; }
+      // 关键：拿「原始行」先判广告。inlineStrip 会把广告片段挖掉，
+      // 特征被破坏后 judge 就认不出来了（会留下「澳门 即送彩金…」这类残骸）
+      if ((opt.rmAd || opt.rmSite) && isAdultAd(lines[i])) { rep.adult++; rep.lines++; continue; }
+      if (opt.rmAd && isAppPromo(lines[i])) { rep.app++; rep.lines++; continue; }
+      const st = inlineStrip(lines[i], opt, rep);
+      if (!st.text) continue;                   // 整行都是垃圾
+      const v = judge(st.text, opt, rep,
+        { idx: i, total: lines.length, freq, repeatSet, hit: st.hit });
+      if (v.drop) { rep.lines++; continue; }
+      out.push(st.text);
+    }
+    t = out.join("\n");
+    t = trimRange(t, opt, rep);
+    t = reflow(t, opt);
+    if (opt.normalizePunct) t = fixPunct(t);
+    t = t.replace(/\n{3,}/g, "\n\n").trim();
+    const leftover = (opt.rmUrl || opt.rmSite) ? scanLeftover(t) : [];
+    return { text: t, report: rep, leftover };
+  }
+
+  return { run, TITLE_RE, scanLeftover };
+})();
+
+/* ==================================================================
+   本地离线生成引擎（无需 API）
+   从你粘贴的文字里学习用词与句式，用可变阶马尔可夫链续写 / 仿写。
+   免费、离线、不上传；能模仿"味道"，长句逻辑不如大模型。
+   ================================================================== */
+/* ==================================================================
+   本地离线生成引擎（无需 API）
+   做法：把你粘贴的文字按标点切成"短语"，统计短语之间的接续关系，
+        再用变阶马尔可夫链重新编织。生成时会刻意避开原文里出现过的
+        相邻组合，所以读起来是"这个作者的味儿"，而不是照抄原句。
+   免费、离线、不上传；能模仿用词与节奏，长句逻辑不如大模型。
+   ================================================================== */
+const LOCAL_GEN = (function () {
+  const J = "\u0001";
+  function countCN(t) { return (t || "").replace(/\s/g, "").length; }
+  function flat(t) { return String(t || "").replace(/\s+/g, ""); }
+
+  /* 变阶字符模型：同时存 1~n 阶上下文，查不到就自动回退到短阶 */
+  function buildCharModel(text, n) {
+    const s = flat(text).slice(-40000);
+    const map = new Map();
+    for (let L = 1; L <= n; L++) {
+      for (let i = 0; i + L < s.length; i++) {
+        const k = s.substr(i, L), v = s[i + L];
+        let a = map.get(k);
+        if (!a) { a = new Map(); map.set(k, a); }
+        a.set(v, (a.get(v) || 0) + 1);
+      }
+    }
+    return { map: map, n: n, kind: "char", pool: [], empty: map.size === 0 };
+  }
+  /* 短语模型：按标点切成短语再建变阶模型 */
+  function splitPhrases(text) {
+    return String(text || "")
+      .split(/(?<=[，。！？；：、…—])|\n+/)
+      .map((s) => s.trim())
+      .filter((s) => s.length > 1);
+  }
+  function buildPhraseModel(text, order) {
+    // 章节标题不进素材池，否则生成时会冒出"第二章 xxx"这种半截标题
+    const ph = splitPhrases(text)
+      .filter((p) => !/^第\s*[零一二三四五六七八九十百千万两0-9]+\s*[章节回卷篇集]/.test(p.trim()))
+      .slice(-8000);
+    const map = new Map();
+    for (let L = 1; L <= order; L++) {
+      for (let i = 0; i + L < ph.length; i++) {
+        const k = ph.slice(i, i + L).join(J), v = ph[i + L];
+        let a = map.get(k);
+        if (!a) { a = new Map(); map.set(k, a); }
+        a.set(v, (a.get(v) || 0) + 1);
+      }
+    }
+    return { map: map, n: order, kind: "phrase", pool: ph, empty: map.size === 0 };
+  }
+  function lookup(model, seq) {
+    for (let L = Math.min(model.n, seq.length); L >= 1; L--) {
+      const k = model.kind === "phrase" ? seq.slice(-L).join(J) : seq.slice(-L).join("");
+      const a = model.map.get(k);
+      if (a && a.size) return a;
+    }
+    return null;
+  }
+  /* 按权重抽样：rand 越大候选范围越宽 → 越跳跃 */
+  function pick(arr, rand) {
+    let e = Array.from(arr.entries()).sort((a, b) => b[1] - a[1]);
+    const k = Math.max(1, Math.min(e.length, Math.round((e.length * rand) / 12) + 1));
+    e = e.slice(0, k);
+    let total = 0;
+    e.forEach((x) => (total += x[1]));
+    let r = Math.random() * total;
+    for (let i = 0; i < e.length; i++) { r -= e[i][1]; if (r <= 0) return e[i][0]; }
+    return e[e.length - 1][0];
+  }
+
+  const MAX_SAME = 12;                 // 允许与原文连续重合的最大字数
+  function genFrom(model, seed, target, rand, learn) {
+    const n = model.n;
+    const keys = Array.from(model.map.keys());
+    const src = flat(learn);
+    if (!keys.length) return "";
+    let giveUp = false;                // 语料太小时放弃"防复读"，避免死循环
+
+    if (model.kind === "char") {
+      let ctx = (seed || "").slice(-n) || keys[(Math.random() * keys.length) | 0];
+      let out = "", guard = 0, rejects = 0;
+      while (countCN(out) < target && guard++ < target * 25) {
+        let arr = null;
+        for (let L = Math.min(n, ctx.length); L >= 1; L--) {
+          const a = model.map.get(ctx.slice(-L));
+          if (a && a.size) { arr = a; break; }
+        }
+        if (!arr) { ctx = keys[(Math.random() * keys.length) | 0]; continue; }
+        const ch = pick(arr, rand);
+        if (!giveUp) {
+          const tail = (out + ch).slice(-MAX_SAME);
+          if (tail.length >= MAX_SAME && src.indexOf(tail) >= 0) {
+            if (++rejects > 200) giveUp = true;
+            else { ctx = keys[(Math.random() * keys.length) | 0]; continue; }
+          }
+        }
+        out += ch;
+        ctx = (ctx + ch).slice(-n);
+        if (/[。！？]/.test(ch) && Math.random() < 0.55) {
+          ctx = keys[(Math.random() * keys.length) | 0];   // 每句话换个新起头
+        }
+      }
+      return out;
+    }
+
+    // 短语模型：同一短语最多用 2 次，且相邻组合必须是原文里没出现过的
+    const used = new Map();
+    const rndPool = () => model.pool[(Math.random() * model.pool.length) | 0] || "";
+    const isCopy = (a, b) => {                       // a+b 在原文里挨着 → 属于照抄
+      const join = (a + b).replace(/\s/g, "");
+      return join.length >= 8 && src.indexOf(join) >= 0;
+    };
+    const usable = (cand) => cand && cand !== prev && (used.get(cand) || 0) < 2;
+    const JUMP = 0.3;                                // 每步有多大概率另起一条线索
+    let out = "", seq = [], prev = "", guard = 0;
+    if (seed && seed.length) { out = seed[seed.length - 1]; seq = seed.slice(-n); prev = out; }
+    if (!out) { const p = rndPool(); out = p; seq = [p]; prev = p; }
+
+    while (countCN(out) < target && guard++ < target * 6) {
+      // 已经连续 16 字和原文一样 → 必须跳走，避免整段照抄
+      const tail = (out + "\u0002").replace(/\s/g, "").slice(-17, -1);
+      const mustJump = tail.length >= 16 && src.indexOf(tail) >= 0;
+      let nx = null;
+      const arr = lookup(model, seq);
+      if (arr && !mustJump && Math.random() > JUMP) { // 顺着上下文走（保证读着顺）
+        for (let t = 0; t < 10; t++) {
+          const cand = pick(arr, rand);
+          if (usable(cand)) { nx = cand; break; }
+        }
+      }
+      if (nx === null) {                             // 另起一条线索：挑个不与上一句相邻的新短语
+        for (let t = 0; t < 14; t++) {
+          const cand = rndPool();
+          if (usable(cand) && !isCopy(prev, cand)) { nx = cand; break; }
+        }
+      }
+      if (nx === null) nx = rndPool();               // 语料太小，兜底
+      used.set(nx, (used.get(nx) || 0) + 1);
+      out += nx;
+      prev = nx;
+      seq.push(nx);
+      if (seq.length > n) seq = seq.slice(-n);
+    }
+    return out;
+  }
+
+  function avgSentenceLen(text) {
+    const sents = String(text || "")
+      .split(/(?<=[。！？…])/).map((x) => x.trim()).filter((x) => x.length > 1);
+    if (!sents.length) return 20;
+    return Math.max(12, Math.round(sents.reduce((a, b) => a + b.length, 0) / sents.length));
+  }
+  /* 生成结果排版成分段 */
+  function toParagraphs(text, avg) {
+    let s = String(text || "").replace(/\s+/g, " ").trim();
+    if (!s) return "";
+    // 中文与中文之间的多余空格去掉（生成时换行被压成空格留下的痕迹）
+    s = s.replace(/([\u4e00-\u9fa5\u3001-\u303f\uff01-\uff65”’』」])\s+([\u4e00-\u9fa5])/g, "$1$2");
+    s = s.replace(/^[^“"\u4e00-\u9fa5A-Za-z0-9]{1,6}(?=[，。！？；])/, "");
+    let sents = s.split(/(?<=[。！？…])/).map((x) => x.trim()).filter((x) => x.length > 1);
+    while (sents.length && /^[”’」』，。；、？！]/.test(sents[0])) sents.shift();
+    if (!sents.length) return "";
+    sents = sents.map((x) => {                       // 引号配对：多出来的右引号丢掉，缺的补上
+      let depth = 0, res = "";
+      for (const ch of x) {
+        if (ch === "\u201c") { depth++; res += ch; }
+        else if (ch === "\u201d") { if (depth > 0) { depth--; res += ch; } }
+        else res += ch;
+      }
+      return depth > 0 ? res + "\u201d".repeat(depth) : res;
+    });
+    const target = Math.max(60, Math.min(200, (avg || 20) * 2.6));
+    const paras = [];
+    let buf = "";
+    sents.forEach((x) => {
+      buf += x;
+      if (countCN(buf) >= target) { paras.push(buf); buf = ""; }
+    });
+    if (buf) paras.push(buf);
+    paras.forEach((p, i) => { if (!/[。！？…”』]$/.test(p)) paras[i] = p + "。"; });
+    return paras.map((p) => "\u3000\u3000" + p).join("\n\n");
+  }
+  /* 统一入口：短语够多就用短语模型，否则退回字符模型 */
+  function generate(learn, opt) {
+    opt = opt || {};
+    const words = opt.words || 800, rand = opt.rand || 5, order = opt.order || 2;
+    const pm = buildPhraseModel(learn, order);
+    let raw;
+    if (pm.pool.length >= 8) {
+      raw = genFrom(pm, opt.seed ? [opt.seed] : null, words, rand, learn);
+    } else {
+      const cm = buildCharModel(learn, Math.min(4, order + 2));
+      raw = genFrom(cm, opt.seed || flat(learn).slice(-3), words, rand, learn);
+    }
+    return toParagraphs(raw, avgSentenceLen(learn));
+  }
+  return {
+    generate: generate, buildCharModel: buildCharModel, buildPhraseModel: buildPhraseModel,
+    genFrom: genFrom, toParagraphs: toParagraphs, avgSentenceLen: avgSentenceLen,
+    splitPhrases: splitPhrases, countCN: countCN,
+  };
+})();
+
+/* ============ 清洗选项（本地保存） ============ */
+const CLEAN_OPTS = [
+  { k: "rmUrl", t: "网址 / 邮箱 / QQ / 微信", d: "含裸域名、变形域名（xx点com）、推广链接", def: true },
+  { k: "rmSite", t: "小说站名与水印", d: "笔趣阁等站名、XX小说网、整行水印", def: true },
+  { k: "rmAd", t: "广告 / 求票 / 导航", d: "求收藏月票、上一章下一章、按钮文案", def: true },
+  { k: "rmRepeat", t: "重复水印行", d: "全文出现 3 次以上的相同短行", def: true },
+  { k: "rmComment", t: "评论 / 楼层 / 时间戳", d: "书评区、楼层、发帖时间", def: true },
+  { k: "rmCopyright", t: "版权与免责声明", d: "版权所有、ICP备案、免责声明", def: true },
+  { k: "rmPage", t: "页码 / 分隔线", d: "1/3、第2页、——— 等", def: true },
+  { k: "rmMeta", t: "书名作者等元信息", d: "「作者：xxx」「更新时间：…」", def: true },
+  { k: "rmShort", t: "智能判定可疑短行", d: "结合位置/重复/符号比例，不误伤对话", def: true },
+  { k: "rmBracket", t: "括号内推广", d: "【笔趣阁 www.x.com】这类整段括号", def: true },
+  { k: "rmHtml", t: "网页代码残留", d: "HTML 标签、&nbsp;、脚本样式", def: true },
+  { k: "trimRange", t: "裁掉首尾垃圾", d: "从第一章起，到评论区/版权为止", def: true },
+  { k: "mergeLines", t: "合并被强行断行", d: "网页换行导致的半截句子合成段落", def: true },
+  { k: "indent", t: "段落首行缩进", d: "每段前空两格", def: true },
+  { k: "normalizePunct", t: "标点规范化", d: "英标转中标、去重、引号配对", def: true },
+  { k: "autoAdd", t: "清洗后自动加入章节", d: "重复清洗会覆盖上次自动加入的那章", def: false },
+];
+function loadCleanOpts() {
+  const s = getStore();
+  const saved = s.cleanOpt || {};
+  $("cleanOptGrid").innerHTML = CLEAN_OPTS.map((o) => {
+    const on = o.k in saved ? !!saved[o.k] : o.def;
+    return '<label class="opt"><input type="checkbox" data-k="' + o.k + '"' +
+      (on ? " checked" : "") + "><span>" + o.t + "<small>" + o.d + "</small></span></label>";
+  }).join("");
+  $("cleanOptGrid").querySelectorAll("input").forEach((i) =>
+    i.addEventListener("change", saveCleanOpts));
+  if (s.cleanStrength) $("cleanStrength").value = s.cleanStrength;
+}
+function saveCleanOpts() {
+  const o = {};
+  $("cleanOptGrid").querySelectorAll("input").forEach((i) => { o[i.dataset.k] = i.checked; });
+  setStore({ cleanOpt: o, cleanStrength: $("cleanStrength").value });
+}
+function getCleanOpt() {
+  const o = {};
+  CLEAN_OPTS.forEach((x) => { o[x.k] = x.def; });
+  const s = getStore();
+  Object.assign(o, s.cleanOpt || {});
+  o.strength = s.cleanStrength || "normal";
+  return o;
+}
+$("cleanStrength").addEventListener("change", saveCleanOpts);
+$("cleanOptAll").onclick = () => {
+  $("cleanOptGrid").querySelectorAll("input").forEach((i) => (i.checked = true));
+  saveCleanOpts();
+};
+$("cleanOptNone").onclick = () => {
+  $("cleanOptGrid").querySelectorAll("input").forEach((i) => (i.checked = false));
+  saveCleanOpts();
+};
+
+/* ============ 深度清洗 ============ */
+let lastCleanResult = null;
+$("cleanBtn").onclick = () => {
+  const raw = $("cleanIn").value;
+  if (!raw.trim()) { $("cleanStatus").textContent = "⚠️ 请先粘贴内容"; return; }
+  $("cleanStatus").textContent = "🧹 正在清洗…";
+  setTimeout(() => {
+    let r;
+    try {
+      r = CLEAN.run(raw, getCleanOpt());
+    } catch (err) {
+      $("cleanStatus").textContent = "⚠️ 清洗出错：" + err.message;
+      return;
+    }
+    lastCleanResult = r;
+    $("cleanOut").value = r.text;
+    setCount($("cleanCount"), r.text);
+    renderCleanReport(r);
+    if (getCleanOpt().autoAdd && r.text.trim()) autoAddChapter(true);
+    $("cleanStatus").textContent = r.text.trim()
+      ? "✅ 清洗完成（" + countChars(r.text) + " 字）" : "⚠️ 没剩下正文，试试把「清洗强度」调到温和";
+  }, 20);
+};
+function renderCleanReport(r) {
+  const rep = r.report;
+  const tags = [
+    ["网址/邮箱/QQ/微信", rep.url], ["站点水印", rep.site + rep.promo],
+    ["广告求票导航", rep.ad + rep.ui], ["评论区", rep.comment],
+    ["版权免责", rep.copyright], ["站点声明/年龄警告", rep.disclaimer], ["页码分隔线", rep.page],
+    ["色情/成人广告", rep.adult], ["软件推广", rep.app],
+    ["书名作者信息", rep.meta], ["重复水印行", rep.repeat],
+    ["可疑短行/乱码", rep.short + rep.junk], ["括号内推广", rep.bracket],
+    ["首部裁切", rep.head], ["尾部裁切", rep.tail],
+  ].filter((x) => x[1] > 0);
+  let html = '<div class="report"><div class="r-head">🧾 清洗报告</div>' +
+    "共删除 <b>" + rep.lines + "</b> 行垃圾：" +
+    (tags.length
+      ? tags.map((t) => '<span class="r-tag hot">' + t[0] + " ×" + t[1] + "</span>").join("")
+      : '<span class="r-tag ok">没发现垃圾</span>');
+  html += '<div style="margin-top:6px">保留正文 <b>' + countChars(r.text) +
+    "</b> 字（不含空格） · 强度：" +
+    ({ mild: "温和", normal: "标准", strong: "激进", nuclear: "彻底" }[getCleanOpt().strength] || "标准") +
+    "</div></div>";
+  if (r.leftover.length) {
+    html += '<div class="leftover">⚠️ 还剩 <b>' + r.leftover.length +
+      "</b> 处可疑内容（可能是正文本来就要的网址，也可能是没认出来的水印）：<br>" +
+      r.leftover.slice(0, 20).map((x) => "<code>" + escHtml(x) + "</code>").join(" ") +
+      '<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">' +
+      '<button class="btn ghost sm" id="killLeftover">🗑 一键删掉这些</button>' +
+      '<button class="btn ghost sm" id="keepLeftover">✓ 保留不动</button></div></div>';
+  }
+  $("cleanReport").innerHTML = html;
+  const kb = $("killLeftover");
+  if (kb) kb.onclick = () => {
+    let t = $("cleanOut").value;
+    r.leftover.forEach((x) => { t = t.split(x).join(""); });
+    t = t.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+    $("cleanOut").value = t;
+    setCount($("cleanCount"), t);
+    renderCleanReport({ text: t, report: r.report, leftover: [] });
+    $("cleanStatus").textContent = "✅ 已删掉 " + r.leftover.length + " 处残留";
+  };
+  const kp = $("keepLeftover");
+  if (kp) kp.onclick = () => {
+    $("cleanReport").innerHTML = $("cleanReport").innerHTML
+      .replace(/<div class="leftover">[\s\S]*$/, "");
+    $("cleanStatus").textContent = "已保留（这些可能是正文的一部分）";
+  };
+}
+/* AI 精修：大模型做语义级整理（离线时不可用，本地深度清洗已能覆盖绝大多数情况） */
+$("cleanAI").dataset.label = "✨ AI 精修";
+$("cleanAI").onclick = async () => {
+  const raw = $("cleanIn").value.trim();
+  if (!raw) { $("cleanStatus").textContent = "⚠️ 请先粘贴内容"; return; }
+  const sys = '你是一名文字编辑。下面是从小说网站"全选复制"得到的内容，里面混杂了网站导航菜单、广告、求订阅求票、推荐书单、网友评论、版权声明、网址链接等与正文无关的废话。请只保留纯粹的小说正文（章节标题+故事内容），删除以上所有杂质，并理顺段落（每段之间空一行，去掉多余空行）。只输出清理后的纯正文，不要任何解释。';
+  await callDeepSeek(sys, raw, $("cleanOut"), $("cleanStatus"), $("cleanAI"));
+  const txt = $("cleanOut").value.trim();
+  setCount($("cleanCount"), txt);
+  if (txt && getCleanOpt().autoAdd) autoAddChapter(true);
+};
+$("cleanOut").addEventListener("input", () => setCount($("cleanCount"), $("cleanOut").value));
+$("cleanRead").onclick = () => loadToRead($("cleanOut").value);
+$("cleanBack").onclick = () => {
+  if (!$("cleanOut").value.trim()) { $("cleanStatus").textContent = "⚠️ 还没有清洗结果"; return; }
+  $("cleanIn").value = $("cleanOut").value;
+  $("cleanStatus").textContent = "已写回输入框，可继续清洗";
+};
+$("cleanCopy").onclick = () => copyText($("cleanOut").value);
+$("cleanDownload").onclick = () =>
+  downloadText($("cleanOut").value, ($("bookName").value.trim() || "清洗后的正文") + ".txt");
+
+/* ============ 章节状态 ============ */
+let chapters = [];
+let lastAutoIdx = -1;
+function autoAddChapter(fromClean) {
+  const c = $("cleanOut").value.trim();
+  if (!c) return false;
+  const title = $("chTitle").value.trim() || "第" + (chapters.length + 1) + "章";
+  if (fromClean && lastAutoIdx >= 0 && chapters[lastAutoIdx]) {
+    chapters[lastAutoIdx] = { title, content: c };   // 重复清洗时覆盖上一次自动加入的
+  } else {
+    chapters.push({ title, content: c });
+    lastAutoIdx = chapters.length - 1;
+  }
+  $("chTitle").value = "";
+  renderChapters();
+  return true;
+}
+function renderChapters() {
+  const list = $("chapterList");
+  list.innerHTML = "";
+  chapters.forEach((ch, i) => {
+    const div = document.createElement("div");
+    div.className = "chapter";
+    div.innerHTML =
+      '<div class="ch-head">' +
+        '<span class="badge">第' + (i + 1) + "章</span>" +
+        '<input type="text" value="' + escAttr(ch.title) + '" data-i="' + i + '" class="ch-title-in">' +
+        '<button class="ch-move" data-up="' + i + '">↑</button>' +
+        '<button class="ch-del" data-i="' + i + '">删除</button>' +
+      "</div>" +
+      '<div class="ch-prev">' + escHtml(ch.content.slice(0, 120)) +
+        (ch.content.length > 120 ? "…" : "") + "</div>";
+    list.appendChild(div);
+  });
+  $("chSummary").textContent = chapters.length
+    ? "共 " + chapters.length + " 章，合计约 " +
+        chapters.reduce((s, c) => s + countChars(c.content), 0) + " 字"
+    : "还没有章节，清洗后点「➕ 添加为章节」即可。";
+  list.querySelectorAll(".ch-title-in").forEach((inp) => {
+    inp.addEventListener("input", (e) => { chapters[+e.target.dataset.i].title = e.target.value; });
+  });
+  list.querySelectorAll(".ch-del").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      chapters.splice(+btn.dataset.i, 1);
+      lastAutoIdx = -1;
+      renderChapters();
+    });
+  });
+  list.querySelectorAll("[data-up]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const i = +btn.dataset.up;
+      if (i <= 0) return;
+      const tmp = chapters[i - 1]; chapters[i - 1] = chapters[i]; chapters[i] = tmp;
+      lastAutoIdx = -1;
+      renderChapters();
+    });
+  });
+}
+function escHtml(s) {
+  return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function escAttr(s) { return escHtml(s).replace(/"/g, "&quot;"); }
+
+$("addCh").onclick = () => {
+  const c = $("cleanOut").value.trim();
+  if (!c) { $("cleanStatus").textContent = "⚠️ 请先清洗出内容"; return; }
+  chapters.push({ title: $("chTitle").value.trim() || "第" + (chapters.length + 1) + "章", content: c });
+  lastAutoIdx = -1;
+  $("chTitle").value = "";
+  renderChapters();
+  $("cleanStatus").textContent = "✅ 已添加为第 " + chapters.length + " 章";
+};
+/* 自动按「第X章」拆分 */
+$("splitCh").onclick = () => {
+  const c = $("cleanOut").value.trim();
+  if (!c) { $("cleanStatus").textContent = "⚠️ 请先清洗出内容"; return; }
+  const re = /(第[零一二三四五六七八九十百千0-9]+[章节][^\n]*)/g;
+  const segs = c.split(re);
+  const titles = [], bodies = [];
+  if (segs[0].trim()) { titles.push("开篇"); bodies.push(segs[0].trim()); }
+  for (let i = 1; i < segs.length; i += 2) {
+    const title = segs[i].trim();
+    const body = (segs[i + 1] || "").trim();
+    if (title) titles.push(title);
+    bodies.push(body);
+  }
+  if (titles.length === 0) {
+    chapters.push({ title: "第一章", content: c });
+    $("cleanStatus").textContent = "未识别到「第X章」，已整体作为一章";
+  } else {
+    titles.forEach((t, i) => { if (bodies[i]) chapters.push({ title: t, content: bodies[i] }); });
+    $("cleanStatus").textContent = "✅ 自动拆出 " +
+      titles.filter((_, i) => bodies[i]).length + " 章";
+  }
+  lastAutoIdx = -1;
+  renderChapters();
+};
+
+$("downloadBook").onclick = () => {
+  if (chapters.length === 0) { alert("还没有章节"); return; }
+  const name = $("bookName").value.trim() || "我的小说合集";
+  let out = name + "\n\n";
+  chapters.forEach((ch, i) => {
+    const t = String(ch.title || "").trim();
+    // 章节名本身已是「第一章 xxx」时别再加编号，否则会变成「第1章 第一章 xxx」
+    const head = /^第\s*[零一二三四五六七八九十百千万两0-9]+\s*[章节回卷部篇集话幕]/.test(t)
+      ? t : ("第" + (i + 1) + "章 " + t);
+    out += "\n" + head + "\n\n" + ch.content + "\n";
+  });
+  downloadText(out, name + ".txt");
+};
+$("clearCh").onclick = () => {
+  chapters = []; lastAutoIdx = -1; renderChapters();
+  $("chSummary").textContent = "已清空全部章节，可重新添加。";
+};
+
+/* ============ 辅助函数 ============ */
+function copyText(t){
+  if(!t) return;
+  navigator.clipboard.writeText(t).then(()=>alert('已复制 ✅')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');ta.remove();alert('已复制 ✅');
+  });
+}
+/* ============ 保存 / 下载（手机可用版）============
+   手机上下载失败的三个真实原因：
+   1) 微信/QQ/UC 等 App 内置浏览器会直接吞掉下载请求 —— 点了毫无反应
+   2) a.download + blob 在 iOS Safari 上不稳定，且元素不挂到 DOM 部分浏览器不触发
+   3) 立刻 revokeObjectURL 会在文件写完前回收，导致大文件下到一半就断
+   所以这里做了环境判断 + 多条降级路径，保证一定能把内容弄到手机上。 */
+const SV_UA = navigator.userAgent || '';
+const SV_IOS = /iPad|iPhone|iPod/.test(SV_UA) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const SV_MOBILE = SV_IOS || /Android|Mobile|Windows Phone|BlackBerry|webOS/i.test(SV_UA);
+const SV_INAPP = /MicroMessenger|Weibo|QQBrowser|UCBrowser|UCWEB|Baidu|BIDUBrowser|Quark|Douyin|Toutiao|AlipayClient|miniProgram/i.test(SV_UA)
+  || /\bQQ\//i.test(SV_UA) || / WeChat/i.test(SV_UA);
+
+function svFixName(name){
+  name = String(name || '我的小说').trim() || '我的小说';
+  if(!/\.(txt|md)$/i.test(name)) name += '.txt';
+  return name.replace(/[\\\/:*?"<>|\r\n\t]/g, '_');   // 去掉手机 / Windows 不接受的文件名字符
+}
+function svBlob(t){
+  // 加 BOM：不加的话手机自带阅读器、Windows 记事本打开 TXT 会乱码
+  return new Blob(['\uFEFF' + t], {type:'text/plain;charset=utf-8'});
+}
+function svCanShare(t, name){
+  try{
+    if(!navigator.canShare || !navigator.share) return false;
+    return !!navigator.canShare({files:[new File([svBlob(t)], name, {type:'text/plain;charset=utf-8'})]});
+  }catch(e){ return false; }
+}
+function svRawDownload(t, name){
+  const url = URL.createObjectURL(svBlob(t));
+  const a = document.createElement('a');
+  a.href = url; a.download = name; a.rel = 'noopener';
+  a.style.display = 'none';
+  document.body.appendChild(a);        // 必须挂进 DOM，否则部分浏览器不触发
+  a.click();
+  setTimeout(function(){ a.remove(); URL.revokeObjectURL(url); }, 10000); // 延迟回收，避免大文件被截断
+}
+function svShare(t, name){
+  try{
+    navigator.share({files:[new File([svBlob(t)], name, {type:'text/plain;charset=utf-8'})], title:name})
+      .then(function(){ svToast('已保存 ✅ 到「文件」App 里找', null, null); })
+      .catch(function(e){
+        if(e && e.name === 'AbortError') return;
+        svDialog(t, name, '分享没完成，换下面一种方式试试。');
+      });
+    return true;
+  }catch(e){ return false; }
+}
+function svOpenTab(t){
+  const url = URL.createObjectURL(new Blob([t], {type:'text/plain;charset=utf-8'}));
+  const a = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  a.style.display = 'none';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 120000);
+  svToast('已在新页面打开全文，用浏览器的「分享 / 菜单」保存', null, null);
+}
+function svCopyAll(t){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){
+      svToast('全文已复制 ✅ 粘贴到备忘录 / 小说 App 保存', null, null);
+    }).catch(function(){ svTextWall(t); });
+  } else { svTextWall(t); }
+}
+function svTextWall(t){   // 最后兜底：弹一个可长按全选的文本框
+  const m = document.createElement('div');
+  m.style.cssText = 'position:fixed;inset:0;background:#fff;z-index:10000;padding:14px;display:flex;flex-direction:column';
+  m.innerHTML = '<div style="font-size:13px;color:#7a7468;margin-bottom:8px">'
+    + '长按下方文字 →「全选」→「拷贝」，再粘贴到备忘录或小说 App</div>'
+    + '<textarea readonly style="flex:1;width:100%;border:1px solid #e6e1d8;border-radius:10px;'
+    + 'padding:12px;font-size:15px;line-height:1.7;resize:none"></textarea>'
+    + '<button style="margin-top:10px;padding:11px;border:1px solid #e6e1d8;border-radius:10px;'
+    + 'background:#f5f3ef;font-size:14px;font-family:inherit">关闭</button>';
+  const ta = m.querySelector('textarea'); ta.value = t;
+  m.querySelector('button').onclick = function(){ m.remove(); };
+  document.body.appendChild(m);
+  setTimeout(function(){ try{ ta.focus(); ta.setSelectionRange(0, t.length); }catch(e){} }, 120);
+}
+function svToast(msg, btnText, onBtn){
+  const old = document.getElementById('svToast'); if(old) old.remove();
+  const el = document.createElement('div');
+  el.id = 'svToast'; el.className = 'sv-toast';
+  el.innerHTML = '<span>' + msg + '</span>';
+  if(btnText){
+    const b = document.createElement('button'); b.textContent = btnText;
+    b.onclick = function(){ el.remove(); onBtn && onBtn(); };
+    el.appendChild(b);
+  }
+  const x = document.createElement('button'); x.className = 'sv-x'; x.textContent = '×';
+  x.onclick = function(){ el.remove(); };
+  el.appendChild(x);
+  document.body.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 8000);
+}
+function svDialog(t, name, tip){
+  const old = document.getElementById('svMask'); if(old) old.remove();
+  const canShare = svCanShare(t, name);
+  const mask = document.createElement('div');
+  mask.className = 'sv-mask'; mask.id = 'svMask';
+  let html = '<div class="sv-box"><h4>把小说存到手机</h4>'
+    + '<div class="sv-sub">文件名：' + esc(name) + ' · 约 ' + (t || '').replace(/\s/g,'').length + ' 字</div>';
+  if(SV_INAPP){
+    html += '<div class="sv-tip warn">现在是在微信 / QQ 等 App 里打开的，'
+      + '<b>这类内置浏览器会直接拦掉下载</b>，所以点了没反应。'
+      + '请点右上角「···」→「在浏览器中打开」再来下载；或者先用下面的方式把内容弄走。</div>';
+  } else if(SV_IOS){
+    html += '<div class="sv-tip info">苹果手机建议用「分享保存」，选「存储到文件」即可存进「文件」App。</div>';
+  } else if(tip){
+    html += '<div class="sv-tip warn">' + tip + '</div>';
+  }
+  html += '<div class="sv-list"></div><button class="sv-close">取消</button></div>';
+  mask.innerHTML = html;
+
+  const list = mask.querySelector('.sv-list');
+  function item(ico, title, desc, rec, fn){
+    const b = document.createElement('button');
+    b.className = 'sv-item' + (rec ? ' rec' : '');
+    b.innerHTML = '<span class="sv-ico"></span><div><div class="sv-t"></div><div class="sv-d"></div></div>'
+      + (rec ? '<span class="sv-badge">推荐</span>' : '');
+    b.querySelector('.sv-ico').textContent = ico;
+    b.querySelector('.sv-t').textContent = title;
+    b.querySelector('.sv-d').textContent = desc;
+    b.onclick = fn;
+    list.appendChild(b);
+  }
+  if(canShare) item('📤', '分享保存', '选「存储到文件」/ 发到微信、网盘', SV_IOS, function(){
+    mask.remove(); svShare(t, name);
+  });
+  item('💾', '直接下载', '存到手机「下载」或「文件」里', !SV_IOS && !canShare, function(){
+    mask.remove(); svRawDownload(t, name);
+    svToast('已触发下载，看手机上是否出现文件', '没反应？', function(){ svDialog(t, name, ''); });
+  });
+  item('👁️', '打开全文再保存', '新页面打开，用浏览器菜单保存', false, function(){
+    mask.remove(); svOpenTab(t);
+  });
+  item('📋', '复制全文', '粘贴到备忘录 / 小说 App', false, function(){
+    mask.remove(); svCopyAll(t);
+  });
+  mask.querySelector('.sv-close').onclick = function(){ mask.remove(); };
+  mask.addEventListener('click', function(e){ if(e.target === mask) mask.remove(); });
+  document.body.appendChild(mask);
+}
+function downloadText(t, name){
+  if(!t){ alert('内容为空，没有可下载的文本'); return; }
+  name = svFixName(name);
+  // 手机或 App 内置浏览器：直接给保存方案，避免「点了没反应」
+  if(SV_MOBILE || SV_INAPP){ svDialog(t, name); return; }
+  svRawDownload(t, name);   // 电脑：保持原来的一键下载手感
+  svToast('已开始下载：' + name, '没反应？', function(){ svDialog(t, name, ''); });
+}
+
+/* ============ 功能四：朗读（Web Speech API，纯本地，不耗 API）============ */
+const readState = { idx:0, reading:false, paused:false };
+
+function splitSentences(t){
+  // 按中英文句末标点 + 换行切句，保留标点
+  const parts = t.split(/(?<=[。！？!?…；;\n])/);
+  return parts.map(s=>s.trim()).filter(s=>s.length>0);
+}
+function renderReadView(highlightIdx){
+  const view = $('readView');
+  const text = $('readIn').value;
+  if(!text.trim()){ view.innerHTML='<span class="rh-empty">播放后，正在朗读的句子会在这里高亮显示…</span>'; return; }
+  const sents = splitSentences(text);
+  view.innerHTML = sents.map((s,i)=>{
+    let cls='rh-sent';
+    if(i<highlightIdx) cls+=' done';
+    if(i===highlightIdx) cls+=' hl';
+    return '<span class="'+cls+'" data-idx="'+i+'">'+esc(s)+'</span>';
+  }).join('');
+  if(highlightIdx>=0) scrollReadViewToHl();
+}
+/* 高亮句自动跟随：把正在朗读的句子滚到预览区中部；已完整可见则不动，不打扰手动翻阅 */
+function scrollReadViewToHl(){
+  const follow = $('readFollow');
+  if(follow && !follow.checked) return;               // 用户关掉了自动跟随
+  const view = $('readView');
+  const hl = view.querySelector('.rh-sent.hl');
+  if(!hl) return;
+  if(!view.getBoundingClientRect || !view.scrollTo) return;
+  const vr = view.getBoundingClientRect();
+  const hr = hl.getBoundingClientRect();
+  const margin = 22;                                   // 距边缘还有余量就算可见
+  if(hr.top >= vr.top + margin && hr.bottom <= vr.bottom - margin) return;
+  const delta = (hr.top - vr.top) - view.clientHeight/2 + hr.height/2;
+  view.scrollTo({top: view.scrollTop + delta, behavior:'smooth'});
+}
+function populateVoices(){
+  const sel = $('readVoice');
+  if(!window.speechSynthesis){ return false; }
+  const voices = window.speechSynthesis.getVoices()||[];
+  if(!voices.length){ sel.innerHTML='<option value="">（加载中…）</option>'; return false; }
+  const zh = voices.filter(v=>/zh|cmn|Chinese|中文|普通话/i.test(v.lang+' '+v.name));
+  const list = zh.length ? zh : voices;
+  const saved = sel.value;
+  sel.innerHTML = list.map((v,i)=>'<option value="'+i+'">'+esc(v.name)+'（'+v.lang+'）</option>').join('');
+  sel._voices = list;
+  // 尽量恢复之前的选项；否则默认选第一条
+  if(saved && list[Number(saved)]) sel.value = saved;
+  else if(list[0]) sel.value = '0';
+  return true;
+}
+function ensureVoices(){
+  if(populateVoices()) return true;
+  // 部分手机浏览器（尤其是国产浏览器/iOS）需要一次 cancel 或空 speak 才暴露 voices
+  if(window.speechSynthesis){
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    try{
+      const u = new SpeechSynthesisUtterance(''); u.volume=0; window.speechSynthesis.speak(u);
+      window.speechSynthesis.cancel();
+    }catch(e){}
+  }
+  return populateVoices();
+}
+function speakSentence(){
+  if(readState.idx >= readState.sents.length){ stopRead(); $('readStatus').textContent='✅ 朗读完成'; return; }
+  const u = new SpeechSynthesisUtterance(readState.sents[readState.idx]);
+  const sel = $('readVoice');
+  if(sel._voices && sel._voices[sel.value]) u.voice = sel._voices[sel.value];
+  u.lang = 'zh-CN';
+  u.rate = parseFloat($('readRate').value);
+  u.volume = parseFloat($('readVol').value);
+  u.pitch = parseFloat($('readPitch').value);
+  u.onend = ()=>{
+    if(!readState.reading) return;
+    readState.idx++;
+    renderReadView(readState.idx);
+    $('readCount').textContent='第 '+readState.idx+' / '+readState.sents.length+' 句';
+    speakSentence();
+  };
+  u.onerror = ()=>{};
+  window.speechSynthesis.speak(u);
+  renderReadView(readState.idx);
+  $('readCount').textContent='第 '+(readState.idx+1)+' / '+readState.sents.length+' 句';
+  readState.reading=true; readState.paused=false;
+}
+function startReadAt(idx){
+  window.speechSynthesis.cancel();
+  readState.sents = splitSentences($('readIn').value);
+  readState.idx = idx;
+  if(!readState.sents.length){ $('readStatus').textContent='⚠️ 没有可朗读的内容'; return; }
+  speakSentence();
+}
+function stopRead(){
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  readState.reading=false; readState.paused=false;
+  $('readPause').textContent='⏸ 暂停';
+}
+/* 播放 */
+$('readPlay').onclick=()=>{
+  if(readState.reading && readState.paused){ window.speechSynthesis.resume(); readState.paused=false; $('readPause').textContent='⏸ 暂停'; return; }
+  const text = $('readIn').value.trim();
+  if(!text){ $('readStatus').textContent='⚠️ 请先粘贴文字或上传文档'; return; }
+  // 手机上首次播放常需主动唤醒语音列表
+  if(!ensureVoices() && !$('readVoice')._voices?.length){
+    $('readStatus').textContent='⚠️ 未获取到本机语音包，请检查系统语音设置或换用 Chrome / Edge';
+    return;
+  }
+  stopRead();
+  startReadAt(0);
+  $('readStatus').textContent='🎧 朗读中…';
+};
+/* 暂停 / 继续 */
+$('readPause').onclick=()=>{
+  if(readState.reading && !readState.paused){ window.speechSynthesis.pause(); readState.paused=true; $('readPause').textContent='▶ 继续'; }
+  else if(readState.paused){ window.speechSynthesis.resume(); readState.paused=false; $('readPause').textContent='⏸ 暂停'; }
+};
+/* 停止 */
+$('readStop').onclick=()=>{ stopRead(); $('readStatus').textContent='⏹ 已停止'; };
+/* 从选中处读 */
+$('readFromSel').onclick=()=>{
+  const ta = $('readIn');
+  const selStart = ta.selectionStart;
+  if(selStart===ta.selectionEnd){ $('readStatus').textContent='⚠️ 请先用鼠标选中一段文字，再从该处朗读'; return; }
+  const before = ta.value.slice(0, selStart);
+  const allSents = splitSentences(ta.value);
+  const startIdx = splitSentences(before).length;
+  const idx = Math.min(startIdx, allSents.length-1);
+  if(!allSents.length){ $('readStatus').textContent='⚠️ 没有可朗读的内容'; return; }
+  stopRead();
+  startReadAt(idx);
+  $('readStatus').textContent='🎧 从选中处朗读中…';
+};
+/* 滑块数值显示 */
+const rateValMap = {readRate:'rateVal', readVol:'volVal', readPitch:'pitchVal'};
+['readRate','readVol','readPitch'].forEach(id=>{
+  $(id).addEventListener('input', e=>{
+    const v = parseFloat(e.target.value).toFixed(1);
+    $(rateValMap[id]).textContent = v;
+  });
+});
+/* 一键加速 / 减速 */
+function changeRate(delta){
+  const el = $('readRate');
+  let v = parseFloat(el.value) + delta;
+  v = Math.max(parseFloat(el.min), Math.min(parseFloat(el.max), v));
+  v = Math.round(v*10)/10;
+  el.value = v;
+  $('rateVal').textContent = v.toFixed(1);
+}
+$('rateUp').onclick = ()=>changeRate(0.5);
+$('rateDown').onclick = ()=>changeRate(-0.5);
+/* 输入即更新预览（未朗读时） */
+$('readIn').addEventListener('input', ()=>{ if(!readState.reading) renderReadView(-1); });
+/* 预览区：点击任意一句，从该句开始读 */
+$('readView').addEventListener('click', e=>{
+  const span = e.target.closest('.rh-sent');
+  if(!span) return;
+  const idx = parseInt(span.dataset.idx, 10);
+  stopRead();
+  startReadAt(idx);
+  $('readStatus').textContent='🎧 从点击处朗读中…';
+});
+/* 上传文档 */
+$('readFile').addEventListener('change', async e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const ext = f.name.split('.').pop().toLowerCase();
+  $('readStatus').textContent='⏳ 正在读取 '+f.name+'…';
+  try{
+    let text='';
+    if(ext==='txt'||ext==='md'){ text = await f.text(); }
+    else if(ext==='doc'){ throw new Error('旧版 .doc 不支持，请在 Word 中「另存为」.docx 或 .txt 再上传'); }
+    else if(ext==='docx'){ text = await readDocx(f); }
+    else if(ext==='pdf'){ text = await readPdf(f); }
+    else { throw new Error('不支持的格式（请用 TXT / Word / PDF）'); }
+    $('readIn').value = text.trim();
+    renderReadView(0);
+    $('readStatus').textContent='✅ 已载入 '+f.name+'（'+countChars(text)+' 字）';
+  }catch(err){
+    $('readStatus').textContent='⚠️ 读取失败：'+err.message+'（可改为复制粘贴）';
+  }
+  e.target.value='';
+});
+async function readDocx(file){
+  if(typeof mammoth==='undefined') throw new Error('Word 解析库未加载，请联网后重试');
+  const buf = await file.arrayBuffer();
+  try{
+    const res = await mammoth.extractRawText({arrayBuffer:buf});
+    return res.value;
+  }catch(err){
+    if(/zip|central directory/i.test(err.message)){
+      throw new Error('这是旧版 .doc 文件，无法直接读取。请用 Word「另存为」.docx 或 .txt 后再上传');
+    }
+    throw err;
+  }
+}
+async function readPdf(file){
+  if(typeof pdfjsLib==='undefined') throw new Error('PDF 解析库未加载，请联网后重试');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  let text='';
+  for(let i=1;i<=pdf.numPages;i++){
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(it=>it.str).join(' ') + '\n';
+  }
+  return text;
+}
+/* 清空 */
+$('readClear').onclick=()=>{
+  $('readIn').value='';                 // 先清空输入框，确保一定有反应
+  try{ renderReadView(-1); }catch(e){}
+  try{ stopRead(); }catch(e){}          // 停止朗读；语音异常时忽略错误
+  $('readStatus').textContent='已清空';
+};
+/* 其他功能「朗读」按钮：把内容载入朗读面板 */
+function loadToRead(text){
+  if(!text.trim()){ alert('当前没有可朗读的内容'); return; }
+  $('readIn').value = text.trim();
+  renderReadView(0);
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelector('[data-tab="read"]').classList.add('active');
+  $('panel-read').classList.add('active');
+  $('readStatus').textContent='已载入内容，点「▶ 播放」开始朗读 🎧';
+  $('panel-read').scrollIntoView({behavior:'smooth'});
+}
+$('contRead').onclick=()=>loadToRead($('contIn').value);
+$('mimicRead').onclick=()=>loadToRead($('mimicOut').textContent);
+$('cleanRead').onclick=()=>loadToRead($('cleanOut').textContent);
+/* 初始化语音 */
+if('speechSynthesis' in window){
+  populateVoices();
+  // 系统语音列表就绪时自动刷新
+  window.speechSynthesis.onvoiceschanged = populateVoices;
+  // 兜底：部分手机浏览器不触发 voiceschanged，轮询加载
+  let voiceTries=0;
+  const voicePoll = setInterval(()=>{
+    if(populateVoices()){ clearInterval(voicePoll); return; }
+    if(++voiceTries>25){
+      clearInterval(voicePoll);
+      $('readVoice').innerHTML='<option value="">（未获取到语音，点击播放再试）</option>';
+    }
+  }, 400);
+  // 用户首次交互时再次强制加载（iOS / 部分国产浏览器需要手势才暴露语音）
+  ['touchstart','click'].forEach(evt=>{
+    const fn = ()=>{ if(!populateVoices()) ensureVoices(); };
+    document.addEventListener(evt, fn, {once:true});
+  });
+}else{
+  $('readVoice').innerHTML='<option value="">（浏览器不支持语音）</option>';
+  $('readStatus').textContent='⚠️ 当前浏览器不支持语音朗读，请换 Chrome / Edge';
+  $('readPlay').disabled=true;
+}
+
+loadSettings();
+loadCleanOpts();
+renderChapters();
+updateEngineUI();
+</script>
+</body>
+</html>
